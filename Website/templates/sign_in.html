@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Sign IN{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <h3 align="center">Sign In</h3>
+    <div class="form-group">
+        <label for="empName">Employee Name</label>
+        <input
+        type="text"
+        class="form-control"
+        id="empName"
+        name="empName"
+        placeholder="Enter your name"
+        />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

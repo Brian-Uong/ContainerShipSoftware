@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+
+{% block content %}
+<!--Start Balance & Unlod/load Buttons-->
+<div class="d-flex justify-content-center align-items-center" style="height: 75vh">
+    <button type="button" class="btn btn-secondary btn-lg custom-button">Balance</button>
+    <button type="button" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+</div>
+
+<style>
+    .custom-button{
+        width: 200px;
+        height: 200px;
+        margin: 0 20px;
+        border-radius: 30px;
+        font-size: 1.75rem;
+    }
+</style>
+<!--End Balance & Unlod/load Buttons-->
+
+<!--Start Log Message Section-->
+<form method="POST">
+    <div style="position: fixed; bottom: 0; left: 0; width: 100%; max-width: 400px; padding: 16px;">
+      <label for="logMessage">Log Message</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button">Submit</button>
+        </div>
+      </div>
+    </form>
+</div>
+<!--End Log Message Section-->
+{% endblock %}
+
