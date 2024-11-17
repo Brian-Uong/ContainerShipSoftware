@@ -78,10 +78,10 @@ def create_app():
     
     @app.route('/balanceRedirect', methods=['POST'])
     def balanceRedirect():
-        return redirect(url_for('auth./balance')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.balance')) #These don't work I'll keep thinking about why later
     
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
-        return redirect(url_for('auth./unload_load')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.unload_load')) #These don't work I'll keep thinking about why later
 
     return app
