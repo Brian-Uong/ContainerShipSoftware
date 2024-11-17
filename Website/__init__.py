@@ -24,6 +24,27 @@ def create_app():
 
         return redirect(url_for('home'))
     
+    # Crated 2 more log functions so user can stay on page where message was logged
+    @app.route('/logBalance', methods=['POST'])
+    def log_message_balance():
+        log_message = request.form.get('logMessage')
+        file_path = 'log.txt'
+
+        with open(file_path, 'a') as files:
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
+
+        return redirect(url_for('auth.balance'))
+    
+    @app.route('/logUnloadLoad', methods=['POST'])
+    def log_message_UnloadLoad():
+        log_message = request.form.get('logMessage')
+        file_path = 'log.txt'
+
+        with open(file_path, 'a') as files:
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
+
+        return redirect(url_for('auth.unload_load'))
+    
     @app.route('/signIn', methods=['POST'])
     def sign_in():
         sign_in = request.form.get('empName')
@@ -33,6 +54,27 @@ def create_app():
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
         return redirect(url_for('home'))
+    
+    # Created 2 more log functions for balancing and unload/load page
+    @app.route('/signInBalance', methods=['POST'])
+    def sign_in_Balance():
+        sign_in = request.form.get('empName')
+        file_path = 'log.txt'
+
+        with open(file_path, 'a') as files:
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
+
+        return redirect(url_for('auth.balance'))
+    
+    @app.route('/signInUnloadLoad', methods=['POST'])
+    def sign_in_UnloadLoad():
+        sign_in = request.form.get('empName')
+        file_path = 'log.txt'
+
+        with open(file_path, 'a') as files:
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
+
+        return redirect(url_for('auth.unload_load'))
     
     @app.route('/balanceRedirect', methods=['POST'])
     def balanceRedirect():
