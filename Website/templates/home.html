@@ -3,8 +3,13 @@
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
-    <button type="button" class="btn btn-secondary btn-lg custom-button">Balance</button>
-    <button type="button" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+  <form method="POST" action="/balanceRedirect">
+    <button action="/balanceRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
+  </form>
+
+  <form method="POST" action="/unload_loadRedirect">
+    <button action="/unload_loadRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+  </form>
 </div>
 
 <style>
@@ -19,17 +24,16 @@
 <!--End Balance & Unlod/load Buttons-->
 
 <!--Start Log Message Section-->
-<form method="POST">
+<form method="POST" action="/log">
     <div style="position: fixed; bottom: 0; left: 0; width: 100%; max-width: 400px; padding: 16px;">
       <label for="logMessage">Log Message</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
+        <input type="text" class="form-control" name="logMessage" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button">Submit</button>
+          <button class="btn btn-outline-secondary" type="submit">Submit</button>
         </div>
       </div>
     </form>
 </div>
 <!--End Log Message Section-->
 {% endblock %}
-
