@@ -1,11 +1,5 @@
 import heapq
-
-class Container:
-    def __init__(self, x, y, weight, name):
-        self.x = x
-        self.y = y
-        self.weight = weight
-        self.name = name
+import manifest_read
 
 class BoardState:
     MAX_BAY_Y = 10
@@ -14,38 +8,70 @@ class BoardState:
     MAX_BUFFER_Y = 4
     MAX_BUFFER_X = 24
     MAX_BUFFER_CONTAINERS = 96
+    testx = 5
+    testy = 4
     
-    def __init__(self, neededOff, currentOff, neededOn, currentOn, bay, buffer, g, parent):
-        self.neededOff = neededOff
-        self.currentOff = currentOff
-        self.neededOn = neededOn
-        self.currentOn = currentOn
+    # def __init__(self, neededOff, currentOff, neededOn, currentOn, bay, buffer, g, parent):
+    #     self.neededOff = neededOff
+    #     self.currentOff = currentOff
+    #     self.neededOn = neededOn
+    #     self.currentOn = currentOn
+    #     self.bay = bay
+    #     self.buffer = buffer
+    #     self.g = g
+    #     self.h = self.heuristic()
+    #     self.parent = parent
+    #     self.f = self.g + self.h
+
+    def __init__(self, bay):
         self.bay = bay
-        self.buffer = buffer
-        self.g = g
-        self.h = self.heuristic()
-        self.parent = parent
-        self.f = self.g + self.h
 
-class Tree:
-    def __init__(self, root):
-        self.root = root
+    def PrintState(self):
+        for row in range(self.testx - 1, -1, -1):
+            for column in range(self.testy):
+                container = self.bay[row][column]
+                if container:
+                    print(f"| {container.name} {container.weight} ({container.x},{container.y}) |", end='')
+                else:
+                    print("| EMPTY |", end='')
+            print('\n')
+
+
+
+# class Tree:
+#     def __init__(self, root):
+#         self.root = root
     
-    def AStar(self):
-        frontier = []
-        heapq.heappush(frontier, (self.root.f, self.root))
-        frontierSet = {self.root}
-        visitedSet = set()
+#     def AStar(self):
+#         frontier = []
+#         heapq.heappush(frontier, (self.root.f, self.root))
+#         frontierSet = {self.root}
+#         visitedSet = set()
 
-        while frontier:
-            _, curr = heapq.heappop(frontier)
-            frontierSet.remove(curr)
+#         while frontier:
+#             _, curr = heapq.heappop(frontier)
+#             frontierSet.remove(curr)
 
-            if self.isGoal(curr):
-                print('GOAL')
+#             if self.isGoal(curr):
+#                 print('GOAL')
 
-                return
+#                 return
             
-            visitedSet.add(curr)
+#             visitedSet.add(curr)
 
-            
+def main():
+    # bay = []
+
+    # for i in range(5):
+    #     row = []
+    #     for j in range(4):
+    #         container = manifest_read.Container(j + 1, i + 1, i * 5, 'bob')
+    #         row.append(container)
+    #     bay.append(row)
+
+    test = BoardState(manifest_read.parse())
+
+    test.PrintState()
+
+if __name__ == "__main__":
+    main()
