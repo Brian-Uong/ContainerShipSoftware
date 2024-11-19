@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, session
 from datetime import datetime
 
 def create_app():
@@ -8,10 +8,11 @@ def create_app():
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')  
 
     @app.route('/')
     def home():
+        session['previous_url'] = url_for('home')
         return "Home Page"
 
     @app.route('/log', methods=['POST'])
@@ -22,30 +23,9 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('home'))
+        return redirect(session['previous_url'])
     
-    # Crated 2 more log functions so user can stay on page where message was logged
-    @app.route('/logBalance', methods=['POST'])
-    def log_message_balance():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
-
-        return redirect(url_for('auth.balance'))
-    
-    @app.route('/logUnloadLoad', methods=['POST'])
-    def log_message_UnloadLoad():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
-
-        return redirect(url_for('auth.unload_load'))
-    
-    @app.route('/signIn', methods=['POST'])
+    @app.route('/signIn', methods=['POST']) #This has an issue where if the user uses the back or forward arrows to navigate pages the session cannot track it.
     def sign_in():
         sign_in = request.form.get('empName')
         file_path = 'log.txt'
@@ -53,35 +33,23 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
-        return redirect(url_for('home'))
-    
-    # Created 2 more log functions for balancing and unload/load page
-    @app.route('/signInBalance', methods=['POST'])
-    def sign_in_Balance():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
+        return redirect(session['previous_url'])
 
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.balance'))
-    
-    @app.route('/signInUnloadLoad', methods=['POST'])
-    def sign_in_UnloadLoad():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.unload_load'))
     
     @app.route('/balanceRedirect', methods=['POST'])
     def balanceRedirect():
-        return redirect(url_for('auth.balance')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
-        return redirect(url_for('auth.unload_load')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.unload_load'))
+
+    
+    #Need to create something that will cause a file explorer pop-up when the user goes to the balance page or the unload/load page.
+    #I think how I will implement this is add a folder that holds the manifest. When the page loads it should check if that folder is empty.
+    #If it is empty it will bring up the file explorer pop-up. If it isn't empty it will just load the page with that manifest. This should 
+    #enable it to keep working if the power goes out. When the user says they have completed the cycle it will delete the manifest file from the manifest folder.
+
+    
 
     return app
