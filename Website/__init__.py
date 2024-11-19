@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, session
 from datetime import datetime
 
 def create_app():
@@ -8,10 +8,11 @@ def create_app():
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')  
 
     @app.route('/')
     def home():
+        session['previous_url'] = url_for('home')
         return "Home Page"
 
     @app.route('/log', methods=['POST'])
@@ -22,7 +23,8 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('auth.unload_load'))
+        return redirect(session['previous_url'])
+    
     @app.route('/signIn', methods=['POST'])
     def sign_in():
         sign_in = request.form.get('empName')
@@ -31,7 +33,7 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
-        return redirect(url_for('home'))
+        return redirect(session['previous_url'])
     
     @app.route('/balanceRedirect', methods=['POST'])
     def balanceRedirect():
