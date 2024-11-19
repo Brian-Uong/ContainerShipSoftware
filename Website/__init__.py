@@ -25,7 +25,7 @@ def create_app():
 
         return redirect(session['previous_url'])
     
-    @app.route('/signIn', methods=['POST'])
+    @app.route('/signIn', methods=['POST']) #This has an issue where if the user uses the back or forward arrows to navigate pages the session cannot track it.
     def sign_in():
         sign_in = request.form.get('empName')
         file_path = 'log.txt'
@@ -43,7 +43,7 @@ def create_app():
     def unload_loadRedirect():
         return redirect(url_for('auth.unload_load'))
 
-
+    
     #Need to create something that will cause a file explorer pop-up when the user goes to the balance page or the unload/load page.
     #I think how I will implement this is add a folder that holds the manifest. When the page loads it should check if that folder is empty.
     #If it is empty it will bring up the file explorer pop-up. If it isn't empty it will just load the page with that manifest. This should 

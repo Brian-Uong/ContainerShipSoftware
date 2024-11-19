@@ -3,14 +3,6 @@
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
 
-<script>
-  //Performance Event timing is the new version. The other is depreciated.
-  
-  if(window.performance.getEntriesByType("navigation")[0].type === "back_forward") { 
-    alert("THIS SHOULD SEND AN ALERT IF THE PAGE WAS ACCESSED BY THE BACK ARROW");
-  }
-</script>
-
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
   <form method="POST" action="/balanceRedirect">
     <button  type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
