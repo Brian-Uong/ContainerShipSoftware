@@ -48,10 +48,10 @@ class BoardState:
 
 
 
-    # def Expand(self):
-    #     for column in range(self.testx):
-    #         if column in self.bay and self.bay[column]:
-            
+    def Expand(self):
+        for column in range(self.testx):
+            if column in self.bay and self.bay[column]:
+                
 
 
 class Tree:
