@@ -4,11 +4,18 @@
 <!--Start Balance & Unlod/load Buttons-->
 
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
-  <form method="POST" action="/balanceRedirect">
-    <button  type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
+  <form method="POST" action="/balanceRedirect" enctype="multipart/form-data">
+    <div class="position-relative">
+      <button  type="submit" class="btn btn-secondary btn-lg custom-button" onclick="document.getElementById('manifest-input-balance').click()">Balance</button>
+      <input type="file" id="manifest-input-balance" style="display:none" accept=".txt" class="form-control-file" onchange="fileChosen(event, 'balance')" />
+    </div>
   </form>
-  <form method="POST" action="/unload_loadRedirect">
-    <button type="submit" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+
+  <form method="POST" action="/unload_loadRedirect" enctype="multipart/form-data">
+    <div class="position-relative">
+      <button type="submit" class="btn btn-secondary btn-lg custom-button" onclick="document.getElementById('manifest-input-unload-load').click()">Load/Unload</button>
+      <input type="file" id="manifest-input-unload-load" style="display:none" accept=".txt" class="form-control-file" onchange="fileChosen(event, 'unload_load')" />
+    </div>
   </form>
 </div>
 
