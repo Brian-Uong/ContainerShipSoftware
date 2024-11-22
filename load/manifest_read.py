@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 class Container:
     def __init__(self, x, y, weight, name):
         self.x = x
@@ -6,7 +8,7 @@ class Container:
         self.name = name
 
 def parse():
-    grid = [[None for _ in range(4)] for _ in range(5)]
+    grid = defaultdict(list)
 
     try:
         with open('./manifest.txt', 'r') as f:
@@ -20,12 +22,12 @@ def parse():
                     name = parts[2]
                     container = Container(x + 1, y + 1, weight, name)
                     
-                    if 0 <= y < len(grid) and 0 <= x < len(grid[0]):
-                        grid[y][x] = container
-                    else:
-                        print(f"Skipping out-of-bounds container at ({x+1}, {y+1}).")
+                    if name != "UNUSED" or weight != 0:
+                        print(x + 1, y + 1, weight, name)
+                        grid[x].append(container)
     except FileNotFoundError:
         print("Error: Manifest file not found.")
     except Exception as e:
         print(f"Error while parsing: {e}")
     return grid
+
