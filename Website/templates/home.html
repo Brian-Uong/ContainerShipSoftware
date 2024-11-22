@@ -6,18 +6,34 @@
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
   <form method="POST" action="/balanceRedirect" enctype="multipart/form-data">
     <div class="position-relative">
-      <button  type="submit" class="btn btn-secondary btn-lg custom-button" onclick="document.getElementById('manifest-input-balance').click()">Balance</button>
-      <input type="file" id="manifest-input-balance" style="display:none" accept=".txt" class="form-control-file" onchange="fileChosen(event, 'balance')" />
+      <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-balance">Balance</label>
+      <input style="display: none;" type="file" name='manifest-input-balance' id='manifest-input-balance' accept=".txt" onchange="balanceSubmit()">
+      <input style="display: none;"id='manifest-submit-balance' type="submit" value="upload">
     </div>
   </form>
 
   <form method="POST" action="/unload_loadRedirect" enctype="multipart/form-data">
     <div class="position-relative">
-      <button type="submit" class="btn btn-secondary btn-lg custom-button" onclick="document.getElementById('manifest-input-unload-load').click()">Load/Unload</button>
-      <input type="file" id="manifest-input-unload-load" style="display:none" accept=".txt" class="form-control-file" onchange="fileChosen(event, 'unload_load')" />
+      <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-unload-load">Unload/Load</label>
+      <input style="display: none;" type="file" name='manifest-input-unload-load' id='manifest-input-unload-load' accept=".txt" onchange="unloadLoadSubmit()">
+      <input style="display: none;"id='manifest-submit-unload-load' type="submit" value="upload">
     </div>
   </form>
 </div>
+
+<script>
+  function balanceSubmit() {
+    setInterval(() => {
+    document.getElementById('manifest-submit-balance').click();}
+    ,100);
+  }
+
+  function unloadLoadSubmit() {
+    setInterval(() => {
+    document.getElementById('manifest-submit-unload-load').click();}
+    ,100);
+  }
+</script>
 
 <style>
     .custom-button{
