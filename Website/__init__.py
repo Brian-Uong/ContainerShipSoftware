@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, session
 from datetime import datetime
 
 def create_app():
@@ -8,10 +8,11 @@ def create_app():
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')  
 
     @app.route('/')
     def home():
+        session['previous_url'] = url_for('home')
         return "Home Page"
 
     @app.route('/log', methods=['POST'])
@@ -22,28 +23,28 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('home'))
+        return redirect(session['previous_url'])
     
     # Crated 2 more log functions so user can stay on page where message was logged
-    @app.route('/logBalance', methods=['POST'])
-    def log_message_balance():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
+    # @app.route('/logBalance', methods=['POST'])
+    # def log_message_balance():
+    #     log_message = request.form.get('logMessage')
+    #     file_path = 'log.txt'
 
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
+    #     with open(file_path, 'a') as files:
+    #         files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('auth.balance'))
+    #     return redirect(url_for('auth.balance'))
     
-    @app.route('/logUnloadLoad', methods=['POST'])
-    def log_message_UnloadLoad():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
+    # @app.route('/logUnloadLoad', methods=['POST'])
+    # def log_message_UnloadLoad():
+    #     log_message = request.form.get('logMessage')
+    #     file_path = 'log.txt'
 
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
+    #     with open(file_path, 'a') as files:
+    #         files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('auth.unload_load'))
+    #     return redirect(url_for('auth.unload_load'))
     
     @app.route('/signIn', methods=['POST'])
     def sign_in():
@@ -53,35 +54,19 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
-        return redirect(url_for('home'))
+        return redirect(session['previous_url'])
     
-    # Created 2 more log functions for balancing and unload/load page
-    @app.route('/signInBalance', methods=['POST'])
-    def sign_in_Balance():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
+    @app.route('/homeRedirect', methods=['POST'])
+    def homeRedirect():
+        session['previous_url'] = url_for('home')
+        return redirect(url_for('auth.home'))
 
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.balance'))
-    
-    @app.route('/signInUnloadLoad', methods=['POST'])
-    def sign_in_UnloadLoad():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.unload_load'))
-    
     @app.route('/balanceRedirect', methods=['POST'])
     def balanceRedirect():
-        return redirect(url_for('auth.balance')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
-        return redirect(url_for('auth.unload_load')) #These don't work I'll keep thinking about why later
+        return redirect(url_for('auth.unload_load'))
 
     return app
