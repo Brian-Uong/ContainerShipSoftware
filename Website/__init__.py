@@ -8,7 +8,7 @@ def create_app():
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')  
 
     @app.route('/')
     def home():
@@ -55,27 +55,6 @@ def create_app():
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
         return redirect(session['previous_url'])
-    
-    # # Created 2 more log functions for balancing and unload/load page
-    # @app.route('/signInBalance', methods=['POST'])
-    # def sign_in_Balance():
-    #     sign_in = request.form.get('empName')
-    #     file_path = 'log.txt'
-
-    #     with open(file_path, 'a') as files:
-    #         files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-    #     return redirect(url_for('auth.balance'))
-    
-    # @app.route('/signInUnloadLoad', methods=['POST'])
-    # def sign_in_UnloadLoad():
-    #     sign_in = request.form.get('empName')
-    #     file_path = 'log.txt'
-
-    #     with open(file_path, 'a') as files:
-    #         files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.unload_load'))
     
     @app.route('/homeRedirect', methods=['POST'])
     def homeRedirect():

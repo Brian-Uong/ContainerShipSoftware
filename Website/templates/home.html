@@ -2,13 +2,13 @@
 
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
+
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
   <form method="POST" action="/balanceRedirect">
-    <button action="/balanceRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
+    <button  type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
   </form>
-
   <form method="POST" action="/unload_loadRedirect">
-    <button action="/unload_loadRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+    <button type="submit" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
   </form>
 </div>
 
@@ -36,4 +36,5 @@
     </form>
 </div>
 <!--End Log Message Section-->
+
 {% endblock %}

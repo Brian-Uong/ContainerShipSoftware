@@ -24,7 +24,11 @@ def unload_load():
 @auth.route('/file_upload')
 def file_upload():
     session['previous_url'] = url_for('file_upload')
+<<<<<<< HEAD
     return render_template("file_upload.html")
+=======
+    return render_template("auth.file_upload.html")
+>>>>>>> 65bcb2e58ce20a486d2f44c742ac1538f3190204
 
 
 
