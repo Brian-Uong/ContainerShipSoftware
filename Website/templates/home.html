@@ -2,15 +2,38 @@
 
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
+
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh">
-  <form method="POST" action="/balanceRedirect">
-    <button action="/balanceRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Balance</button>
+  <form method="POST" action="/balanceRedirect" enctype="multipart/form-data">
+    <div class="position-relative">
+      <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-balance">Balance</label>
+      <input style="display: none;" type="file" name='manifest-input-balance' id='manifest-input-balance' accept=".txt" onchange="balanceSubmit()">
+      <input style="display: none;"id='manifest-submit-balance' type="submit" value="upload">
+    </div>
   </form>
 
-  <form method="POST" action="/unload_loadRedirect">
-    <button action="/unload_loadRedirect" type="submit" class="btn btn-secondary btn-lg custom-button">Load/Unload</button>
+  <form method="POST" action="/unload_loadRedirect" enctype="multipart/form-data">
+    <div class="position-relative">
+      <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-unload-load">Unload/Load</label>
+      <input style="display: none;" type="file" name='manifest-input-unload-load' id='manifest-input-unload-load' accept=".txt" onchange="unloadLoadSubmit()">
+      <input style="display: none;"id='manifest-submit-unload-load' type="submit" value="upload">
+    </div>
   </form>
 </div>
+
+<script>
+  function balanceSubmit() {
+    setInterval(() => {
+    document.getElementById('manifest-submit-balance').click();}
+    ,100);
+  }
+
+  function unloadLoadSubmit() {
+    setInterval(() => {
+    document.getElementById('manifest-submit-unload-load').click();}
+    ,100);
+  }
+</script>
 
 <style>
     .custom-button{
@@ -36,4 +59,5 @@
     </form>
 </div>
 <!--End Log Message Section-->
+
 {% endblock %}

@@ -1,39 +1,9 @@
 {% extends "tasks_base.html" %} {% block title %}Unload and Load{% endblock %}
 
 {% block content %}
-<!-- End Sign In Section-->
-<!--Don't know why the nav bar is cut off to the sides will look into this-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <button 
-  class="navbar-toggler" 
-  type="button" 
-  data-toggle="collapse"
-  data-target="#navbar"
-  >
-  <span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbar">
-  <div class="navbar-nav">
-      <form method="post" action="/signInUnloadLoad">
-        <div class="form-group">
-          <input
-          type="text"
-          class="form-control"
-          id="empName"
-          name="empName"
-          placeholder="Sign in"
-          />
-        </div>
-      </form>
-      <!--<a class="nav-item nav-link" id="Sign In" href="/signin">Sign In</a>-->
-  </div>
-
-</div>
-</nav>
-<!-- End Sign In-->
 
 <!--Begin Unload/Load Button-->
-<div style="position: fixed; top: 75; left: 0; width: 100; padding: 20px;">
+<div style="position: fixed; top: 8vh; left: 0vw; width: 100; padding: 20px;">
     <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-secondary">Unload</button>
         <button type="button" class="btn btn-secondary">Load</button>
@@ -41,18 +11,6 @@
 </div>
 <!--End Unload/Load Button-->
 
-<!--Start Log Message Section-->
-<form method="POST" action="/logUnloadLoad">
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%; max-width: 400px; padding: 16px;">
-      <label for="logMessage">Log Message</label>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" name="logMessage" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div>
-  <!--End Log Message Section-->
+
   
 {% endblock %}

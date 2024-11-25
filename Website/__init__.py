@@ -1,17 +1,24 @@
-from flask import Flask, request, redirect, url_for
+import os
+from flask import Flask, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
 from datetime import datetime
+from load.manifest_read import parse
 
 def create_app():
+
+    UPLOAD_FOLDER = '/'
+
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'secret key BEAM'
 
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
-    app.register_blueprint(auth, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/')  
 
     @app.route('/')
     def home():
+        session['previous_url'] = url_for('home')
         return "Home Page"
 
     @app.route('/log', methods=['POST'])
@@ -22,28 +29,7 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
 
-        return redirect(url_for('home'))
-    
-    # Crated 2 more log functions so user can stay on page where message was logged
-    @app.route('/logBalance', methods=['POST'])
-    def log_message_balance():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
-
-        return redirect(url_for('auth.balance'))
-    
-    @app.route('/logUnloadLoad', methods=['POST'])
-    def log_message_UnloadLoad():
-        log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
-
-        return redirect(url_for('auth.unload_load'))
+        return redirect(session['previous_url'])
     
     @app.route('/signIn', methods=['POST'])
     def sign_in():
@@ -53,35 +39,62 @@ def create_app():
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
 
-        return redirect(url_for('home'))
+        return redirect(session['previous_url'])
     
-    # Created 2 more log functions for balancing and unload/load page
-    @app.route('/signInBalance', methods=['POST'])
-    def sign_in_Balance():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
+    @app.route('/homeRedirect', methods=['POST'])
+    def homeRedirect():    
+        session['previous_url'] = url_for('home')
+        return redirect(url_for('auth.home'))
 
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
+    #These both take a file from their respective buttons on the home page and upload it to the ManifestFolder file. If there is no file selected it will keep them on the hope page.
+    @app.route('/balanceRedirect', methods=['GET','POST'])
+    def balanceRedirect():
+        print(request.files)
+        file = request.files['manifest-input-balance']
+        filename = secure_filename(file.filename)
+        if filename == '': 
+            session['previous_url'] = url_for('home')
+            return redirect(url_for('home'))
+        if file:
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
+            file.save(manifest_path)
 
+            try:
+                grid_data = parse(manifest_path)
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+            
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
         return redirect(url_for('auth.balance'))
     
-    @app.route('/signInUnloadLoad', methods=['POST'])
-    def sign_in_UnloadLoad():
-        sign_in = request.form.get('empName')
-        file_path = 'log.txt'
-
-        with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
-
-        return redirect(url_for('auth.unload_load'))
-    
-    @app.route('/balanceRedirect', methods=['POST'])
-    def balanceRedirect():
-        return redirect(url_for('auth.balance')) #These don't work I'll keep thinking about why later
     
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
-        return redirect(url_for('auth.unload_load')) #These don't work I'll keep thinking about why later
+        print(request.files)
+        file = request.files['manifest-input-unload-load']
+        filename = secure_filename(file.filename)
+        if filename == '':
+            session['previous_url'] = url_for('home')
+            return redirect(url_for('home'))
+        if file:
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
+            file.save(manifest_path)
+
+            try:
+                grid_data = parse(manifest_path)
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+            
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+
+        return redirect(url_for('auth.unload_load'))
 
     return app
