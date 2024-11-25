@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, url_for
-
+import load
 auth = Blueprint('auth', __name__)
 
 @auth.route('/')
@@ -10,16 +10,14 @@ def home():
 @auth.route('/balance')
 def balance():
     session['previous_url'] = url_for('auth.balance')
-    return render_template("balancing.html")
+    grid = session.get('grid_data', {})
+    return render_template("balancing.html", grid=grid)
 
 @auth.route('/unload_load')
 def unload_load():
     session['previous_url'] = url_for('auth.unload_load')
-    return render_template("unload_load.html")
-
-# @auth.route('/signin')
-# def signin():
-#     return render_template("sign_in.html")
+    grid = session.get('grid_data', {})
+    return render_template('unload_load.html', grid=grid)
 
 @auth.route('/file_upload')
 def file_upload():
