@@ -11,20 +11,23 @@ class BoardState:
     testx = 5
     testy = 4
     
-    # def __init__(self, neededOff, currentOff, neededOn, currentOn, bay, buffer, g, parent):
-    #     self.neededOff = neededOff
-    #     self.currentOff = currentOff
-    #     self.neededOn = neededOn
-    #     self.currentOn = currentOn
-    #     self.bay = bay
-    #     self.buffer = buffer
-    #     self.g = g
-    #     self.h = self.heuristic()
-    #     self.parent = parent
-    #     self.f = self.g + self.h
-
-    def __init__(self, bay):
+    def __init__(self, bay, g, parent):
+        # self.neededOff = neededOff
+        # self.currentOff = currentOff
+        # self.neededOn = neededOn
+        # self.currentOn = currentOn
         self.bay = bay
+        # self.buffer = buffer
+        self.g = g
+        self.h = self.heuristic()
+        self.parent = parent
+        self.f = self.g + self.h
+
+    def heuristic():
+        return 0
+
+    # def __init__(self, bay):
+    #     self.bay = bay
 
     def PrintState(self):
         name_width = 14
@@ -48,12 +51,36 @@ class BoardState:
 
 
 
-    def Expand(self):
+    def Expand(self, curr, frontier, frontierSet, visitedSet):
         for column in range(self.testx):
             if column in self.bay and self.bay[column]:
+                top = self.bay[column][-1]
+
+                for otherColumn in range(curr.testx):
+                    if otherColumn == column:
+                        continue
+
+                newBay = {key: list(value) for key, value in curr.bay.item }
+
+                for col in range(curr.testx):
+                    if col not in newBay:
+                        newBay[col] = []
+
+                oldY = top.y
+                oldX = top.x
+                top.y = len(newBay[otherColumn]) + 1
+                top.x = otherColumn + 1
+                newBay[otherColumn].append(top)
+                newCost = abs(oldX - top.x) + abs(oldY - top.y)
+
+                child = BoardState(newBay, newCost, curr)
+
+                if child not in visitedSet and child not in frontierSet:
+                    heapq.heappush(frontierSet, (child.f, child))
+                    frontierSet.add(child)
                 
 
-
+                
 class Tree:
     def __init__(self, root):
         self.root = root

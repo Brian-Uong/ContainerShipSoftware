@@ -10,6 +10,9 @@ class Container:
 def parse():
     grid = defaultdict(list)
 
+    for x in range(5):
+        grid[x] = []
+
     try:
         with open('./manifest.txt', 'r') as f:
             for line in f:
@@ -21,9 +24,8 @@ def parse():
                     weight = int(parts[1].strip("{}"))
                     name = parts[2]
                     container = Container(x + 1, y + 1, weight, name)
-                    
+
                     if name != "UNUSED" or weight != 0:
-                        print(x + 1, y + 1, weight, name)
                         grid[x].append(container)
     except FileNotFoundError:
         print("Error: Manifest file not found.")
