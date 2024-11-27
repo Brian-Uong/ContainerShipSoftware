@@ -120,7 +120,7 @@ class Tree:
                         frontierSet.add(child)
                 
 
-    def isGoal():
+    # def isGoal():
         
 
 
