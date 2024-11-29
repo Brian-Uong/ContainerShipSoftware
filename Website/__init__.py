@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from load.manifest_read import parse
 
 def create_app():
 
@@ -55,7 +56,19 @@ def create_app():
             session['previous_url'] = url_for('home')
             return redirect(url_for('home'))
         if file:
-            file.save(os.path.join(app.root_path+'\ManifestFolder', filename))
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
+            file.save(manifest_path)
+
+            try:
+                grid_data = parse(manifest_path)
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+            
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
         return redirect(url_for('auth.balance'))
     
     
@@ -68,7 +81,20 @@ def create_app():
             session['previous_url'] = url_for('home')
             return redirect(url_for('home'))
         if file:
-            file.save(os.path.join(app.root_path+'\ManifestFolder', filename))
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
+            file.save(manifest_path)
+
+            try:
+                grid_data = parse(manifest_path)
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+            
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+
         return redirect(url_for('auth.unload_load'))
 
     return app
