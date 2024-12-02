@@ -1,36 +1,44 @@
 from collections import defaultdict
 
 class Container:
-    def __init__(self, x, y, weight, name):
-        self.x = x
-        self.y = y
+    def __init__(self, weight, name):
         self.weight = weight
         self.name = name
+
+    def __eq__(self, other):
+        if isinstance(other, Container):
+            return self.name == other.name
+        return False
+
+    def __hash__(self):
+        return hash(self.name)
 
 def parse(file_path):
     grid = defaultdict(list)
 
-    for x in range(5):
-        grid[x] = []
+    num_columns = 5
+    for i in range(num_columns):
+        grid[i] = []
 
     try:
         with open(file_path, 'r') as f:
             for line in f:
                 if line.strip():
                     parts = line.strip().split(", ")
-                    yx = parts[0].strip("[]").split(",")
-                    y = int(yx[0]) - 1
-                    x = int(yx[1]) - 1
+                    indices = parts[0].strip("[]").split(",")
+                    x_index = int(indices[1]) - 1
                     weight = int(parts[1].strip("{}"))
                     name = parts[2]
-                    container = Container(x + 1, y + 1, weight, name)
-                    grid[x].append(container)
+                    
+                    if name == "UNUSED" and weight == 0:
+                        continue
 
-                    #if name != "UNUSED" or weight != 0:
-                        #grid[x].append(container)
+                    container = Container(weight, name)
+                    grid[x_index].append(container)
     except FileNotFoundError:
         print("Error: Manifest file not found.")
     except Exception as e:
         print(f"Error while parsing: {e}")
     return grid
+
 
