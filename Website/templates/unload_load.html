@@ -3,14 +3,38 @@
 {% block content %}
 
 <!--Begin Unload/Load Button-->
-<div style="position: fixed; top: 8vh; left: 0vw; width: 100; padding: 20px;">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">Unload</button>
-        <button type="button" class="btn btn-secondary">Load</button>
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div style="position: fixed; top: 8vh; left: 0vw; width: 100; padding: 30px;">
+                <div class="btn-group mb-4" role="group" aria-label="unload.load">
+                    <button type="button" class="btn btn-secondary" id="unloadBtn">Unload</button>
+                    <button type="button" class="btn btn-secondary" id="loadBtn">Load</button>
+                </div>
+            </div>
+        </div>
+<!--This will display the input the containers and if they are being loaded or unloaded (based on user input)-->
+        <div class="d-flex">
+            <div style="position: fixed; top: 20vh; left: 0vw; width: 250px; height: 350px; padding: 10px; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
+        </div>
+<!--Container info input-->
+        <div style="position: fixed; top: 10vh; left: 18vw; width: 100; padding: 30px;">
+            <form id="containerForm">
+                <div class="mb-3">
+                    <label for="containerName" class="from-label">Container Name: </label>
+                    <input style="width: 170px" type="text" class="form-control" id="containerName" placeholder="Enter Name...">
+                </div>
+                <div class="mb-3" id="weightField" style="display:non;">
+                    <label for="containerWeight" class="form-label">Container Weight</label>
+                    <input style="width: 170px" type="number" class="form-control" id="containerWeight" placeholder="Enter Weight...">
+                </div>
+                <button type="button" class="btn btn-primary" id="addButton">Add</button>
+            </form>
+        </div>
+    </div>
+    <div class="mt-4">
+        <button style="position: fixed; bottom: 40vh; left: 20vw; padding: 8px;" type="button" class="btn btn-success" id="continueBalance">Continue</button> <!--We can change the verbage to something different if we want-->
     </div>
 </div>
-<!--End Unload/Load Button-->
 
-
-  
 {% endblock %}
