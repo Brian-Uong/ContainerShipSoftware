@@ -3,14 +3,107 @@
 {% block content %}
 
 <!--Begin Unload/Load Button-->
-<div style="position: fixed; top: 8vh; left: 0vw; width: 100; padding: 20px;">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">Unload</button>
-        <button type="button" class="btn btn-secondary">Load</button>
+<div class="container-fluid mt-5">
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div style="position: fixed; top: 8vh; left: 0vw; width: 100; padding: 30px;">
+                <div class="btn-group mb-4" role="group" aria-label="unload.load">
+                    <button type="button" class="btn btn-secondary" id="unloadBtn">Unload</button>
+                    <button type="button" class="btn btn-secondary" id="loadBtn">Load</button>
+                </div>
+            </div>
+        </div>
+<!--This will display the input the containers and if they are being loaded or unloaded (based on user input)-->
+        <div class="d-flex">
+            <div style="position: fixed; top: 20vh; left: 0vw; width: 250px; height: 350px; padding: 10px; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
+        </div>
+<!--Container info input-->
+<!--These buttons will only appear when user selects Unload/Load buttons-->
+        <div style="position: fixed; top: 10vh; left: 18vw; width: 100; padding: 30px;">
+            <form id="containerForm">
+                <div class="mb-3" id="nameField" style="display:none;">
+                    <label for="containerName" class="from-label">Container Name: </label>
+                    <input style="width: 170px" type="text" class="form-control" id="containerName" placeholder="Enter Name...">
+                </div>
+                <div class="mb-3" id="weightField" style="display:none;">
+                    <label for="containerWeight" class="form-label">Container Weight: </label>
+                    <input style="width: 170px" type="number" class="form-control" id="containerWeight" placeholder="Enter Weight...">
+                </div>
+                <div class="mb-3" id="addField" style="display:none;">
+                    <button type="button" class="btn btn-primary" id="addButton">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mt-4" id="continueField" style="display:none;">
+        <button style="position: fixed; bottom: 40vh; left: 20vw; padding: 8px;" type="button" class="btn btn-success" id="continueButton">Continue</button> <!--We can change the verbage to something different if we want-->
     </div>
 </div>
-<!--End Unload/Load Button-->
 
+<!--Button functionality-->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputDisplay = document.getElementById('inputDisplay');
+        const addButton = document.getElementById('addButton');
+        const continueButton = document.getElementById('continueButton');
+        const unloadBtn = document.getElementById('unloadBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        const weightField = document.getElementById('weightField');
+        const nameField = document.getElementById('nameField');
+        const addField = document.getElementById('addField');
+        const continueField = document.getElementById('continueField');
+        let selectedAction = null;
+        let containerData = [];
 
-  
+    unloadBtn.addEventListener('click', () => {
+        selectedAction = 'Unload';
+        nameField.style.display = 'block';
+        addField.style.display = 'block';
+        continueField.style.display = 'block';
+        weightField.style.display = 'none';
+    });
+
+    loadBtn.addEventListener('click', () => {
+        selectedAction = 'Load';
+        nameField.style.display = 'block';
+        addField.style.display = 'block';
+        continueField.style.display = 'block';
+        weightField.style.display = 'block';
+    });
+
+    addButton.addEventListener('click', () => {
+        const containerName = document.getElementById('containerName').value;
+        const containerWeight = document.getElementById('containerWeight').value;
+
+        if(!containerName || !selectedAction){
+            alert('Please make sure an action was selected and the container name is at least one character to continue');
+            return;
+        }
+
+        const newEntry = document.createElement('div');
+        if(selectedAction ==='Load' && containerWeight){
+            newEntry.textContent = `${selectedAction}: ${containerName} ${containerWeight}`;
+            containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
+        }
+        else if(selectedAction === 'Unload'){
+            newEntry.textContent = `${selectedAction}: ${containerName}`;
+            containerData.push({action: selectedAction, name: containerName});
+        }
+        else{
+            alert('Input NOT Valid');
+            return;
+        }
+
+        inputDisplay.appendChild(newEntry);
+        document.getElementById('containerName').value = '';
+        if(selectedAction === 'Load') document.getElementById('containerWeight').value = '';
+    });
+
+        continueButton.addEventListener('click', () => {
+            //still working on how we will send this to backend for optimal solution based on user input
+            //Continue button does not have functionality yet
+            //Once this is solved will work on displaying instructions in box where input is displayed
+        });
+    });
+</script>
 {% endblock %}

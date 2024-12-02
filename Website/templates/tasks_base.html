@@ -87,6 +87,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
   }
   .layout-right {
     position: absolute;
@@ -108,132 +109,71 @@
 
 <!--1 0f 8-->
 <div class="container layout-right">
-<div class="row">
-  <div class="col-1 custom-border">{{grid['0'][7].name}} <br/> {{grid['0'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][7].name}} <br/> {{grid['1'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][7].name}} <br/> {{grid['2'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][7].name}} <br/> {{grid['3'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][7].name}} <br/> {{grid['4'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][7].name}} <br/> {{grid['5'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][7].name}} <br/> {{grid['6'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][7].name}} <br/> {{grid['7'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][7].name}} <br/> {{grid['8'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][7].name}} <br/> {{grid['9'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][7].name}} <br/> {{grid['10'][7].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][7].name}} <br/> {{grid['11'][7].weight}}</div>
-</div>
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][7].name}}, {{grid['' ~ i][7].weight}}">{{grid['' ~ i][7].name}} <br/> {{grid['' ~ i][7].weight}}</div>
+    {% endfor %}
+  </div>
+
 
 <!--2 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][6].name}} <br/> {{grid['0'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][6].name}} <br/> {{grid['1'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][6].name}} <br/> {{grid['2'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][6].name}} <br/> {{grid['3'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][6].name}} <br/> {{grid['4'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][6].name}} <br/> {{grid['5'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][6].name}} <br/> {{grid['6'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][6].name}} <br/> {{grid['7'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][6].name}} <br/> {{grid['8'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][6].name}} <br/> {{grid['9'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][6].name}} <br/> {{grid['10'][6].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][6].name}} <br/> {{grid['11'][6].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][6].name}}, {{grid['' ~ i][6].weight}}">{{grid['' ~ i][6].name}} <br/> {{grid['' ~ i][6].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--3 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][5].name}} <br/> {{grid['0'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][5].name}} <br/> {{grid['1'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][5].name}} <br/> {{grid['2'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][5].name}} <br/> {{grid['3'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][5].name}} <br/> {{grid['4'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][5].name}} <br/> {{grid['5'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][5].name}} <br/> {{grid['6'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][5].name}} <br/> {{grid['7'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][5].name}} <br/> {{grid['8'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][5].name}} <br/> {{grid['9'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][5].name}} <br/> {{grid['10'][5].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][5].name}} <br/> {{grid['11'][5].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][5].name}}, {{grid['' ~ i][5].weight}}">{{grid['' ~ i][5].name}} <br/> {{grid['' ~ i][5].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--4 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][4].name}} <br/> {{grid['0'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][4].name}} <br/> {{grid['1'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][4].name}} <br/> {{grid['2'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][4].name}} <br/> {{grid['3'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][4].name}} <br/> {{grid['4'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][4].name}} <br/> {{grid['5'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][4].name}} <br/> {{grid['6'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][4].name}} <br/> {{grid['7'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][4].name}} <br/> {{grid['8'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][4].name}} <br/> {{grid['9'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][4].name}} <br/> {{grid['10'][4].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][4].name}} <br/> {{grid['11'][4].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][4].name}}, {{grid['' ~ i][4].weight}}">{{grid['' ~ i][4].name}} <br/> {{grid['' ~ i][4].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--5 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][3].name}} <br/> {{grid['0'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][3].name}} <br/> {{grid['1'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][3].name}} <br/> {{grid['2'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][3].name}} <br/> {{grid['3'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][3].name}} <br/> {{grid['4'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][3].name}} <br/> {{grid['5'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][3].name}} <br/> {{grid['6'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][3].name}} <br/> {{grid['7'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][3].name}} <br/> {{grid['8'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][3].name}} <br/> {{grid['9'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][3].name}} <br/> {{grid['10'][3].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][3].name}} <br/> {{grid['11'][3].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][3].name}}, {{grid['' ~ i][3].weight}}">{{grid['' ~ i][3].name}} <br/> {{grid['' ~ i][3].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--6 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][2].name}} <br/> {{grid['0'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][2].name}} <br/> {{grid['1'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][2].name}} <br/> {{grid['2'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][2].name}} <br/> {{grid['3'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][2].name}} <br/> {{grid['4'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][2].name}} <br/> {{grid['5'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][2].name}} <br/> {{grid['6'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][2].name}} <br/> {{grid['7'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][2].name}} <br/> {{grid['8'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][2].name}} <br/> {{grid['9'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][2].name}} <br/> {{grid['10'][2].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][2].name}} <br/> {{grid['11'][2].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][2].name}}, {{grid['' ~ i][2].weight}}">{{grid['' ~ i][2].name}} <br/> {{grid['' ~ i][2].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--7 0f 8-->
 <div class="row">
-  <div class="col-1 custom-border">{{grid['0'][1].name}} <br/> {{grid['0'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['1'][1].name}} <br/> {{grid['1'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['2'][1].name}} <br/> {{grid['2'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][1].name}} <br/> {{grid['3'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][1].name}} <br/> {{grid['4'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][1].name}} <br/> {{grid['5'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][1].name}} <br/> {{grid['6'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][1].name}} <br/> {{grid['7'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][1].name}} <br/> {{grid['8'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][1].name}} <br/> {{grid['9'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['10'][1].name}} <br/> {{grid['10'][1].weight}}</div>
-  <div class="col-1 custom-border">{{grid['11'][1].name}} <br/> {{grid['11'][1].weight}}</div>
+  {% for i in range(0, 12) %}
+  <div class="col-1 custom-border" title="{{grid['' ~ i][1].name}}, {{grid['' ~ i][1].weight}}">{{grid['' ~ i][1].name}} <br/> {{grid['' ~ i][1].weight}}</div>
+  {% endfor %}
 </div>
 
 <!--8 0f 8-->
 <!--grey for the unavailable positions on the ship's grid-->
 <div class="row">
-  <div class="col-1 custom-border" style="background-color: grey;">{{grid['0'][0].name}}</div>
-  <div class="col-1 custom-border" style="background-color: grey;">{{grid['1'][0].name}}</div>
-  <div class="col-1 custom-border">{{grid['2'][0].name}} <br/> {{grid['2'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['3'][0].name}} <br/> {{grid['3'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['4'][0].name}} <br/> {{grid['4'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['5'][0].name}} <br/> {{grid['5'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['6'][0].name}} <br/> {{grid['6'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['7'][0].name}} <br/> {{grid['7'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['8'][0].name}} <br/> {{grid['8'][0].weight}}</div>
-  <div class="col-1 custom-border">{{grid['9'][0].name}} <br/> {{grid['9'][0].weight}}</div>
-  <div class="col-1 custom-border" style="background-color: grey;">{{grid['10'][0].name}}</div>
-  <div class="col-1 custom-border" style="background-color: grey;">{{grid['11'][0].name}}</div>
+  {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" 
+      {% if grid['' ~ i][0].name == 'NAN' %}
+        style="background-color: grey;"
+      {% else %}
+        title="{{grid['' ~ i][0].name}}, {{grid['' ~ i][0].weight}}"
+      {% endif %}>
+      {{grid['' ~ i][0].name}}
+      {% if grid['' ~ i][0].name != 'NAN' %}
+        <br/> {{grid['' ~ i][0].weight}}
+     {% endif %}
+   </div>
+  {% endfor %}
 </div>
 </div>
 <!--End Ship Grid Section-->
