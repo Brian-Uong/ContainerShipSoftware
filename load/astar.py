@@ -1,6 +1,7 @@
 import heapq
 import manifest_read
 from collections import Counter
+import copy
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -29,6 +30,17 @@ class BoardState:
 
     def __lt__(self, other):
         return self.f < other.f
+    
+    def __eq__(self, other):
+        return (
+            sorted(self.bay.items()) == sorted(other.bay.items()) and
+            Counter(self.currentOff) == Counter(other.currentOff)
+        )
+    
+    def __hash__(self):
+        bay_hash = frozenset((k, tuple(v)) for k, v in sorted(self.bay.items()))
+        currentOff_hash = frozenset((container.name, container.weight) for container in self.currentOff)
+        return hash((bay_hash, currentOff_hash))
 
     def PrintState(self):
         print("Current state of the bay:")
@@ -96,47 +108,41 @@ class Tree:
         print("Expanding children...")
         for column in range(testx):
             if column in curr.bay and curr.bay[column]:
-                top = curr.bay[column][-1]
-                row = len(curr.bay[column])
-                position = (column + 1, row + 1)
+                top = curr.bay[column].pop()
+                row = len(curr.bay[column]) + 1
+                position = (column + 1, row)
                 print(f"Popped container '{top.name}' from position {position}")
 
-                # for otherColumn in range(curr.testx):
-                #     if otherColumn == column:
-                #         continue
+                for otherColumn in range(testx):
+                    if otherColumn == column:
+                        continue
 
-                #     newBay = {key: list(value) for key, value in curr.bay.item }
+                    newBay = copy.deepcopy(curr.bay)
+                    newRow = len(newBay[otherColumn]) + 1
+                    newBay[otherColumn].append(top)
 
-                #     for col in range(curr.testx):
-                #         if col not in newBay:
-                #             newBay[col] = []
+                    newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
 
-                #     oldY = top.y
-                #     oldX = top.x
-                #     top.y = len(newBay[otherColumn]) + 1
-                #     top.x = otherColumn + 1
-                #     newBay[otherColumn].append(top)
-                #     newCost = abs(oldX - top.x) + abs(oldY - top.y)
+                    child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + newCost, curr)
+                    print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
-                #     child = BoardState(newBay, newCost, curr, curr.currentOff)
+                    if child not in visitedSet and child not in frontierSet:
+                        heapq.heappush(frontier, (child.f, child))
+                        frontierSet.add(child)
 
-                #     if child not in visitedSet and child not in frontierSet:
-                #         heapq.heappush(frontier, (child.f, child))
-                #         frontierSet.add(child)
-
-                newBay = {key: list(value) for key, value in curr.bay.items()}
+                newBay = copy.deepcopy(curr.bay)
+                newCurrOff = curr.currentOff[:]
+                newCurrOff.append(top)
                 newCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
-                newCurrOff = curr.currentOff + [top]
-
-                newBay[column].pop()
 
                 child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + newCost, curr)
-                print(f"Generated child state with f={child.f} (g={child.g}, h={child.h})")
+                print(f"Generated child state with container removed, f={child.f} (g={child.g}, h={child.h})")
 
                 if child not in visitedSet and child not in frontierSet:
                     print("Adding child to frontier.")
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
+
 
     def isGoal(self, curr):
         print("Checking goal state...")
