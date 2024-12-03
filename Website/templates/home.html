@@ -3,7 +3,7 @@
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
 
-<div class="d-flex justify-content-center align-items-center" style="max-height: 75vh;height: 75vh;">
+<div class="d-flex justify-content-center align-items-center" style="max-height: 60vh;height: 60vh;">
   <form method="POST" action="/balanceRedirect" enctype="multipart/form-data">
     <div class="position-relative">
       <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-balance">Balance</label>
@@ -41,26 +41,25 @@
         height: 200px;
         margin: 2vw;
         border-radius: 5vh;
-        font-size: 1.75rem;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
-        font-size: 2.5vw;
-        max-height: 15vw;
-        max-width: 15vw;
+        font-size: min(2.2vw,6vh);
+        max-height: min(15vw,35vh);
+        max-width: min(15vw,35vh);
     }
 </style>
 <!--End Balance & Unlod/load Buttons-->
 
 <!--Start Log Message Section-->
-<form method="POST" action="/log"> <!--needs to also change text size to scale with view size-->
-    <div style="position: relative; bottom: 10vh; right: 1vw; max-width:30vw; font-size: 2vw;">
+<form method="POST" action="/log">
+    <div style="position: relative; bottom: 5vh; max-width:30vw; font-size: min(2vw,5.5vh);">
       <label for="logMessage">Log Message</label>
       <div class="input-group mb-3">
         <input type="text" class="form-control" style="font-size: 1.4vw; max-height: 8vh;" name="logMessage" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit" style="max-height: 8vh; max-width: 8vw; font-size: 1.4vw;">Submit</button>
+          <button class="btn btn-outline-secondary" type="submit" style="max-height: 8vh; max-width: 8vw; font-size: min(1.4vw,4.8vh);">Submit</button>
         </div>
       </div>
     </form>
