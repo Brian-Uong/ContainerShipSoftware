@@ -2,6 +2,7 @@ import heapq
 import manifest_read
 from collections import Counter
 import copy
+import time
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -11,8 +12,6 @@ MAX_BUFFER_X = 24
 MAX_BUFFER_CONTAINERS = 96
 testx = 5
 testy = 4
-testbayx = 7
-textbayy = 2
 
 class BoardState:
     def __init__(self, bay, neededOff, currentOff, g, parent):
@@ -44,7 +43,7 @@ class BoardState:
 
     def PrintState(self):
         print("Current state of the bay:")
-        name_width = 12
+        name_width = 14
         weight_width = 5
 
         for row in range(testy - 1, -1, -1):
@@ -153,8 +152,17 @@ class Tree:
         return False
 
 def main():
+    start_time = time.time()
+
     tree = Tree()
     tree.AStar()
+
+    end_time = time.time()
+
+    runtime_seconds = end_time - start_time
+    runtime_minutes = runtime_seconds / 60
+
+    print(f"Runtime: {runtime_seconds:.2f} seconds ({runtime_minutes:.2f} minutes)")
 
 if __name__ == "__main__":
     main()
