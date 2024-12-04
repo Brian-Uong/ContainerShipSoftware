@@ -49,7 +49,7 @@ def create_app():
     #These both take a file from their respective buttons on the home page and upload it to the ManifestFolder file. If there is no file selected it will keep them on the hope page.
     @app.route('/balanceRedirect', methods=['GET','POST'])
     def balanceRedirect():
-        print(request.files)
+        # print(request.files)
         file = request.files['manifest-input-balance']
         filename = secure_filename(file.filename)
         if filename == '': 
@@ -60,7 +60,7 @@ def create_app():
             file.save(manifest_path)
 
             try:
-                grid_data = parse(manifest_path)
+                ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
                 return redirect(url_for('home'))
@@ -74,7 +74,7 @@ def create_app():
     
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
-        print(request.files)
+        #print(request.files)
         file = request.files['manifest-input-unload-load']
         filename = secure_filename(file.filename)
         if filename == '':
@@ -85,7 +85,8 @@ def create_app():
             file.save(manifest_path)
 
             try:
-                grid_data = parse(manifest_path)
+                ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
+
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
                 return redirect(url_for('home'))
