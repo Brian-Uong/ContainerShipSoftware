@@ -109,72 +109,72 @@
 
 <!--1 0f 8-->
 <div class="container layout-right">
-  <div class="row">
+  <!-- <div class="row">
     {% for i in range(0, 12) %}
     <div class="col-1 custom-border" title="{{grid['' ~ i][7].name}}, {{grid['' ~ i][7].weight}}">{{grid['' ~ i][7].name}} <br/> {{grid['' ~ i][7].weight}}</div>
     {% endfor %}
+  </div> -->
+
+
+  <!--2 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][6].name}}, {{grid['' ~ i][6].weight}}">{{grid['' ~ i][6].name}} <br/> {{grid['' ~ i][6].weight}}</div>
+    {% endfor %}
   </div>
 
+  <!--3 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][5].name}}, {{grid['' ~ i][5].weight}}">{{grid['' ~ i][5].name}} <br/> {{grid['' ~ i][5].weight}}</div>
+    {% endfor %}
+  </div>
 
-<!--2 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][6].name}}, {{grid['' ~ i][6].weight}}">{{grid['' ~ i][6].name}} <br/> {{grid['' ~ i][6].weight}}</div>
-  {% endfor %}
-</div>
+  <!--4 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][4].name}}, {{grid['' ~ i][4].weight}}">{{grid['' ~ i][4].name}} <br/> {{grid['' ~ i][4].weight}}</div>
+    {% endfor %}
+  </div>
 
-<!--3 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][5].name}}, {{grid['' ~ i][5].weight}}">{{grid['' ~ i][5].name}} <br/> {{grid['' ~ i][5].weight}}</div>
-  {% endfor %}
-</div>
+  <!--5 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][3].name}}, {{grid['' ~ i][3].weight}}">{{grid['' ~ i][3].name}} <br/> {{grid['' ~ i][3].weight}}</div>
+    {% endfor %}
+  </div>
 
-<!--4 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][4].name}}, {{grid['' ~ i][4].weight}}">{{grid['' ~ i][4].name}} <br/> {{grid['' ~ i][4].weight}}</div>
-  {% endfor %}
-</div>
+  <!--6 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][2].name}}, {{grid['' ~ i][2].weight}}">{{grid['' ~ i][2].name}} <br/> {{grid['' ~ i][2].weight}}</div>
+    {% endfor %}
+  </div>
 
-<!--5 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][3].name}}, {{grid['' ~ i][3].weight}}">{{grid['' ~ i][3].name}} <br/> {{grid['' ~ i][3].weight}}</div>
-  {% endfor %}
-</div>
+  <!--7 0f 8-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+    <div class="col-1 custom-border" title="{{grid['' ~ i][1].name}}, {{grid['' ~ i][1].weight}}">{{grid['' ~ i][1].name}} <br/> {{grid['' ~ i][1].weight}}</div>
+    {% endfor %}
+  </div>
 
-<!--6 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][2].name}}, {{grid['' ~ i][2].weight}}">{{grid['' ~ i][2].name}} <br/> {{grid['' ~ i][2].weight}}</div>
-  {% endfor %}
-</div>
-
-<!--7 0f 8-->
-<div class="row">
-  {% for i in range(0, 12) %}
-  <div class="col-1 custom-border" title="{{grid['' ~ i][1].name}}, {{grid['' ~ i][1].weight}}">{{grid['' ~ i][1].name}} <br/> {{grid['' ~ i][1].weight}}</div>
-  {% endfor %}
-</div>
-
-<!--8 0f 8-->
-<!--grey for the unavailable positions on the ship's grid-->
-<div class="row">
-  {% for i in range(0, 12) %}
-    <div class="col-1 custom-border" 
-      {% if grid['' ~ i][0].name == 'NAN' %}
-        style="background-color: grey;"
-      {% else %}
-        title="{{grid['' ~ i][0].name}}, {{grid['' ~ i][0].weight}}"
-      {% endif %}>
-      {{grid['' ~ i][0].name}}
-      {% if grid['' ~ i][0].name != 'NAN' %}
-        <br/> {{grid['' ~ i][0].weight}}
-     {% endif %}
-   </div>
-  {% endfor %}
-</div>
+  <!--8 0f 8-->
+  <!--grey for the unavailable positions on the ship's grid-->
+  <div class="row">
+    {% for i in range(0, 12) %}
+      <div class="col-1 custom-border" 
+        {% if grid['' ~ i][0].name == 'NAN' %}
+          style="background-color: grey;"
+        {% else %}
+          title="{{grid['' ~ i][0].name}}, {{grid['' ~ i][0].weight}}"
+        {% endif %}>
+        {{grid['' ~ i][0].name}}
+        {% if grid['' ~ i][0].name != 'NAN' %}
+          <br/> {{grid['' ~ i][0].weight}}
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
 </div>
 <!--End Ship Grid Section-->
 
