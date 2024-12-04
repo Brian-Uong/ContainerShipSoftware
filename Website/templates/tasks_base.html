@@ -107,17 +107,17 @@
 <!--Little Truck-->
 <i class="fas fa-truck truck-icon"></i>
 
-<!--Loop that handles populating the table-->
+<!--Loop that handles filling in the table-->
 <div class="container layout-right">
   {% for j in range(0,8)%}
   <div class="row">
     {% for i in range(0, 12) %}
-    <div class="col-1 custom-border" title="{{grid['' ~ i][7-j].name}}, {{grid['' ~ i][7-j].weight}}">{{grid['' ~ i][7-j].name}} <br/> {{grid['' ~ i][7-j].weight}}</div>
+    <div class="col-1 custom-border" {% if grid['' ~ i][7-j].name == 'NAN' %} style="background-color: grey;" {% endif %} title="{{grid['' ~ i][7-j].name}}, {{grid['' ~ i][7-j].weight}}">{{grid['' ~ i][7-j].name}} <br/> {{grid['' ~ i][7-j].weight}}</div>
     {% endfor %}
   </div>
   {% endfor %}
-<!--End of table populating-->
- 
+</div>
+<!--End Ship Grid Section-->
 
 <!--Install Packages for bootstrap-->
     <div class ="container">
