@@ -75,12 +75,11 @@ def create_app():
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
         #print(request.files)
+        folder_path = "Website\ManifestFolder"
+        Manifest_Folder = os.listdir(folder_path)
         file = request.files['manifest-input-unload-load']
         filename = secure_filename(file.filename)
-        if filename == '':
-            session['previous_url'] = url_for('home')
-            return redirect(url_for('home'))
-        if file:
+        if len(Manifest_Folder) == 0: 
             manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
             file.save(manifest_path)
 
@@ -96,6 +95,30 @@ def create_app():
                 for key, containers in grid_data.items()
                 }
 
-        return redirect(url_for('auth.unload_load'))
+            return redirect(url_for('auth.unload_load'))
+        else:
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+            try:
+                ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
 
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+                
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+            return redirect(url_for('auth.unload_load'))
+
+
+    @app.route('/completeCycle', methods=['POST'])
+    def completeCycle():
+        folder_path = "Website\ManifestFolder"
+        Manifest_Folder = os.listdir(folder_path)
+        for file in Manifest_Folder:
+            file_path = os.path.join(folder_path, file)
+            os.unlink(file_path)
+        return redirect(url_for('home'))
+    
     return app

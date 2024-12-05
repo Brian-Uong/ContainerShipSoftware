@@ -3,7 +3,7 @@
 {% block content %}
 <!--Start Balance & Unlod/load Buttons-->
 
-<div class="d-flex justify-content-center align-items-center" style="max-height: 60vh;height: 60vh;">
+<div class="d-flex justify-content-center align-items-center" style="max-height: 60vh;height: 60vh;"> <!--Have to think about how to make this not ask for a new file if the manifestFolder is not empty-->
   <form method="POST" action="/balanceRedirect" enctype="multipart/form-data">
     <div class="position-relative">
       <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-balance">Balance</label>
@@ -12,7 +12,7 @@
     </div>
   </form>
 
-  <form method="POST" action="/unload_loadRedirect" enctype="multipart/form-data">
+  <form method="POST" action="/unload_loadRedirect" enctype="multipart/form-data"> <!--Have to think about how to make this not ask for a new file if the manifestFolder is not empty-->
     <div class="position-relative">
       <label class="btn btn-secondary btn-lg custom-button" for="manifest-input-unload-load">Unload/Load</label>
       <input style="display: none;" type="file" name='manifest-input-unload-load' id='manifest-input-unload-load' accept=".txt" onchange="unloadLoadSubmit()">
