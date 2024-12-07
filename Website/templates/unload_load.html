@@ -96,6 +96,11 @@
                 e.target.remove();
             })
             containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
+            fetch('/unloadLoadrequest'), {
+                method: 'POST',
+                body: JSON.stringify({action: selectedAction, name: containerName, weight: containerWeight}),
+            };
+            console.log("test")
         }
         else if(selectedAction === 'Unload'){
             newEntry.textContent = `${selectedAction}: ${containerName}`;

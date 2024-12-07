@@ -126,11 +126,23 @@ def create_app():
                 }
             return redirect(url_for('auth.unload_load'))
 
+    @app.route('/unloadLoadRequest', methods=['POST']) #This isn't being seen for some reason
+    def unloadLoadRequest():
+        file_path = '/ManifestFolder/instructions.txt'
+
+        with open(file_path, 'a') as files:
+            files.write("test")
+        return 200
+
 
     @app.route('/completeCycle', methods=['POST'])
     def completeCycle():
         folder_path = "Website\ManifestFolder"
         Manifest_Folder = os.listdir(folder_path)
+        file_path = 'log.txt'
+
+        with open(file_path, 'a') as files:
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + 'Cycle Complete.\n')
         for file in Manifest_Folder:
             file_path = os.path.join(folder_path, file)
             os.unlink(file_path)
