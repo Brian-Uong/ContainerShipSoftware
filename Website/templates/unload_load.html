@@ -101,6 +101,15 @@
             newEntry.textContent = `${selectedAction}: ${containerName}`;
             newEntry.id = idTracker;
             idTracker++;
+            newEntry.addEventListener('mouseover', (e) => {
+                e.target.style.color = "red";
+            })
+            newEntry.addEventListener('mouseleave', (e) => {
+                e.target.style.color = "black";
+            })
+            newEntry.addEventListener('click', (e) => {
+                e.target.remove();
+            })
             containerData.push({action: selectedAction, name: containerName});
         }
         else{
