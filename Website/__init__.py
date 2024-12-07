@@ -50,17 +50,17 @@ def create_app():
     @app.route('/balanceRedirect', methods=['GET','POST'])
     def balanceRedirect():
         # print(request.files)
+        folder_path = "Website\ManifestFolder"
+        Manifest_Folder = os.listdir(folder_path)
         file = request.files['manifest-input-balance']
         filename = secure_filename(file.filename)
-        if filename == '': 
-            session['previous_url'] = url_for('home')
-            return redirect(url_for('home'))
-        if file:
+        if len(Manifest_Folder) == 0: 
             manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
             file.save(manifest_path)
 
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
+
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
                 return redirect(url_for('home'))
@@ -69,7 +69,22 @@ def create_app():
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
-        return redirect(url_for('auth.balance'))
+
+            return redirect(url_for('auth.balance'))
+        else:
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+            try:
+                ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
+
+            except Exception as e:
+                flash(f"ERRORRRRRR: {e}", "error")
+                return redirect(url_for('home'))
+                
+            session['grid_data'] = {
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+            return redirect(url_for('auth.balance'))
     
     
     @app.route('/unload_loadRedirect', methods=['POST'])
@@ -90,7 +105,7 @@ def create_app():
                 flash(f"ERRORRRRRR: {e}", "error")
                 return redirect(url_for('home'))
             
-            session['grid_data'] = {
+            session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }

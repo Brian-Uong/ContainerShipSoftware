@@ -71,6 +71,7 @@
         weightField.style.display = 'block';
     });
 
+    idTracker = 0;
     addButton.addEventListener('click', () => {
         const containerName = document.getElementById('containerName').value;
         const containerWeight = document.getElementById('containerWeight').value;
@@ -80,13 +81,26 @@
             return;
         }
 
-        const newEntry = document.createElement('div');
+        newEntry = document.createElement('div');
         if(selectedAction ==='Load' && containerWeight){
             newEntry.textContent = `${selectedAction}: ${containerName} ${containerWeight}`;
+            newEntry.id = idTracker;
+            idTracker++;
+            newEntry.addEventListener('mouseover', (e) => {
+                e.target.style.color = "red";
+            })
+            newEntry.addEventListener('mouseleave', (e) => {
+                e.target.style.color = "black";
+            })
+            newEntry.addEventListener('click', (e) => {
+                e.target.remove();
+            })
             containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
         }
         else if(selectedAction === 'Unload'){
             newEntry.textContent = `${selectedAction}: ${containerName}`;
+            newEntry.id = idTracker;
+            idTracker++;
             containerData.push({action: selectedAction, name: containerName});
         }
         else{
