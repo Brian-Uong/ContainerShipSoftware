@@ -96,11 +96,13 @@
                 e.target.remove();
             })
             containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
-            fetch('/unloadLoadrequest'), {
+            fetch('/unloadLoadRequest', {
                 method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'  
+                },
                 body: JSON.stringify({action: selectedAction, name: containerName, weight: containerWeight}),
-            };
-            console.log("test")
+            });
         }
         else if(selectedAction === 'Unload'){
             newEntry.textContent = `${selectedAction}: ${containerName}`;
@@ -116,6 +118,13 @@
                 e.target.remove();
             })
             containerData.push({action: selectedAction, name: containerName});
+            fetch('/unloadLoadRequest', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'  
+                },
+                body: JSON.stringify({action: selectedAction, name: containerName}),
+            });
         }
         else{
             alert('Input NOT Valid');

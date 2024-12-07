@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, url_for, session, flash
+from flask import Flask, request, redirect, url_for, session, flash, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from load.manifest_read import parse
@@ -128,11 +128,11 @@ def create_app():
 
     @app.route('/unloadLoadRequest', methods=['POST']) #This isn't being seen for some reason
     def unloadLoadRequest():
-        file_path = '/ManifestFolder/instructions.txt'
-
+        file_path = 'Website/ManifestFolder/instructions.txt'
+        data = request.json
         with open(file_path, 'a') as files:
-            files.write("test")
-        return 200
+            files.write(f"Action: {data.get('action')}, Name: {data.get('name')}, Weight: {data.get('weight')}\n")
+        return jsonify({"message": "Success!"})
 
 
     @app.route('/completeCycle', methods=['POST'])
