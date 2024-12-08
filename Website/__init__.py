@@ -69,6 +69,7 @@ def create_app():
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
+            session['manifest_file'] = filename
 
             return redirect(url_for('auth.balance'))
         else:
@@ -84,6 +85,7 @@ def create_app():
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
+            session['manifest_file'] = filename
             return redirect(url_for('auth.balance'))
     
     
@@ -109,6 +111,7 @@ def create_app():
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
+            session['manifest_file'] = filename
 
             return redirect(url_for('auth.unload_load'))
         else:
@@ -124,6 +127,7 @@ def create_app():
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
+            session['manifest_file'] = filename
             return redirect(url_for('auth.unload_load'))
 
     @app.route('/unloadLoadRequest', methods=['POST']) #This isn't being seen for some reason

@@ -11,13 +11,15 @@ def home():
 def balance():
     session['previous_url'] = url_for('auth.balance')
     grid = session.get('grid_data', {})
-    return render_template("balancing.html", grid=grid)
+    filename = session.get('manifest_file', "Unknown File")
+    return render_template("balancing.html", grid=grid, filename=filename)
 
 @auth.route('/unload_load')
 def unload_load():
     session['previous_url'] = url_for('auth.unload_load')
     grid = session.get('grid_data', {})
-    return render_template('unload_load.html', grid=grid)
+    filename = session.get('manifest_file', "Unknown File")
+    return render_template('unload_load.html', grid=grid, filename=filename)
 
 @auth.route('/file_upload')
 def file_upload():
