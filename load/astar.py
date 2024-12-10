@@ -151,6 +151,19 @@ class Tree:
                     else:
                         print("      Child already visited or in frontier.")
 
+                newBay = copy.deepcopy(curr.bay)
+                newCurrOff = curr.currentOff[:]
+                newCurrOff.append(top)
+                newCost = abs(position[0]) + abs(position[1] - (len(curr.bay[0]) + 1)) + 4
+
+                child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + newCost, curr)
+                print(f"Generated child state with container removed, f={child.f} (g={child.g}, h={child.h})")
+
+                if child not in visitedSet and child not in frontierSet:
+                    print("Adding child to frontier.")
+                    heapq.heappush(frontier, (child.f, child))
+                    frontierSet.add(child)
+
 
 
     def isGoal(self, curr):
