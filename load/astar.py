@@ -25,7 +25,22 @@ class BoardState:
         print(f"BoardState created: g={self.g}, h={self.h}, f={self.f}")
 
     def heuristic(self):
-        return 0
+        totalCost = 0
+
+        for needed in self.neededOff:
+            found = False
+            for column, stack in self.bay.items():
+                for row, container in enumerate(stack):
+                    if container == needed:
+                        position = (column + 1, row + 1)
+                        offloadCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
+                        totalCost += offloadCost
+                        found = True
+                        break
+                if found:
+                    break
+        return totalCost
+
 
     def __lt__(self, other):
         return self.f < other.f
@@ -37,7 +52,7 @@ class BoardState:
         )
     
     def __hash__(self):
-        bay_hash = frozenset((i, tuple(row)) for i, row in enumerate(self.bay))
+        bay_hash = frozenset((k, tuple(v)) for k, v in sorted(self.bay.items()))
         currentOff_hash = frozenset((container.name, container.weight) for container in self.currentOff)
         return hash((bay_hash, currentOff_hash))
 
@@ -46,8 +61,8 @@ class BoardState:
         name_width = 14
         weight_width = 5
 
-        for row in range(testy - 1, -1, -1):
-            for column in range(testx):
+        for row in range(testx - 1, -1, -1):
+            for column in range(testy):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(name_width)
@@ -71,13 +86,16 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filepath = 'C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\test_manifest2.txt'
+        filepath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         neededOff = [cont1, cont2]
         currentOff = []
+
         print("Tree initialized with root BoardState.")
-        self.root = BoardState(manifest_read.parse(filepath), neededOff, currentOff, 0, None)
+        grid, _ = manifest_read.parse(filepath)
+        self.root = BoardState(grid, neededOff, currentOff, 0, None)
+
     
     def AStar(self):
         print("Starting A* search...")
@@ -102,45 +120,38 @@ class Tree:
             visitedSet.add(curr)
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet)
+            # input("Press Enter to continue to the next step...")
 
     def Expand(self, curr, frontier, frontierSet, visitedSet):
         print("Expanding children...")
+
         for column in range(testx):
             if column in curr.bay and curr.bay[column]:
+                print(f"  Exploring column {column}...")
                 top = curr.bay[column].pop()
-                row = len(curr.bay[column]) + 1
-                position = (column + 1, row)
-                print(f"Popped container '{top.name}' from position {position}")
+                position = (column + 1, len(curr.bay[column]) + 1)
+                print(f"    Popped container '{top.name}' from position {position}")
 
                 for otherColumn in range(testx):
                     if otherColumn == column:
                         continue
 
+                    print(f"    Trying to move container to column {otherColumn}...")
                     newBay = copy.deepcopy(curr.bay)
-                    newRow = len(newBay[otherColumn]) + 1
                     newBay[otherColumn].append(top)
 
-                    newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-
+                    newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - (len(newBay[otherColumn]) + 1))
                     child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + newCost, curr)
-                    print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
+                    print(f"      Child generated with f={child.f} (g={child.g}, h={child.h})")
 
                     if child not in visitedSet and child not in frontierSet:
+                        print("      Adding child to frontier.")
                         heapq.heappush(frontier, (child.f, child))
                         frontierSet.add(child)
+                    else:
+                        print("      Child already visited or in frontier.")
 
-                newBay = copy.deepcopy(curr.bay)
-                newCurrOff = curr.currentOff[:]
-                newCurrOff.append(top)
-                newCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
 
-                child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + newCost, curr)
-                print(f"Generated child state with container removed, f={child.f} (g={child.g}, h={child.h})")
-
-                if child not in visitedSet and child not in frontierSet:
-                    print("Adding child to frontier.")
-                    heapq.heappush(frontier, (child.f, child))
-                    frontierSet.add(child)
 
     def isGoal(self, curr):
         print("Checking goal state...")
