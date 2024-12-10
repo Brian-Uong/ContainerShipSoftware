@@ -37,7 +37,7 @@ class BoardState:
         )
     
     def __hash__(self):
-        bay_hash = frozenset((i, tuple(row)) for i, row in enumerate(self.bay))
+        bay_hash = frozenset((k, tuple(v)) for k, v in sorted(self.bay.items()))
         currentOff_hash = frozenset((container.name, container.weight) for container in self.currentOff)
         return hash((bay_hash, currentOff_hash))
 
@@ -46,8 +46,8 @@ class BoardState:
         name_width = 14
         weight_width = 5
 
-        for row in range(testy - 1, -1, -1):
-            for column in range(testx):
+        for row in range(testx - 1, -1, -1):
+            for column in range(testy):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(name_width)
@@ -71,13 +71,16 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filepath = 'C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\test_manifest2.txt'
+        filepath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         neededOff = [cont1, cont2]
         currentOff = []
+
         print("Tree initialized with root BoardState.")
-        self.root = BoardState(manifest_read.parse(filepath), neededOff, currentOff, 0, None)
+        grid, _ = manifest_read.parse(filepath)
+        self.root = BoardState(grid, neededOff, currentOff, 0, None)
+
     
     def AStar(self):
         print("Starting A* search...")
@@ -102,14 +105,15 @@ class Tree:
             visitedSet.add(curr)
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet)
+            # input("Press Enter to continue to the next step...")
 
     def Expand(self, curr, frontier, frontierSet, visitedSet):
         print("Expanding children...")
         for column in range(testx):
             if column in curr.bay and curr.bay[column]:
                 top = curr.bay[column].pop()
-                row = len(curr.bay[column]) + 1
-                position = (column + 1, row)
+                row = len(curr.bay[column])
+                position = (column + 1, row + 1)
                 print(f"Popped container '{top.name}' from position {position}")
 
                 for otherColumn in range(testx):
@@ -141,6 +145,7 @@ class Tree:
                     print("Adding child to frontier.")
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
+
 
     def isGoal(self, curr):
         print("Checking goal state...")
