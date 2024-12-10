@@ -46,7 +46,7 @@ def balance(board):
     bay = board.bay
     is_balanced = False
     moves = 0
-    #also nneed to calculate cost in minutes
+    #also need to calculate cost in minutes
 
     #if only single container, done
     #if no containers, done
@@ -71,7 +71,7 @@ def balance(board):
         diff = abs(left - right)
         #if its balanced
         #aslso need to account if all containers on one side, leading to div by 0
-        if (diff/min(left, right) * 100 <= 10):
+        if (diff/min(left, right) * 100 <= 10): 
             is_balanced = True
         
         #if not balanced
@@ -110,14 +110,18 @@ def find_closest_weight(bay, diff):
 
 def SIFT(board):
     bay = board.bay
-
+    sorted_containers = []
     #put all containers in buffer
 
     #logically, sort by weight
+    for i in range(len(bay)):
+        for j in range(board.MAX_BAY_X/2, board.MAX_BAY_X):
+            sorted_container.append(bay[i][j])
+    sorted_container.sort(key=lambda x: x.weight, reverse=True)
+    print(sorted_container)
+    #starting with the [01,06], put the heaviest container. The second heaviest goes in [01,07]
+    #third heaviest in [01,05] etc. When first row is filled, go to second row and so on
 
-    #starting with the first spot in the first row, put the heaviest container
-    #when first row is filled, go to second row and so on
-    
 
 
 class Tree:
