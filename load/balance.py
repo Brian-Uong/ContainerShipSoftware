@@ -24,7 +24,7 @@ def get_weight_left(board):
 
     for i in range(len(bay)):
         #left side weight
-        for j in range(board.MAX_BAY_X/2):
+        for j in range(MAX_BAY_X//2):
             left += bay[i][j].weight
 
     return left
@@ -144,8 +144,10 @@ class Tree:
         heapq.heappush(frontier, (self.root.f, self.root))
         frontierSet = {self.root}
         visitedSet = set()
+        is_balanced = self.isGoal(self.root)
+        
 
-        while frontier:
+        while not is_balanced:
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 
@@ -164,14 +166,14 @@ class Tree:
 
     def Expand(self, curr, frontier, frontierSet, visitedSet):
 
-        for column in range(self.ship.cols):
+        for column in range(self.root.cols):
             if column in curr.bay and curr.bay[column]:
                 top = curr.bay[column].pop()  # Remove the top container
                 row = len(curr.bay[column]) + 1
                 position = (column + 1, row)
 
                 # Move the container to other columns
-                for otherColumn in range(self.ship.cols):
+                for otherColumn in range(self.root.cols):
                     if otherColumn == column:
                         continue
 
@@ -200,14 +202,19 @@ class Tree:
 
     def isGoal(self, curr):
 
+        left_weight = 0
+        for i in range(MAX_BAY_X // 2):
+            for j in range(MAX_BAY_Y):
+                left_weight = left_weight + curr.bay[i][j].weight
+
         left_weight = sum(
             container.weight
-            for column, stack in enumerate(curr.bay[: self.ship.cols // 2])
+            for column, stack in enumerate(curr.bay[: MAX_BAY_X // 2])
             for container in stack
         )
         right_weight = sum(
             container.weight
-            for column, stack in enumerate(curr.bay[self.ship.cols // 2 :])
+            for column, stack in enumerate(curr.bay[MAX_BAY_X // 2 :])
             for container in stack
         )
         total_weight = left_weight + right_weight
@@ -216,6 +223,7 @@ class Tree:
 
 
 def main():
+
     start_time = time.time()
 
     tree = Tree()
