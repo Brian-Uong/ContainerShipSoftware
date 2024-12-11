@@ -12,10 +12,6 @@ MAX_BAY_X = 12
 MAX_BUFFER_Y = 4
 MAX_BUFFER_X = 24
 MAX_BUFFER_CONTAINERS = 96
-testX = 5
-testY = 4
-testBufferX = 2
-testBufferY = 2
 
 def debugPrint(message):
     if DEBUG:
@@ -44,7 +40,7 @@ class BoardState:
                 for row, container in enumerate(stack):
                     if container == needed:
                         position = (column + 1, row + 1)
-                        offloadCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 4
+                        offloadCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 4
                         totalCost += offloadCost
                         found = True
                         break
@@ -96,8 +92,8 @@ class BoardState:
         weightWidth = 5
 
         print("Bay State:")
-        for row in range(testX - 1, -1, -1):
-            for column in range(testY):
+        for row in range(MAX_BAY_X - 1, -1, -1):
+            for column in range(MAX_BAY_Y):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(nameWidth)
@@ -110,8 +106,8 @@ class BoardState:
             print()
 
         print("\nBuffer State:")
-        for row in range(testBufferX - 1, -1, -1):
-            for bufferCol in range(testBufferY):
+        for row in range(MAX_BUFFER_X - 1, -1, -1):
+            for bufferCol in range(MAX_BUFFER_Y):
                 if bufferCol in self.buffer and row < len(self.buffer[bufferCol]):
                     container = self.buffer[bufferCol][row]
                     name = f"{container.name}".ljust(nameWidth)
@@ -135,16 +131,16 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
-        cont1 = manifest_read.A_Container(3000, '6LBdogs500')
-        cont2 = manifest_read.A_Container(634, 'Maersk')
+        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
+        cont1 = manifest_read.A_Container(60, 'Catfish')
+        cont2 = manifest_read.A_Container(20, 'DOGANA')
         neededOff = [cont1, cont2]
         currentOff = []
 
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filePath)
         buffer = defaultdict(list)
-        for i in range(testBufferX):
+        for i in range(MAX_BUFFER_X):
             buffer[i] = []
         self.root = BoardState(grid, buffer, neededOff, currentOff, 0, None)
         self.initialCount = (
@@ -205,7 +201,7 @@ class Tree:
     def expand(self, curr, frontier, frontierSet, visitedSet):
         debugPrint(f"Expanding children of node at depth {curr.depth}...")
 
-        for column in range(testX):
+        for column in range(MAX_BAY_X):
             if column in curr.bay and curr.bay[column]:
                 debugPrint(f"  Exploring bay column {column} with {len(curr.bay[column])} containers...")
 
@@ -217,7 +213,7 @@ class Tree:
                     debugPrint(f"    Skipping container '{top.name}' with weight '{top.weight}' as it is not movable.")
                     continue
 
-                for otherColumn in range(testX):
+                for otherColumn in range(MAX_BAY_X):
                     if otherColumn == column:
                         continue
 
@@ -241,14 +237,14 @@ class Tree:
                         heapq.heappush(frontier, (child.f, child))
                         frontierSet.add(child)
 
-                for bufferCol in range(testBufferX):
+                for bufferCol in range(MAX_BUFFER_X):
                     debugPrint(f"    Trying to move container to buffer column {bufferCol}...")
                     newBay = copy.deepcopy(curr.bay)
                     newBay[column] = newBay[column][:-1]
                     newBuffer = copy.deepcopy(curr.buffer)
                     newBuffer[bufferCol].append(top)
 
-                    newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 4 + abs(testBufferX - bufferCol + 1) + abs((testBufferY + 1) - len(newBuffer[bufferCol]))
+                    newCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 4 + abs(MAX_BUFFER_X - bufferCol + 1) + abs((MAX_BUFFER_Y + 1) - len(newBuffer[bufferCol]))
                     moveDescription = f"Move '{top.name}' from bay column {column + 1} to buffer column {bufferCol + 1}"
                     movePositions = [(column + 1, position[1]), f"Buffer {bufferCol + 1}"]
 
@@ -269,7 +265,7 @@ class Tree:
                 newCurrOff = copy.deepcopy(curr.currentOff)
                 newCurrOff.append(top)
 
-                newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 4
+                newCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 4
                 moveDescription = f"Move '{top.name}' from column {column + 1} to OFFLOAD"
                 movePositions = [(column + 1, position[1]), "OFFLOAD"]
 
@@ -284,21 +280,21 @@ class Tree:
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
 
-        for bufferCol in range(testBufferX):
+        for bufferCol in range(MAX_BUFFER_X):
             if bufferCol in curr.buffer and curr.buffer[bufferCol]:
                 debugPrint(f"  Exploring buffer column {bufferCol} with {len(curr.buffer[bufferCol])} containers...")
 
                 top = curr.buffer[bufferCol][-1]
                 debugPrint(f"    Accessed container '{top.name}' from buffer column {bufferCol + 1}")
 
-                for column in range(testX):
+                for column in range(MAX_BAY_X):
                     debugPrint(f"    Trying to move container to column {column}...")
                     newBuffer = copy.deepcopy(curr.buffer)
                     newBuffer[bufferCol] = newBuffer[bufferCol][:-1]
                     newBay = copy.deepcopy(curr.bay)
                     newBay[column].append(top)
 
-                    newCost = abs((bufferCol + 1) - testBufferX) + abs(len(curr.buffer[bufferCol]) - (testBufferY + 1)) + 4 + abs(column) + abs((testY + 1) - len(newBay[column]))
+                    newCost = abs((bufferCol + 1) - MAX_BUFFER_X) + abs(len(curr.buffer[bufferCol]) - (MAX_BUFFER_Y + 1)) + 4 + abs(column) + abs((MAX_BAY_Y + 1) - len(newBay[column]))
                     moveDescription = f"Move '{top.name}' from buffer column {bufferCol + 1} to bay column {column + 1}"
                     movePositions = [f"Buffer {bufferCol + 1}", (column + 1, len(newBay[column]))]
 
