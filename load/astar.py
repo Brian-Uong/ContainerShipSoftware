@@ -25,22 +25,7 @@ class BoardState:
         print(f"BoardState created: g={self.g}, h={self.h}, f={self.f}")
 
     def heuristic(self):
-        totalCost = 0
-
-        for needed in self.neededOff:
-            found = False
-            for column, stack in self.bay.items():
-                for row, container in enumerate(stack):
-                    if container == needed:
-                        position = (column + 1, row + 1)
-                        offloadCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
-                        totalCost += offloadCost
-                        found = True
-                        break
-                if found:
-                    break
-        return totalCost
-
+        return 0
 
     def __lt__(self, other):
         return self.f < other.f
@@ -124,37 +109,34 @@ class Tree:
 
     def Expand(self, curr, frontier, frontierSet, visitedSet):
         print("Expanding children...")
-
         for column in range(testx):
             if column in curr.bay and curr.bay[column]:
-                print(f"  Exploring column {column}...")
                 top = curr.bay[column].pop()
-                position = (column + 1, len(curr.bay[column]) + 1)
-                print(f"    Popped container '{top.name}' from position {position}")
+                row = len(curr.bay[column])
+                position = (column + 1, row + 1)
+                print(f"Popped container '{top.name}' from position {position}")
 
                 for otherColumn in range(testx):
                     if otherColumn == column:
                         continue
 
-                    print(f"    Trying to move container to column {otherColumn}...")
                     newBay = copy.deepcopy(curr.bay)
+                    newRow = len(newBay[otherColumn]) + 1
                     newBay[otherColumn].append(top)
 
-                    newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - (len(newBay[otherColumn]) + 1))
+                    newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
+
                     child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + newCost, curr)
-                    print(f"      Child generated with f={child.f} (g={child.g}, h={child.h})")
+                    print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
                     if child not in visitedSet and child not in frontierSet:
-                        print("      Adding child to frontier.")
                         heapq.heappush(frontier, (child.f, child))
                         frontierSet.add(child)
-                    else:
-                        print("      Child already visited or in frontier.")
 
                 newBay = copy.deepcopy(curr.bay)
                 newCurrOff = curr.currentOff[:]
                 newCurrOff.append(top)
-                newCost = abs(position[0]) + abs(position[1] - (len(curr.bay[0]) + 1)) + 4
+                newCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
 
                 child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + newCost, curr)
                 print(f"Generated child state with container removed, f={child.f} (g={child.g}, h={child.h})")
@@ -163,7 +145,6 @@ class Tree:
                     print("Adding child to frontier.")
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
-
 
 
     def isGoal(self, curr):
