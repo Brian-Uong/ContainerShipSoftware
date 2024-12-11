@@ -1,0 +1,4 @@
+Action: Load, Name: ltest, Weight: 1
+Action: Load, Name: ltest, Weight: 2
+Action: Unload, Name: utest1, Weight: None
+Action: Unload, Name: utest2, Weight: None
