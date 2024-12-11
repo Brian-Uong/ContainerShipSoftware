@@ -115,7 +115,10 @@ def create_app():
 
             return redirect(url_for('auth.unload_load'))
         else:
-            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+            if (Manifest_Folder[0] == 'instructions.txt'):
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[1]))
+            else:
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
 
