@@ -1,0 +1,4 @@
+Action: Unload, Name: dog, Weight: None
+Action: Unload, Name: cat, Weight: None
+Action: Load, Name: meat, Weight: 234
+Action: Load, Name: fsdfghjgfdsfretyfhjgrewrtyhjgtrefghnjmvg, Weight: 4653
