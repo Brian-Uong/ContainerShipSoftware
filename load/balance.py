@@ -1,7 +1,7 @@
 from astar import BoardState
 from collections import Counter
 import manifest_read
-import numpy as np
+# import numpy as np
 import heapq
 import time
 import copy
@@ -128,12 +128,13 @@ class Tree:
     def __init__(self):
 
         filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
-        cont1 = manifest_read.A_Container(3000, '6LBdogs500')
+        cont1 = manifest_read.A_Container(300, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         neededOff = [cont1, cont2]
         currentOff = []
         print("Tree initialized with root BoardState.")
-        self.root = BoardState(manifest_read.parse(filepath), neededOff, currentOff, 0, None)
+        grid, _ = manifest_read.parse(filepath)
+        self.root = BoardState(grid, neededOff, currentOff, 0, None) 
 
         print("Tree initialized with root BoardState.")
 
@@ -144,86 +145,129 @@ class Tree:
         heapq.heappush(frontier, (self.root.f, self.root))
         frontierSet = {self.root}
         visitedSet = set()
-        is_balanced = self.isGoal(self.root)
+        left = self.leftWeight(self.root)
+        right = self.rightWeight(self.root)
+        is_balanced = self.isGoal(left, right)
+        side = self.heavySide(left, right)
         
 
         while not is_balanced:
+            print(f"Frontier size: {len(frontier)}")
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 
-            if self.isGoal(curr):
+            print(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
+            curr.PrintState()
+
+            left = self.leftWeight(self.root)
+            right = self.rightWeight(self.root)
+
+            if self.isGoal(left, right):
                 print("Goal state reached!")
                 curr.PrintState()
-                return curr
-
+                return
+            
             visitedSet.add(curr)
-            self.Expand(curr, frontier, frontierSet, visitedSet)
+            print("Expanding current state...")
+            self.Expand(curr, frontier, frontierSet, visitedSet, side)
 
-        # If balancing fails, perform SIFT operation
-        print("Unable to balance the ship. Performing SIFT operation.")
-        #SIFT WIP
+            is_balanced = self.isGoal(left, right)
+            
+            input("Press Enter to continue to the next step...")
 
+    def Expand(self, curr, frontier, frontierSet, visitedSet, side):
+        print("Expanding children...")
 
-    def Expand(self, curr, frontier, frontierSet, visitedSet):
+        if side == "left":
+            for column in range(testx // 2):
+                if column in curr.bay and curr.bay[column]:
+                    top = curr.bay[column].pop()
+                    row = len(curr.bay[column])
+                    position = (column + 1, row + 1)
+                    print(f"Popped container '{top.name}' from position {position}")
 
-        for column in range(self.root.cols):
-            if column in curr.bay and curr.bay[column]:
-                top = curr.bay[column].pop()  # Remove the top container
-                row = len(curr.bay[column]) + 1
-                position = (column + 1, row)
+                    for otherColumn in range(testx // 2):
+                        if otherColumn == column:
+                            continue
 
-                # Move the container to other columns
-                for otherColumn in range(self.root.cols):
-                    if otherColumn == column:
-                        continue
+                        newBay = copy.deepcopy(curr.bay)
+                        newRow = len(newBay[otherColumn]) + 1
+                        newBay[otherColumn].append(top)
 
-                    newBay = copy.deepcopy(curr.bay)
-                    newRow = len(newBay[otherColumn]) + 1
-                    newBay[otherColumn].append(top)
+                        newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
 
-                    moveCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-                    child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + moveCost, curr)
+                        child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + newCost, curr)
+                        print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
-                    if child not in visitedSet and child not in frontierSet:
-                        heapq.heappush(frontier, (child.f, child))
-                        frontierSet.add(child)
+                        if child not in visitedSet and child not in frontierSet:
+                            heapq.heappush(frontier, (child.f, child))
+                            frontierSet.add(child)
 
-                # Move the container to the buffer
-                newBay = copy.deepcopy(curr.bay)
+        elif side == "right":
+            for column in range(testx // 2, testx):
+                if column in curr.bay and curr.bay[column]:
+                    top = curr.bay[column].pop()
+                    row = len(curr.bay[column])
+                    position = (column + 1, row + 1)
+                    print(f"Popped container '{top.name}' from position {position}")
+
+                    for otherColumn in range(testx // 2, testx):
+                        if otherColumn == column:
+                            continue
+
+                        newBay = copy.deepcopy(curr.bay)
+                        newRow = len(newBay[otherColumn]) + 1
+                        newBay[otherColumn].append(top)
+
+                        newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
+
+                        child = BoardState(newBay, curr.neededOff, curr.currentOff, curr.g + newCost, curr)
+                        print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
+
+                        if child not in visitedSet and child not in frontierSet:
+                            heapq.heappush(frontier, (child.f, child))
+                            frontierSet.add(child)
+
+                """ newBay = copy.deepcopy(curr.bay)
                 newCurrOff = curr.currentOff[:]
                 newCurrOff.append(top)
-                bufferCost = abs(position[0]) + abs(position[1] - (self.ship.rows + 1)) + 4
+                newCost = abs(position[0]) + abs(position[1] - (testy + 1)) + 4
 
-                child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + bufferCost, curr)
+                child = BoardState(newBay, curr.neededOff, newCurrOff, curr.g + newCost, curr)
+                print(f"Generated child state with container removed, f={child.f} (g={child.g}, h={child.h})")
 
                 if child not in visitedSet and child not in frontierSet:
+                    print("Adding child to frontier.")
                     heapq.heappush(frontier, (child.f, child))
-                    frontierSet.add(child)
+                    frontierSet.add(child) """
 
-    def isGoal(self, curr):
-
-        left_weight = 0
-        for i in range(MAX_BAY_X // 2):
-            for j in range(MAX_BAY_Y):
-                left_weight = left_weight + curr.bay[i][j].weight
-
-        left_weight = sum(
-            container.weight
-            for column, stack in enumerate(curr.bay[: MAX_BAY_X // 2])
-            for container in stack
-        )
-        right_weight = sum(
-            container.weight
-            for column, stack in enumerate(curr.bay[MAX_BAY_X // 2 :])
-            for container in stack
-        )
+    def isGoal(self, left_weight, right_weight):
         total_weight = left_weight + right_weight
         return abs(left_weight - right_weight) <= 0.1 * total_weight
 
+    def leftWeight(self, curr):
+        left_weight = 0
+        for i in range(testx // 2):
+            for container in curr.bay[i]:
+                left_weight += container.weight
+        
+        return left_weight
 
+    def rightWeight(self, curr):
+        right_weight = 0
+        for i in range(testx // 2, testx):
+            for container in curr.bay[i]:
+                right_weight += container.weight
+
+        return right_weight
+
+    def heavySide(self, left, right):
+        if left > right:
+            return "left"
+        elif right > left:
+            return "right"
 
 def main():
-
     start_time = time.time()
 
     tree = Tree()
