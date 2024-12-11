@@ -113,6 +113,28 @@
 </div>
 <!--End Ship Grid Section-->
 
+<!--Instruction display/ unload & oad display-->
+<div class="container-fluid mt-5">
+  <div class="d-flex">
+    <div style="position: fixed; top: 20vh; left: 0vw; width: 250px; height: 350px; padding: 10px; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const nextBtn = document.getElementById('nextBtn')
+      const previousBtn = document.getElementById('previousBtn')
+      
+    nextBtn.addEventListener('click', () => {
+      // Will add functionality once iparse is up and running for the instructions
+    });
+
+    previousBtn.addEventListener('click', () => {
+      // Will add functionality once iparse is up and running for the instructions
+    });
+});
+</script>
+
 <!--Install Packages for bootstrap-->
     <div class ="container">
       {% block content %} {% endblock %}

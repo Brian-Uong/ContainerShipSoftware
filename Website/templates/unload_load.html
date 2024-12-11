@@ -13,9 +13,12 @@
                 </div>
             </div>
         </div>
-<!--This will display the input the containers and if they are being loaded or unloaded (based on user input)-->
-        <div class="d-flex">
-            <div style="position: fixed; top: 20vh; left: 0vw; width: 250px; height: 350px; padding: 10px; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
+<!--Buttons to move through the instructions for loading/unloading-->
+        <div class="mt-4" id="nextBtn" style="display:none;">
+            <button style="position: fixed; bottom: 50vh; left: 20vw; padding: 8px;" type="button" class="btn btn-secondary" id="nextButton">Next</button>
+        </div>
+        <div class="mt-4" id="previousBtn" style="display:none;">
+            <button style="position: fixed; bottom: 40vh; left: 20vw; padding: 8px;" type="button" class="btn btn-secondary" id="previousButton">Previous</button>
         </div>
 <!--Container info input-->
 <!--These buttons will only appear when user selects Unload/Load buttons-->
@@ -52,6 +55,8 @@
         const nameField = document.getElementById('nameField');
         const addField = document.getElementById('addField');
         const continueField = document.getElementById('continueField');
+        const nextBtn = document.getElementById('nextBtn')
+        const previousBtn = document.getElementById('previousBtn')
         let selectedAction = null;
         let containerData = [];
 
@@ -137,11 +142,21 @@
     });
 
         continueButton.addEventListener('click', () => {
-            //still working on how we will send this to backend for optimal solution based on user input
-            //Continue button does not have functionality yet
-            //Once this is solved will work on displaying instructions in box where input is displayed
-            //Not sure this can be implemeneted until we have the search properly implemented so lets just leave this as a placeholder for now.
+            // Once button is hit the unload/load buttons disapear and instructions are to be displayed in box to the left
+            // Buttons for unload/load are not displayed
+            unloadBtn.style.display = 'none';
+            loadBtn.style.display = 'none';
+            nameField.style.display = 'none';
+            addField.style.display = 'none';
+            continueField.style.display = 'none';
+            weightField.style.display = 'none';
+            previousBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+
+            // Display gets cleared
+            inputDisplay.innerHTML = '';
         });
+
     });
 </script>
 {% endblock %}
