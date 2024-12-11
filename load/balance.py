@@ -1,7 +1,7 @@
 from astar import BoardState
 from collections import Counter
 import manifest_read
-import numpy as np
+# import numpy as np
 import heapq
 import time
 import copy
