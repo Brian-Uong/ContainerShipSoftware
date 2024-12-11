@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 import copy
 import time
 
-DEBUG = True
+DEBUG = False
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -186,7 +186,8 @@ class Tree:
             self.maxDepthReached = max(self.maxDepthReached, curr.depth)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
-            curr.printState()
+            if DEBUG:
+                curr.printState()
 
             # input("Press Enter to continue to the next iteration...")
 
