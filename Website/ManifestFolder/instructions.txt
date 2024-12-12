@@ -1,3 +1,0 @@
-Action: Load, Name: test, Weight: 1
-Action: Load, Name: test, Weight: 1
-Action: Load, Name: test, Weight: 1

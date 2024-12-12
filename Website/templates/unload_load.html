@@ -65,7 +65,7 @@
         nameField.style.display = 'block';
         addField.style.display = 'block';
         continueField.style.display = 'block';
-        weightField.style.display = 'none';
+        weightField.style.display = 'block';
     });
 
     loadBtn.addEventListener('click', () => {
@@ -110,7 +110,7 @@
             });
         }
         else if(selectedAction === 'Unload'){
-            newEntry.textContent = `${selectedAction}: ${containerName}`;
+            newEntry.textContent = `${selectedAction}: ${containerName} ${containerWeight}`;
             newEntry.id = idTracker;
             idTracker++;
             newEntry.addEventListener('mouseover', (e) => {
@@ -122,13 +122,13 @@
             newEntry.addEventListener('click', (e) => {
                 e.target.remove();
             })
-            containerData.push({action: selectedAction, name: containerName});
+            containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
             fetch('/unloadLoadRequest', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'  
                 },
-                body: JSON.stringify({action: selectedAction, name: containerName}),
+                body: JSON.stringify({action: selectedAction, name: containerName, weight: containerWeight}),
             });
         }
         else{

@@ -92,7 +92,7 @@ class BoardState:
 class Tree:
     def __init__(self):
 
-        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
+        filepath = "C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\SilverQueen.txt"
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         self.root = BoardState(grid, 0, None) 
@@ -100,24 +100,20 @@ class Tree:
         debugPrint("Tree initialized with root BoardState.")
 
     def AStar(self):
-
         debugPrint("Starting A* search...")
         frontier = []
         heapq.heappush(frontier, (self.root.f, self.root))
         frontierSet = {self.root}
         visitedSet = set()
-        left = self.leftWeight(self.root)
-        right = self.rightWeight(self.root)
-        is_balanced = self.isGoal(left, right)
-        side = self.heavySide(left, right)
 
-        while not is_balanced:
+        while frontier:
             debugPrint(f"Frontier size: {len(frontier)}")
+            
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 
-            left = self.leftWeight(self.root)
-            right = self.rightWeight(self.root)
+            left = self.leftWeight(curr)
+            right = self.rightWeight(curr)
             side = self.heavySide(left, right)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
@@ -125,14 +121,17 @@ class Tree:
 
             if self.isGoal(left, right):
                 print("Goal state reached!")
-                curr.PrintState()
+                curr.printState()
                 return
-            
+
             visitedSet.add(curr)
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet, side)
 
-            print(f"Left: {left}, right: {right} ")
+            print(f"Left: {left}, right: {right}")
+
+            print("Failed to find a solution: Frontier is empty.")
+
             
             #input("Press Enter to continue to the next step...")
 
