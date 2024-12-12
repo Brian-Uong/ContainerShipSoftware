@@ -4,14 +4,12 @@ from collections import Counter, defaultdict
 import copy
 import time
 
-DEBUG = False
+DEBUG = True
 
-MAX_BAY_Y = 10
-SAIL_BAY_Y = 8
-MAX_BAY_X = 12
-MAX_BUFFER_Y = 4
-MAX_BUFFER_X = 24
-MAX_BUFFER_CONTAINERS = 96
+MAX_BAY_Y = 12
+MAX_BAY_X = 8
+MAX_BUFFER_Y = 24
+MAX_BUFFER_X = 4
 
 def debugPrint(message):
     if DEBUG:
@@ -131,9 +129,9 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
-        cont1 = manifest_read.A_Container(60, 'Catfish')
-        cont2 = manifest_read.A_Container(20, 'DOGANA')
+        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+        cont1 = manifest_read.A_Container(2000, 'Cat')
+        cont2 = manifest_read.A_Container(2007, 'Dog')
         neededOff = [cont1, cont2]
         currentOff = []
 
@@ -182,7 +180,8 @@ class Tree:
             self.maxDepthReached = max(self.maxDepthReached, curr.depth)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
-            curr.printState()
+            if DEBUG:
+                curr.printState()
 
             # input("Press Enter to continue to the next iteration...")
 

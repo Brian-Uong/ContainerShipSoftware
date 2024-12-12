@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 import copy
 import time
 
-DEBUG = False
+DEBUG = True
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -135,7 +135,7 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
+        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         neededOff = [cont1, cont2]
