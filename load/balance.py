@@ -1,7 +1,6 @@
 
 from collections import Counter, defaultdict
 import manifest_read
-# import numpy as np
 import heapq
 import time
 import copy
@@ -93,7 +92,7 @@ class BoardState:
 class Tree:
     def __init__(self):
 
-        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
+        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         self.root = BoardState(grid, 0, None) 
@@ -111,18 +110,18 @@ class Tree:
         right = self.rightWeight(self.root)
         is_balanced = self.isGoal(left, right)
         side = self.heavySide(left, right)
-        
 
         while not is_balanced:
             debugPrint(f"Frontier size: {len(frontier)}")
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 
-            debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
-            curr.printState()
-
             left = self.leftWeight(self.root)
             right = self.rightWeight(self.root)
+            side = self.heavySide(left, right)
+
+            debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
+            curr.printState()
 
             if self.isGoal(left, right):
                 print("Goal state reached!")
@@ -133,9 +132,9 @@ class Tree:
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet, side)
 
-            is_balanced = self.isGoal(left, right)
+            print(f"Left: {left}, right: {right} ")
             
-            input("Press Enter to continue to the next step...")
+            #input("Press Enter to continue to the next step...")
 
     def Expand(self, curr, frontier, frontierSet, visitedSet, side):
         print("Expanding children...")
@@ -171,6 +170,9 @@ class Tree:
                             appended = True
                             break
 
+                    if appended:
+                        break
+
         elif side == "right":
             for column in range(testx // 2, testx):
                 if column in curr.bay and curr.bay[column]:
@@ -179,7 +181,7 @@ class Tree:
                     position = (column + 1, row + 1)
                     print(f"Popped container '{top.name}' from position {position}")
 
-                    for otherColumn in range(testx // 2):
+                    for otherColumn in reversed(testx // 2):
                         if otherColumn == column:
                             continue
 
@@ -201,6 +203,9 @@ class Tree:
                             appended = True
                             break
 
+                    if appended:
+                        break
+
 
 
     def isGoal(self, left_weight, right_weight):
@@ -211,6 +216,7 @@ class Tree:
         left_weight = 0
         for i in range(testx // 2):
             for container in curr.bay[i]:
+                print(f"left container weight: {container.weight}")
                 left_weight += container.weight
         
         return left_weight
@@ -219,6 +225,7 @@ class Tree:
         right_weight = 0
         for i in range(testx // 2, testx):
             for container in curr.bay[i]:
+                print(f"right container weight: {container.weight}")
                 right_weight += container.weight
 
         return right_weight
