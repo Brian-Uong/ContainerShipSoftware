@@ -1,3 +1,6 @@
 Action: Load, Name: test, Weight: 1
 Action: Load, Name: test, Weight: 1
 Action: Load, Name: test, Weight: 1
+Action: Unload, Name: test1, Weight: None
+Action: Unload, Name: test2, Weight: None
+Action: Unload, Name: test3, Weight: None
