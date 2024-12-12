@@ -5,9 +5,9 @@ import heapq
 import time
 import copy
 
-DEBUG = True
+DEBUG = False
 
-MAX_BAY_Y = 10
+MAX_BAY_Y = 12
 SAIL_BAY_Y = 8
 MAX_BAY_X = 12
 MAX_BUFFER_Y = 4
@@ -74,13 +74,13 @@ class BoardState:
         weightWidth = 5
 
         print("Bay State:")
-        for row in range(testx - 1, -1, -1):
-            for column in range(testy):
+        for row in range(MAX_BAY_X - 1, -1, -1):
+            for column in range(MAX_BAY_Y):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(nameWidth)
                     weight = f"{container.weight}".ljust(weightWidth)
-                    print(f"| {name} {weight} |", end='')
+                    print(f"|{name} {weight}|", end='')
                 else:
                     emptyName = "UNUSED".ljust(nameWidth)
                     emptyWeight = "0".ljust(weightWidth)
@@ -139,7 +139,7 @@ class Tree:
         print("Expanding children...")
 
         if side == "left":
-            for column in range(testx // 2):
+            for column in range(MAX_BAY_X // 2):
                 if column in curr.bay and curr.bay[column]:
                     top = curr.bay[column][-1]
                     if top.name == "NAN" and top.weight == 0:
@@ -152,7 +152,7 @@ class Tree:
                     print(f"Popped container '{top.name}' from position {position}")
                     appended = False
 
-                    for otherColumn in range(testx // 2, testx):
+                    for otherColumn in range(MAX_BAY_X // 2, MAX_BAY_X):
                         if otherColumn == column:
                             continue
 
@@ -178,7 +178,7 @@ class Tree:
                         break
 
         elif side == "right":
-            for column in range(testx // 2, testx):
+            for column in range(MAX_BAY_X // 2, MAX_BAY_X):
                 if column in curr.bay and curr.bay[column]:
                     top = curr.bay[column][-1]
                     if top.name == "NAN" and top.weight == 0:
@@ -191,7 +191,7 @@ class Tree:
                     print(f"Popped container '{top.name}' from position {position}")
                     appended = False
 
-                    for otherColumn in reversed(range(testx // 2)):
+                    for otherColumn in reversed(range(MAX_BAY_X // 2)):
                         if otherColumn == column:
                             continue
 
@@ -224,18 +224,18 @@ class Tree:
 
     def leftWeight(self, curr):
         left_weight = 0
-        for i in range(testx // 2):
+        for i in range(MAX_BAY_X // 2):
             for container in curr.bay[i]:
-                print(f"left container weight: {container.weight}")
+                debugPrint(f"left container weight: {container.weight}")
                 left_weight += container.weight
         
         return left_weight
 
     def rightWeight(self, curr):
         right_weight = 0
-        for i in range(testx // 2, testx):
+        for i in range(MAX_BAY_X // 2, MAX_BAY_X):
             for container in curr.bay[i]:
-                print(f"right container weight: {container.weight}")
+                debugPrint(f"right container weight: {container.weight}")
                 right_weight += container.weight
 
         return right_weight
