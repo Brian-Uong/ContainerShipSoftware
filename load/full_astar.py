@@ -6,11 +6,10 @@ import time
 
 DEBUG = False
 
-MAX_BAY_Y = 10
-SAIL_BAY_Y = 8
-MAX_BAY_X = 12
-MAX_BUFFER_Y = 4
-MAX_BUFFER_X = 24
+MAX_BAY_Y = 12
+MAX_BAY_X = 8
+MAX_BUFFER_Y = 24
+MAX_BUFFER_X = 4
 MAX_BUFFER_CONTAINERS = 96
 
 def debugPrint(message):
@@ -131,9 +130,9 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
-        cont1 = manifest_read.A_Container(60, 'Catfish')
-        cont2 = manifest_read.A_Container(20, 'DOGANA')
+        filePath = "C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\ShipCase4.txt"
+        cont1 = manifest_read.A_Container(2011, 'Cow')
+        cont2 = manifest_read.A_Container(10000, 'Ewe')
         neededOff = [cont1, cont2]
         currentOff = []
 
@@ -182,7 +181,8 @@ class Tree:
             self.maxDepthReached = max(self.maxDepthReached, curr.depth)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
-            curr.printState()
+            if DEBUG:
+                curr.printState()
 
             # input("Press Enter to continue to the next iteration...")
 
