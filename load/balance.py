@@ -70,8 +70,8 @@ class BoardState:
 
     def printState(self):
         print("Current state of the bay and buffer:")
-        nameWidth = 14
-        weightWidth = 5
+        nameWidth = 1
+        weightWidth = 1
 
         print("Bay State:")
         for row in range(MAX_BAY_X - 1, -1, -1):
@@ -92,7 +92,7 @@ class BoardState:
 class Tree:
     def __init__(self):
 
-        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
+        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         self.root = BoardState(grid, 0, None) 
@@ -220,6 +220,9 @@ class Tree:
 
     def isGoal(self, left_weight, right_weight):
         total_weight = left_weight + right_weight
+        print(f"Diff {abs(left_weight - right_weight)}")
+        print(f"10% {0.1*total_weight}")
+        print(f"Left {left_weight}, right {right_weight}")
         return abs(left_weight - right_weight) <= 0.1 * total_weight
 
     def leftWeight(self, curr):
