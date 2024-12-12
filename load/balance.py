@@ -5,7 +5,7 @@ import heapq
 import time
 import copy
 
-DEBUG = False
+DEBUG = True
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -100,24 +100,20 @@ class Tree:
         debugPrint("Tree initialized with root BoardState.")
 
     def AStar(self):
-
         debugPrint("Starting A* search...")
         frontier = []
         heapq.heappush(frontier, (self.root.f, self.root))
         frontierSet = {self.root}
         visitedSet = set()
-        left = self.leftWeight(self.root)
-        right = self.rightWeight(self.root)
-        is_balanced = self.isGoal(left, right)
-        side = self.heavySide(left, right)
 
-        while not is_balanced:
+        while frontier:
             debugPrint(f"Frontier size: {len(frontier)}")
+            
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 
-            left = self.leftWeight(self.root)
-            right = self.rightWeight(self.root)
+            left = self.leftWeight(curr)
+            right = self.rightWeight(curr)
             side = self.heavySide(left, right)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
@@ -125,14 +121,17 @@ class Tree:
 
             if self.isGoal(left, right):
                 print("Goal state reached!")
-                curr.PrintState()
+                curr.printState()
                 return
-            
+
             visitedSet.add(curr)
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet, side)
 
-            print(f"Left: {left}, right: {right} ")
+            print(f"Left: {left}, right: {right}")
+
+            print("Failed to find a solution: Frontier is empty.")
+
             
             #input("Press Enter to continue to the next step...")
 
@@ -142,6 +141,11 @@ class Tree:
         if side == "left":
             for column in range(testx // 2):
                 if column in curr.bay and curr.bay[column]:
+                    top = curr.bay[column][-1]
+                    if top.name == "NAN" and top.weight == 0:
+                        debugPrint(f"    Skipping container '{top.name}' with weight '{top.weight}' as it is not movable.")
+                        continue
+
                     top = curr.bay[column].pop()
                     row = len(curr.bay[column])
                     position = (column + 1, row + 1)
@@ -176,12 +180,18 @@ class Tree:
         elif side == "right":
             for column in range(testx // 2, testx):
                 if column in curr.bay and curr.bay[column]:
+                    top = curr.bay[column][-1]
+                    if top.name == "NAN" and top.weight == 0:
+                        debugPrint(f"    Skipping container '{top.name}' with weight '{top.weight}' as it is not movable.")
+                        continue
+
                     top = curr.bay[column].pop()
                     row = len(curr.bay[column])
                     position = (column + 1, row + 1)
                     print(f"Popped container '{top.name}' from position {position}")
+                    appended = False
 
-                    for otherColumn in reversed(testx // 2):
+                    for otherColumn in reversed(range(testx // 2)):
                         if otherColumn == column:
                             continue
 
