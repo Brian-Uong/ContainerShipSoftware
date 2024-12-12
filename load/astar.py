@@ -22,9 +22,10 @@ def debugPrint(message):
         print(message)
 
 class BoardState:
-    def __init__(self, bay, buffer, neededOff, currentOff, g, parent, moveDescription=None, movePositions=None):
+    def __init__(self, bay, buffer, neededOff, currentOff, load, g, parent, moveDescription=None, movePositions=None):
         self.neededOff = neededOff
         self.currentOff = currentOff
+        self.load = load
         self.bay = bay
         self.buffer = buffer
         self.g = g
@@ -44,7 +45,7 @@ class BoardState:
                 for row, container in enumerate(stack):
                     if container == needed:
                         position = (column + 1, row + 1)
-                        offloadCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 4
+                        offloadCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 2
                         totalCost += offloadCost
                         found = True
                         break
@@ -56,11 +57,11 @@ class BoardState:
     def validateTotalContainers(self, initialCount):
         bayCount = sum(len(stack) for stack in self.bay.values())
         bufferCount = sum(len(stack) for stack in self.buffer.values())
-        totalCount = bayCount + bufferCount + len(self.currentOff)
+        totalCount = bayCount + bufferCount + len(self.currentOff) + len(self.load)
         if totalCount != initialCount:
             debugPrint("ERROR: Container count mismatch!")
             debugPrint(f"Expected: {initialCount}, Found: {totalCount}")
-            debugPrint(f"Bay count: {bayCount}, Buffer count: {bufferCount}, Current Off count: {len(self.currentOff)}")
+            debugPrint(f"Bay count: {bayCount}, Buffer count: {bufferCount}, Current Off count: {len(self.currentOff)}, Load count: {len(self.load)}")
             self.printState()
             debugPrint("Full Bay State:")
             for col, stack in self.bay.items():
@@ -70,7 +71,10 @@ class BoardState:
                 debugPrint(f"  Column {col}: {[container.name for container in stack]}")
             debugPrint("Full Current Off State:")
             debugPrint([container.name for container in self.currentOff])
+            debugPrint("Full Load State:")
+            debugPrint([container.name for container in self.load])
             raise ValueError("Container count mismatch")
+
 
 
     def __lt__(self, other):
@@ -80,18 +84,22 @@ class BoardState:
         return (
             sorted(self.bay.items()) == sorted(other.bay.items()) and
             sorted(self.buffer.items()) == sorted(other.buffer.items()) and
-            Counter(self.currentOff) == Counter(other.currentOff)
+            Counter(self.currentOff) == Counter(other.currentOff) and
+            Counter(self.load) == Counter(other.load)
         )
+
 
     def __hash__(self):
         bayHash = frozenset((k, tuple(v)) for k, v in sorted(self.bay.items()))
         bufferHash = frozenset((k, tuple(v)) for k, v in sorted(self.buffer.items()))
-        currentOffHash = frozenset((container.name, container.weight) for container in self.currentOff)
-        return hash((bayHash, bufferHash, currentOffHash))
+        currentOffHash = frozenset(container.name for container in self.currentOff)
+        loadHash = frozenset(container.name for container in self.load)
+        return hash((bayHash, bufferHash, currentOffHash, loadHash))
+
 
 
     def printState(self):
-        print("Current state of the bay and buffer:")
+        print("Current state of the bay, buffer, current offload, and load:")
         nameWidth = 14
         weightWidth = 5
 
@@ -130,28 +138,38 @@ class BoardState:
         print("\nCurrent Off:")
         for container in self.currentOff:
             print(f"  - Name: {container.name}, Weight: {container.weight}")
+
+        print("\nLoad State:")
+        for container in self.load:
+            print(f"  - Name: {container.name}, Weight: {container.weight}")
         print()
+
 
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest.txt'
+        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
+        cont3 = manifest_read.A_Container(234, 'Sunshine')
+        cont4 = manifest_read.A_Container(7453, 'Rainbows')
         neededOff = [cont1, cont2]
         currentOff = []
+        load = [cont3, cont4]
 
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filePath)
         buffer = defaultdict(list)
         for i in range(testBufferX):
             buffer[i] = []
-        self.root = BoardState(grid, buffer, neededOff, currentOff, 0, None)
+        self.root = BoardState(grid, buffer, neededOff, currentOff, load, 0, None)
         self.initialCount = (
             sum(len(stack) for stack in self.root.bay.values()) +
             sum(len(stack) for stack in self.root.buffer.values()) +
-            len(self.root.currentOff)
+            len(self.root.currentOff) +
+            len(self.root.load)
         )
+
 
         self.statesExpanded = 0
         self.maxDepthReached = 0
@@ -231,7 +249,7 @@ class Tree:
                     moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
                     movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
 
-                    child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff), curr.g + newCost, curr, moveDescription, movePositions)
+                    child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff), curr.load, curr.g + newCost, curr, moveDescription, movePositions)
                     child.validateTotalContainers(self.initialCount)
 
                     debugPrint(f"      Generated child node at depth {child.depth}")
@@ -253,7 +271,7 @@ class Tree:
                     moveDescription = f"Move '{top.name}' from bay column {column + 1} to buffer column {bufferCol + 1}"
                     movePositions = [(column + 1, position[1]), f"Buffer {bufferCol + 1}"]
 
-                    child = BoardState(newBay, newBuffer, curr.neededOff, copy.deepcopy(curr.currentOff), curr.g + newCost, curr, moveDescription, movePositions)
+                    child = BoardState(newBay, newBuffer, curr.neededOff, copy.deepcopy(curr.currentOff), curr.load, curr.g + newCost, curr, moveDescription, movePositions)
                     child.validateTotalContainers(self.initialCount)
 
                     debugPrint(f"      Generated child node at depth {child.depth}")
@@ -270,11 +288,11 @@ class Tree:
                 newCurrOff = copy.deepcopy(curr.currentOff)
                 newCurrOff.append(top)
 
-                newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 4
+                newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 2
                 moveDescription = f"Move '{top.name}' from column {column + 1} to OFFLOAD"
                 movePositions = [(column + 1, position[1]), "OFFLOAD"]
 
-                child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, newCurrOff, curr.g + newCost, curr, moveDescription, movePositions)
+                child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, newCurrOff, curr.load, curr.g + newCost, curr, moveDescription, movePositions)
                 child.validateTotalContainers(self.initialCount)
 
                 debugPrint(f"      Generated child node at depth {child.depth}")
@@ -285,44 +303,47 @@ class Tree:
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
 
-        for bufferCol in range(testBufferX):
-            if bufferCol in curr.buffer and curr.buffer[bufferCol]:
-                debugPrint(f"  Exploring buffer column {bufferCol} with {len(curr.buffer[bufferCol])} containers...")
+                for loadContainer in curr.load:
+                    debugPrint(f"  Trying to load container '{loadContainer.name}' into the bay...")
 
-                top = curr.buffer[bufferCol][-1]
-                debugPrint(f"    Accessed container '{top.name}' from buffer column {bufferCol + 1}")
+                    for column in range(testX):
+                        newBay = copy.deepcopy(curr.bay)
 
-                for column in range(testX):
-                    debugPrint(f"    Trying to move container to column {column}...")
-                    newBuffer = copy.deepcopy(curr.buffer)
-                    newBuffer[bufferCol] = newBuffer[bufferCol][:-1]
-                    newBay = copy.deepcopy(curr.bay)
-                    newBay[column].append(top)
+                        newLoad = [container for container in curr.load if container != loadContainer]
+                        newBay[column].append(loadContainer)
 
-                    newCost = abs((bufferCol + 1) - testBufferX) + abs(len(curr.buffer[bufferCol]) - (testBufferY + 1)) + 4 + abs(column) + abs((testY + 1) - len(newBay[column]))
-                    moveDescription = f"Move '{top.name}' from buffer column {bufferCol + 1} to bay column {column + 1}"
-                    movePositions = [f"Buffer {bufferCol + 1}", (column + 1, len(newBay[column]))]
+                        newCost = 2 + abs(column) + abs((testY + 1) - len(newBay[column]))
+                        moveDescription = f"Load '{loadContainer.name}' into bay column {column + 1}"
+                        movePositions = [f"Load", (column + 1, len(newBay[column]))]
 
-                    child = BoardState(newBay, newBuffer, curr.neededOff, copy.deepcopy(curr.currentOff), curr.g + newCost, curr, moveDescription, movePositions)
-                    child.validateTotalContainers(self.initialCount)
+                        child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff), newLoad, curr.g + newCost, curr, moveDescription, movePositions)
+                        child.validateTotalContainers(self.initialCount)
 
-                    debugPrint(f"      Generated child node at depth {child.depth}")
-                    self.totalNodesGenerated += 1
+                        debugPrint(f"      Generated child node at depth {child.depth}")
+                        self.totalNodesGenerated += 1
 
-                    if child not in visitedSet and child not in frontierSet:
-                        debugPrint(f"      Adding child node at depth {child.depth} to frontier.")
-                        heapq.heappush(frontier, (child.f, child))
-                        frontierSet.add(child)
-
+                        if child not in visitedSet and child not in frontierSet:
+                            debugPrint(f"      Adding child node at depth {child.depth} to frontier.")
+                            heapq.heappush(frontier, (child.f, child))
+                            frontierSet.add(child)
 
     def isGoal(self, curr):
         debugPrint("Checking goal state...")
-        if Counter(curr.neededOff) == Counter(curr.currentOff):
-            debugPrint("Goal state confirmed.")
-            return True
-        debugPrint("Not a goal state.")
-        return False
 
+        if Counter(curr.neededOff) != Counter(curr.currentOff):
+            debugPrint("Not all needed containers are offloaded.")
+            return False
+
+        if any(curr.buffer[col] for col in curr.buffer):
+            debugPrint("Buffer is not empty.")
+            return False
+
+        if curr.load:
+            debugPrint("Load is not empty.")
+            return False
+
+        debugPrint("Goal state confirmed.")
+        return True
 
 def main():
     startTime = time.time()

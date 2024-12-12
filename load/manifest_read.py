@@ -27,7 +27,7 @@ def parse(file_path):
     grid = defaultdict(list)
     display_Grid = defaultdict(list)
 
-    num_columns = 12
+    num_columns = 5
     for i in range(num_columns):
         grid[i] = []
 
