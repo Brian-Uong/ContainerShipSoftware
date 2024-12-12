@@ -130,9 +130,15 @@ class BoardState:
 
 class Tree:
     def __init__(self):
+<<<<<<< HEAD
         filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
         cont1 = manifest_read.A_Container(2000, 'Cat')
         cont2 = manifest_read.A_Container(2007, 'Dog')
+=======
+        filePath = "C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\ShipCase4.txt"
+        cont1 = manifest_read.A_Container(2011, 'Cow')
+        cont2 = manifest_read.A_Container(10000, 'Ewe')
+>>>>>>> 0d3dbc57e3b07318e056075b9f392aec04ce78d8
         neededOff = [cont1, cont2]
         currentOff = []
 
@@ -181,7 +187,11 @@ class Tree:
             self.maxDepthReached = max(self.maxDepthReached, curr.depth)
 
             debugPrint(f"Exploring state with f={curr.f} (g={curr.g}, h={curr.h})")
+<<<<<<< HEAD
             if(DEBUG):
+=======
+            if DEBUG:
+>>>>>>> 0d3dbc57e3b07318e056075b9f392aec04ce78d8
                 curr.printState()
 
             # input("Press Enter to continue to the next iteration...")
