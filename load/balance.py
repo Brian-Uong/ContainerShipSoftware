@@ -120,7 +120,7 @@ class Tree:
             if self.isGoal(left, right):
                 print("Goal state reached!")
                 curr.printState()
-                return
+                return self.traceSolution(curr)
 
             visitedSet.add(curr)
             print("Expanding current state...")
@@ -161,8 +161,9 @@ class Tree:
                             appended = True
 
                             newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-
-                            child = BoardState(newBay, curr.g + newCost, curr)
+                            moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
+                            movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
+                            child = BoardState(newBay, curr.g + newCost, curr, moveDescription, movePositions)
                             print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
                             if child not in visitedSet and child not in frontierSet:
@@ -200,8 +201,9 @@ class Tree:
                             appended = True
 
                             newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-
-                            child = BoardState(newBay, curr.g + newCost, curr)
+                            moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
+                            movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
+                            child = BoardState(newBay, curr.g + newCost, curr, moveDescription, movePositions)
                             print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
                             if child not in visitedSet and child not in frontierSet:
@@ -214,7 +216,18 @@ class Tree:
                     if appended:
                         break
 
-
+    def traceSolution(self, goalState):
+        moves = []
+        current = goalState
+        while current.parent:
+            moves.append((current.moveDescription, current.movePositions))
+            current = current.parent
+        moves.reverse()
+        print("\nSolution Moves:")
+        for i, (desc, positions) in enumerate(moves, 1):
+            print(f"{i}. {desc}")
+            print(f"   Positions: Initial {positions[0]} -> Final {positions[1]}")
+        return moves
 
     def isGoal(self, left_weight, right_weight):
         total_weight = left_weight + right_weight
