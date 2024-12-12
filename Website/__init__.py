@@ -35,9 +35,23 @@ def create_app():
     def sign_in():
         sign_in = request.form.get('empName')
         file_path = 'log.txt'
+        current_employee_path = 'curr_emp.txt'
 
+        if not os.path.exists(current_employee_path):
+            with open(current_employee_path, 'w') as f:
+                f.write('')
+        try:
+            with open(current_employee_path, 'r') as f:
+                previous_employee = f.read().strip()
+        except FileNotFoundError:
+            previous_employee = None
+        if previous_employee:
+            with open(file_path, 'a') as files:
+                files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + previous_employee + ' signs out.\n')
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + sign_in + ' signs in.\n')
+        with open(current_employee_path, 'w') as f:
+            f.write(sign_in)
 
         return redirect(session['previous_url'])
     
