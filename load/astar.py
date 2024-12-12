@@ -4,7 +4,7 @@ from collections import Counter, defaultdict
 import copy
 import time
 
-DEBUG = True
+DEBUG = False
 
 MAX_BAY_Y = 10
 SAIL_BAY_Y = 8
@@ -39,6 +39,7 @@ class BoardState:
 
     def heuristic(self):
         totalCost = 0
+
         for needed in self.neededOff:
             found = False
             for column, stack in self.bay.items():
@@ -51,6 +52,13 @@ class BoardState:
                         break
                 if found:
                     break
+
+        iteration = 0
+        for container in self.load:
+            loadCost = 2 + abs(testY) + iteration
+            totalCost += loadCost
+            iteration += 1
+
         debugPrint(f"Heuristic calculated: {totalCost}")
         return totalCost
 
@@ -148,7 +156,7 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest2.txt'
+        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         cont3 = manifest_read.A_Container(234, 'Sunshine')
@@ -240,6 +248,10 @@ class Tree:
                     if otherColumn == column:
                         continue
 
+                    if len(curr.bay[otherColumn]) >= testY:
+                        debugPrint(f"    Cannot move to bay column {otherColumn}: height limit exceeded.")
+                        continue
+
                     debugPrint(f"    Trying to move container to bay column {otherColumn}...")
                     newBay = copy.deepcopy(curr.bay)
                     newBay[column] = newBay[column][:-1]
@@ -249,7 +261,10 @@ class Tree:
                     moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
                     movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
 
-                    child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff), curr.load, curr.g + newCost, curr, moveDescription, movePositions)
+                    child = BoardState(
+                        newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff),
+                        curr.load, curr.g + newCost, curr, moveDescription, movePositions
+                    )
                     child.validateTotalContainers(self.initialCount)
 
                     debugPrint(f"      Generated child node at depth {child.depth}")
@@ -261,6 +276,10 @@ class Tree:
                         frontierSet.add(child)
 
                 for bufferCol in range(testBufferX):
+                    if len(curr.buffer[bufferCol]) >= testBufferY:
+                        debugPrint(f"    Cannot move to buffer column {bufferCol}: height limit exceeded.")
+                        continue
+
                     debugPrint(f"    Trying to move container to buffer column {bufferCol}...")
                     newBay = copy.deepcopy(curr.bay)
                     newBay[column] = newBay[column][:-1]
@@ -271,7 +290,10 @@ class Tree:
                     moveDescription = f"Move '{top.name}' from bay column {column + 1} to buffer column {bufferCol + 1}"
                     movePositions = [(column + 1, position[1]), f"Buffer {bufferCol + 1}"]
 
-                    child = BoardState(newBay, newBuffer, curr.neededOff, copy.deepcopy(curr.currentOff), curr.load, curr.g + newCost, curr, moveDescription, movePositions)
+                    child = BoardState(
+                        newBay, newBuffer, curr.neededOff, copy.deepcopy(curr.currentOff),
+                        curr.load, curr.g + newCost, curr, moveDescription, movePositions
+                    )
                     child.validateTotalContainers(self.initialCount)
 
                     debugPrint(f"      Generated child node at depth {child.depth}")
@@ -282,17 +304,51 @@ class Tree:
                         heapq.heappush(frontier, (child.f, child))
                         frontierSet.add(child)
 
-                debugPrint(f"    Trying to move container to offload...")
+                if top in curr.neededOff:
+                    debugPrint(f"    Trying to move container '{top.name}' to offload...")
+                    newBay = copy.deepcopy(curr.bay)
+                    newBay[column] = newBay[column][:-1]
+                    newCurrOff = copy.deepcopy(curr.currentOff)
+                    newCurrOff.append(top)
+
+                    newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 2
+                    moveDescription = f"Move '{top.name}' from column {column + 1} to OFFLOAD"
+                    movePositions = [(column + 1, position[1]), "OFFLOAD"]
+
+                    child = BoardState(
+                        newBay, copy.deepcopy(curr.buffer), curr.neededOff, newCurrOff,
+                        curr.load, curr.g + newCost, curr, moveDescription, movePositions
+                    )
+                    child.validateTotalContainers(self.initialCount)
+
+                    debugPrint(f"      Generated child node at depth {child.depth}")
+                    self.totalNodesGenerated += 1
+
+                    if child not in visitedSet and child not in frontierSet:
+                        debugPrint(f"      Adding child node at depth {child.depth} to frontier.")
+                        heapq.heappush(frontier, (child.f, child))
+                        frontierSet.add(child)
+
+        for loadContainer in curr.load:
+            debugPrint(f"  Trying to load container '{loadContainer.name}' into the bay...")
+
+            for column in range(testX):
+                if len(curr.bay[column]) >= testY:
+                    debugPrint(f"    Cannot load into bay column {column}: height limit exceeded.")
+                    continue
+
                 newBay = copy.deepcopy(curr.bay)
-                newBay[column] = newBay[column][:-1]
-                newCurrOff = copy.deepcopy(curr.currentOff)
-                newCurrOff.append(top)
+                newLoad = [container for container in curr.load if container != loadContainer]
+                newBay[column].append(loadContainer)
 
-                newCost = abs(position[0]) + abs(position[1] - (testY + 1)) + 2
-                moveDescription = f"Move '{top.name}' from column {column + 1} to OFFLOAD"
-                movePositions = [(column + 1, position[1]), "OFFLOAD"]
+                newCost = 2 + abs(column) + abs((testY + 1) - len(newBay[column]))
+                moveDescription = f"Load '{loadContainer.name}' into bay column {column + 1}"
+                movePositions = ["Load", (column + 1, len(newBay[column]))]
 
-                child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, newCurrOff, curr.load, curr.g + newCost, curr, moveDescription, movePositions)
+                child = BoardState(
+                    newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff),
+                    newLoad, curr.g + newCost, curr, moveDescription, movePositions
+                )
                 child.validateTotalContainers(self.initialCount)
 
                 debugPrint(f"      Generated child node at depth {child.depth}")
@@ -303,29 +359,6 @@ class Tree:
                     heapq.heappush(frontier, (child.f, child))
                     frontierSet.add(child)
 
-                for loadContainer in curr.load:
-                    debugPrint(f"  Trying to load container '{loadContainer.name}' into the bay...")
-
-                    for column in range(testX):
-                        newBay = copy.deepcopy(curr.bay)
-
-                        newLoad = [container for container in curr.load if container != loadContainer]
-                        newBay[column].append(loadContainer)
-
-                        newCost = 2 + abs(column) + abs((testY + 1) - len(newBay[column]))
-                        moveDescription = f"Load '{loadContainer.name}' into bay column {column + 1}"
-                        movePositions = [f"Load", (column + 1, len(newBay[column]))]
-
-                        child = BoardState(newBay, copy.deepcopy(curr.buffer), curr.neededOff, copy.deepcopy(curr.currentOff), newLoad, curr.g + newCost, curr, moveDescription, movePositions)
-                        child.validateTotalContainers(self.initialCount)
-
-                        debugPrint(f"      Generated child node at depth {child.depth}")
-                        self.totalNodesGenerated += 1
-
-                        if child not in visitedSet and child not in frontierSet:
-                            debugPrint(f"      Adding child node at depth {child.depth} to frontier.")
-                            heapq.heappush(frontier, (child.f, child))
-                            frontierSet.add(child)
 
     def isGoal(self, curr):
         debugPrint("Checking goal state...")
