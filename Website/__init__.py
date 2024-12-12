@@ -60,6 +60,13 @@ def create_app():
 
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
+                num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
+                Manifest_Folder = os.listdir(folder_path)
+                file_path_log = 'log.txt'
+
+                with open(file_path_log, 'a') as files:
+                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for balancing, there are ' + str(num_containers) + ' on the ship \n')
+                    os.unlink(file_path_log)
 
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
@@ -102,6 +109,13 @@ def create_app():
 
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
+                num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
+                Manifest_Folder = os.listdir(folder_path)
+                file_path_log = 'log.txt'
+
+                with open(file_path_log, 'a') as files:
+                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for unloading/loading, there are ' + str(num_containers) + ' on the ship \n')
+                    os.unlink(file_path_log)
 
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
@@ -149,7 +163,7 @@ def create_app():
         file_path = 'log.txt'
 
         with open(file_path, 'a') as files:
-            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + 'Cycle Complete.\n')
+            files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
         for file in Manifest_Folder:
             file_path = os.path.join(folder_path, file)
             os.unlink(file_path)
