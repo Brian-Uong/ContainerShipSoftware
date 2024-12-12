@@ -90,9 +90,7 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self):
-
-        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+    def __init__(self, filepath):
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         self.root = BoardState(grid, 0, None) 
@@ -251,8 +249,8 @@ class Tree:
 
 def main():
     start_time = time.time()
-
-    tree = Tree()
+    filepath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+    tree = Tree(filepath)
     tree.AStar()
 
     end_time = time.time()

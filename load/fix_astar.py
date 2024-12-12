@@ -79,8 +79,6 @@ class BoardState:
             debugPrint([container.name for container in self.load])
             raise ValueError("Container count mismatch")
 
-
-
     def __lt__(self, other):
         return self.f < other.f
 
@@ -152,7 +150,7 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\uongb\\Documents\\School\\Senior\\Fall\\CS 179M\\test_manifest.txt'
+        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
         cont1 = manifest_read.A_Container(3000, '6LBdogs500')
         cont2 = manifest_read.A_Container(634, 'Maersk')
         cont3 = manifest_read.A_Container(234, 'Sunshine')
