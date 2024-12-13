@@ -8,18 +8,29 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        if('{{solution}}' == "Cycle Complete. Please click the cycle complete button."){
-            newEntry = document.createElement('div');
-            newEntry.textContent = '{{solution}}'
+        const inputDisplay = document.getElementById('inputDisplay'); 
+        if ('{{solution}}' === "Cycle Complete. Please click the cycle complete button.") {
+            const newEntry = document.createElement('div');
+            newEntry.textContent = '{{solution}}';
             inputDisplay.appendChild(newEntry);
-            document.getElementById('nextBtn').style().display = 'none';
-        }
-        else{
-            newEntry = document.createElement('div');
-            newEntry.textContent = '{{solution}}'
+            const nextBtn = document.getElementById('nextBtn');
+            if (nextBtn) {
+                nextBtn.style.display = 'none';
+            }
+        } else {
+            const newEntry = document.createElement('div');
+            newEntry.textContent = '{{solution}}';
             inputDisplay.appendChild(newEntry);
         }
-
+        const completeCycleForm = document.getElementById('completeCycleForm');
+        if (completeCycleForm) {
+            completeCycleForm.onsubmit = function () {
+                setTimeout(function () {
+                    window.location.href = "/";
+                }, 3000);
+            };
+        }
     });
 </script>
+
 {% endblock %}
