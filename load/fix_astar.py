@@ -59,6 +59,8 @@ class BoardState:
         debugPrint(f"Heuristic calculated: {totalCost}")
         return totalCost
 
+
+
     def validateTotalContainers(self, initialCount):
         bayCount = sum(len(stack) for stack in self.bay.values())
         bufferCount = sum(len(stack) for stack in self.buffer.values())
