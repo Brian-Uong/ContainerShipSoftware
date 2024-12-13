@@ -1,10 +1,12 @@
-import os
+import os, sys
 from flask import Flask, request, redirect, url_for, session, flash, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from load.manifest_read import parse
 from load.balance import Tree
 from load.instruction_read import iparse
+from load.fix_astar import LTree
+from load.manifest_read import A_Container
 
 def create_app():
 
@@ -220,10 +222,24 @@ def create_app():
     
     @app.route('/findSolution', methods=['POST'])
     def findSolution():
+        folder_path = "Website\ManifestFolder"
+        Manifest_Folder = os.listdir(folder_path)
+        if (Manifest_Folder[0] == 'instructions.txt'):
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[1]))
+        if (Manifest_Folder[1] == 'instructions.txt'):
+            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
         file_path = 'Website/ManifestFolder/instructions.txt'
         load, unload = iparse(file_path)
-        print(load)
-        print(unload)
+        for i in range(len(load)):
+            load[i] = A_Container(0, load[i])
+        for i in range(len(unload)):
+            unload[i] = A_Container(0, unload[i])
+
+        print(load[0].name)
+        print(unload[0].name)
+        igrid,_ = parse(manifest_path)
+        tree = LTree(manifest_path, unload, load, igrid)
+        moves = tree.aStar()
         return jsonify({"message": "Success!"})
 
     return app

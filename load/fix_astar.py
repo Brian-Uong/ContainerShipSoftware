@@ -1,11 +1,12 @@
 import heapq
-import manifest_read
+# import manifest_read
 from collections import Counter, defaultdict
 import copy
 import time
 import os
+# from manifest_read import parse
 
-DEBUG = True
+DEBUG = False
 
 MAX_BAY_Y = 12
 MAX_BAY_X = 8
@@ -43,6 +44,9 @@ class BoardState:
                         position = (column + 1, row + 1)
                         offloadCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 2
                         totalCost += offloadCost
+
+                        blockingPenalty = 2 * (len(stack) - (row + 1))
+                        totalCost += blockingPenalty
                         found = True
                         break
                 if found:
@@ -110,7 +114,7 @@ class BoardState:
             for column in range(MAX_BAY_Y):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
-                    name = truncate_name(container.name, nameWidth)
+                    name = container.name
                     weight = f"{container.weight}".ljust(weightWidth)
                     print(f"| {name} {weight} |", end='')
                 else:
@@ -124,7 +128,7 @@ class BoardState:
             for bufferCol in range(MAX_BUFFER_Y):
                 if bufferCol in self.buffer and row < len(self.buffer[bufferCol]):
                     container = self.buffer[bufferCol][row]
-                    name = truncate_name(container.name, nameWidth)
+                    name = container.name
                     weight = f"{container.weight}".ljust(weightWidth)
                     print(f"| {name} {weight} |", end='')
                 else:
@@ -135,32 +139,27 @@ class BoardState:
 
         print("\nNeeded Off:")
         for container in self.neededOff:
-            name = truncate_name(container.name, nameWidth)
+            name = container.name
             print(f"  - Name: {name}, Weight: {container.weight}")
 
         print("\nCurrent Off:")
         for container in self.currentOff:
-            name = truncate_name(container.name, nameWidth)
+            name = container.name
             print(f"  - Name: {name}, Weight: {container.weight}")
 
         print("\nLoad State:")
         for container in self.load:
-            name = truncate_name(container.name, nameWidth)
+            name = container.name
             print(f"  - Name: {name}, Weight: {container.weight}")
         print()
 
 
 
 
-class Tree:
-    def __init__(self):
+class LTree:
+    def __init__(self, filePath, neededOff, load, igrid):
         filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
         self.fileName = os.path.basename(filePath)
-        cont1 = manifest_read.A_Container(60, 'Catfish')
-        cont2 = manifest_read.A_Container(20,'Dogana')
-        cont3 = manifest_read.A_Container(234, 'Sunshine')
-        cont4 = manifest_read.A_Container(7453, 'Rainbows')
-        neededOff = [cont1,cont2]
         currentOff = []
 
         debugPrint("Tree initialized with root BoardState.")
@@ -197,7 +196,7 @@ class Tree:
     def updateManifest(self, goalState):
         baseName, extension = self.fileName.rsplit('.', 1)
         
-        outputPath = f".\\outbound\\{baseName}OUTBOUND.{extension}"
+        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\outbound\\{baseName}OUTBOUND.{extension}"
 
         with open(outputPath, "w") as manifestFile:
             for y in range(MAX_BAY_X):
@@ -397,11 +396,11 @@ class Tree:
 def main():
     startTime = time.time()
 
-    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
+    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
     igrid, _ = parse(filePath)
-    neededOff = [manifest_read.A_Container(0, '6LBdogs500'), manifest_read.A_Container(0, 'Maersk')]
+    neededOff = [manifest_read.A_Container(0, 'Rations for US Army'), manifest_read.A_Container(0, 'Batons')]
     load = [manifest_read.A_Container(0, 'Sunshine'), manifest_read.A_Container(0, 'Rainbows')]
-    tree = Tree(filePath, neededOff, load, igrid)
+    tree = LTree(filePath, neededOff, load, igrid)
     moves = tree.aStar()
 
     endTime = time.time()
