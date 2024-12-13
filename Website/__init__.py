@@ -299,7 +299,7 @@ def create_app():
                     if(type(start_position[0]) == int):
                         session['grid_data'][str(start_position[0]-1)][start_position[1]-1]['name'] = "UNUSED"
                     return redirect(url_for('auth.unload_load'))
-                if( i == len(session['Solution'])-1):
+                if( i+1 >= len(session['Solution'])-1):
                     session['solution_data'] = "Cycle Complete. Please click the cycle complete button."
         return redirect(url_for('auth.unload_load'))
     
