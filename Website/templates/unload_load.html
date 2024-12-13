@@ -57,8 +57,8 @@
         const nameField = document.getElementById('nameField');
         const addField = document.getElementById('addField');
         const continueField = document.getElementById('continueField');
-        const nextBtn = document.getElementById('nextBtn')
-        const previousBtn = document.getElementById('previousBtn')
+        const nextBtn = document.getElementById('nextBtn');
+        const previousBtn = document.getElementById('previousBtn');
         let selectedAction = null;
         let containerData = JSON.parse(localStorage.getItem('containerData')) || [];
 
@@ -191,6 +191,10 @@
             containerData = [];
             localStorage.removeItem('containerData');
             renderContainerData();
+            moves = "{{solution}}"
+            newEntry = document.createElement('div');
+            newEntry.textContent = moves
+            inputDisplay.appendChild(newEntry);
         });
 
     });

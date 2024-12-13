@@ -218,6 +218,7 @@ def create_app():
         for file in Solution_Folder:
             solution_file_path = os.path.join(solution_folder_path, file)
             os.unlink(solution_file_path)
+        session['solution_data'] = []
         return redirect(url_for('home'))
     
     @app.route('/findSolution', methods=['POST'])
@@ -234,13 +235,12 @@ def create_app():
             load[i] = A_Container(0, load[i])
         for i in range(len(unload)):
             unload[i] = A_Container(0, unload[i])
-
-        print(load[0].name)
-        print(unload[0].name)
         igrid,_ = parse(manifest_path)
         tree = LTree(manifest_path, unload, load, igrid)
         moves = tree.aStar()
-        return jsonify({"message": "Success!"})
+        session['solution_data'] = moves
+        print(moves)
+        return ('', 204)
 
     return app
 
