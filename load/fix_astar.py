@@ -206,7 +206,7 @@ class LTree:
     def updateManifest(self, goalState):
         baseName, extension = self.fileName.rsplit('.', 1)
         
-        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\outbound\\{baseName}OUTBOUND.{extension}"
+        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\Website\\outbound\\{baseName}OUTBOUND.{extension}"
 
         with open(outputPath, "w") as manifestFile:
             for y in range(MAX_BAY_X):

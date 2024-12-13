@@ -12,13 +12,14 @@
             newEntry = document.createElement('div');
             newEntry.textContent = '{{solution}}'
             inputDisplay.appendChild(newEntry);
-            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('nextBtn').style().display = 'none';
         }
         else{
             newEntry = document.createElement('div');
             newEntry.textContent = '{{solution}}'
             inputDisplay.appendChild(newEntry);
         }
+
     });
 </script>
 {% endblock %}

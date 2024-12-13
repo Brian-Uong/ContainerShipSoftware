@@ -1,5 +1,5 @@
 import os, sys
-from flask import Flask, request, redirect, url_for, session, flash, jsonify
+from flask import Flask, request, redirect, url_for, session, flash, jsonify, send_file
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from load.manifest_read import parse
@@ -23,6 +23,11 @@ def create_app():
     @app.route('/')
     def home():
         session['previous_url'] = url_for('home')
+        outbound_Folder = os.listdir("Website\outbound")
+        if(outbound_Folder[0]):
+            outbound_name = outbound_Folder[0]
+            outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
+            os.unlink(outbound_file_path)
         return "Home Page"
 
     @app.route('/log', methods=['POST'])
@@ -65,7 +70,6 @@ def create_app():
         return redirect(url_for('auth.home'))
 
     #These both take a file from their respective buttons on the home page and upload it to the ManifestFolder file. If there is no file selected it will keep them on the hope page.
-    @app.route('/balanceRedirect', methods=['GET','POST'])
     @app.route('/balanceRedirect', methods=['GET','POST'])
     def balanceRedirect():
         folder_path = "Website\ManifestFolder"
@@ -210,6 +214,11 @@ def create_app():
         file_path = 'log.txt'
         solution_folder_path = "Website\Solution"
         Solution_Folder = os.listdir(solution_folder_path)
+        outbound_Folder = os.listdir("Website\outbound")
+        if(outbound_Folder[0]):
+            outbound_name = outbound_Folder[0]
+            outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
+            return redirect(url_for('auth.placeholder'))
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
@@ -222,7 +231,7 @@ def create_app():
         session['solution_data'] = []
         print(session['solution_data'])
         session['Solution'] = []
-        return redirect(url_for('home'))
+        return redirect(url_for('auth.home'))
     
     @app.route('/findSolution', methods=['POST'])
     def findSolution():

@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, session, url_for
-import load
+from flask import Blueprint, render_template, session, url_for, send_file
+import load, os
 auth = Blueprint('auth', __name__)
 
 @auth.route('/')
@@ -29,5 +29,10 @@ def file_upload():
     session['previous_url'] = url_for('file_upload')
     return render_template("auth.file_upload.html")
 
-
-
+@auth.route('/placeholder')
+def placeholder():
+    outbound_Folder = os.listdir("Website\outbound")
+    if(outbound_Folder[0]):
+        outbound_name = outbound_Folder[0]
+        outbound_file_path = os.path.join(auth.root_path + '\outbound', outbound_name)
+    return send_file(outbound_file_path, as_attachment=True)

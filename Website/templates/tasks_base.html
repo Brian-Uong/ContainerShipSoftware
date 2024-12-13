@@ -52,7 +52,7 @@
 <!--Begin Complete Cycle Button-->
 <div style="position: fixed; bottom: 3vh; right: 0; max-width: 30vw; max-height: 10vh; padding: 15px; font-size: min(2vw,4vh);">
   <form method="post" action="/completeCycle">
-    <button type="submit" class="btn btn-success btn-lg" style="font-size: min(2vw,4vh);">Complete Cycle</button>
+    <button type="submit" class="btn btn-success btn-lg" style="font-size: min(2vw,4vh);" id="complete-button">Complete Cycle</button>
   </form>
 </div>
 <!--End Complete Cycle Button-->
@@ -124,18 +124,11 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const nextBtn = document.getElementById('nextBtn')
-      const previousBtn = document.getElementById('previousBtn')
-      
-    nextBtn.addEventListener('click', () => {
-      // Will add functionality once iparse is up and running for the instructions
-    });
-
-    previousBtn.addEventListener('click', () => {
-      // Will add functionality once iparse is up and running for the instructions
-    });
-});
+  document.addEventListener('DOMContentLoaded', () => {
+    const nextBtn = document.getElementById('nextBtn')
+    const previousBtn = document.getElementById('previousBtn')
+    const completeButton = document.getElementById("complete-button");
+  });
 </script>
 
 <!--Install Packages for bootstrap-->
