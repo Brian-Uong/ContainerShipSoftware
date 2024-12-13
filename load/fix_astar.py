@@ -197,11 +197,14 @@ class LTree:
             current = current.parent
         moves.reverse()
 
-        # Print the moves as a JSON object
-        print("\nSolution Moves (JSON):")
-        print(json.dumps(moves, indent=4))
+        # Convert moves to JSON string
+        moves_json = json.dumps(moves, indent=4)
 
-        return moves
+        # Print the JSON string
+        print("\nSolution Moves (JSON):")
+        print(moves_json)
+
+        return moves_json
     
     def updateManifest(self, goalState):
         baseName, extension = self.fileName.rsplit('.', 1)
