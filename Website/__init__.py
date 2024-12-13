@@ -98,7 +98,7 @@ def create_app():
             for move in moves:
                 print(move[0])
                 session['Solution'].append(move[0])
-            session['solution_Data'] = session['Solution'][0]
+            session['solution_data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
 
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
@@ -112,7 +112,7 @@ def create_app():
             for move in moves:
                 print(move[0])
                 session['Solution'].append(move[0])
-            session['solution_Data'] = session['Solution'][0]
+            session['solution_data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -137,7 +137,7 @@ def create_app():
             for move in moves:
                 print(move[0])
                 session['Solution'].append(move[0])
-            session['solution_Data'] = session['Solution'][0]
+            session['solution_data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
@@ -219,8 +219,8 @@ def create_app():
         for file in Solution_Folder:
             solution_file_path = os.path.join(solution_folder_path, file)
             os.unlink(solution_file_path)
-        session['solution_Data'] = []
-        print(session['solution_Data'])
+        session['solution_data'] = []
+        print(session['solution_data'])
         session['Solution'] = []
         return redirect(url_for('home'))
     
@@ -248,22 +248,35 @@ def create_app():
         for move in moves:
             print(move)
             session['Solution'].append(move['description'])
-        session['solution_Data'] = session['Solution'][0]
+        session['solution_data'] = session['Solution'][0]
         
         return redirect(url_for('auth.unload_load'))
 
     @app.route('/nextInstruction', methods=['POST'])
     def nextInstruction():
         for i in range(len(session['Solution'])):
-            if (session['solution_Data'] == session['Solution'][i]):
+            if (session['solution_data'] == session['Solution'][i]):
                 print(i)
                 print(len(session['Solution'])-1)
                 if(i != len(session['Solution'])-1):
-                    session['solution_Data'] = session['Solution'][i+1]
+                    session['solution_data'] = session['Solution'][i+1]
                     return redirect(url_for('auth.unload_load'))
                 if( i == len(session['Solution'])-1):
-                    session['solution_Data'] = "Cycle Complete. Please click the cycle complete button."
+                    session['solution_data'] = "Cycle Complete. Please click the cycle complete button."
         return redirect(url_for('auth.unload_load'))
+    
+    @app.route('/nextBalanceInstruction', methods=['POST'])
+    def nextBalanceInstruction():
+        for i in range(len(session['Solution'])):
+            if (session['solution_data'] == session['Solution'][i]):
+                print(i)
+                print(len(session['Solution'])-1)
+                if(i != len(session['Solution'])-1):
+                    session['solution_data'] = session['Solution'][i+1]
+                    return redirect(url_for('auth.balance'))
+                if( i == len(session['Solution'])-1):
+                    session['solution_data'] = "Cycle Complete. Please click the cycle complete button."
+        return redirect(url_for('auth.balance'))
 
 
     return app

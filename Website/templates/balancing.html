@@ -1,8 +1,24 @@
 {% extends "tasks_base.html" %} {% block title %}Balancing{% endblock %}
 
 {% block content %}
-{{solution}}
+<div class="mt-4" id="nextBtn">
+    <form method="post" action="/nextBalanceInstruction">
+        <button style="position: fixed; bottom: 50vh; left: 20vw; padding: 8px;" type="submit" class="btn btn-secondary" id="nextButton">Next</button>
+    </form>
+</div>
 <script>
-    
+    document.addEventListener('DOMContentLoaded', () => {
+        if('{{solution}}' == "Cycle Complete. Please click the cycle complete button."){
+            newEntry = document.createElement('div');
+            newEntry.textContent = '{{solution}}'
+            inputDisplay.appendChild(newEntry);
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+        else{
+            newEntry = document.createElement('div');
+            newEntry.textContent = '{{solution}}'
+            inputDisplay.appendChild(newEntry);
+        }
+    });
 </script>
 {% endblock %}
