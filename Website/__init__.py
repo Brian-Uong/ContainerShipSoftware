@@ -100,9 +100,11 @@ def create_app():
             moves = tree.AStar()
             session['Solution'] = []
             for move in moves:
-                print(move[0])
-                session['Solution'].append(move[0])
-            session['solution_data'] = session['Solution'][0]
+                print(move)
+                session['Solution'].append(move)
+            session['solution_data'] = session['Solution'][0]['description']
+            final_position = session['Solution'][0]['positions']['final']
+            start_position = session['Solution'][0]['positions']['initial']
             return redirect(url_for('auth.balance'))
 
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
@@ -114,9 +116,11 @@ def create_app():
             moves = tree.AStar()
             session['Solution'] = []
             for move in moves:
-                print(move[0])
-                session['Solution'].append(move[0])
-            session['solution_data'] = session['Solution'][0]
+                print(move)
+                session['Solution'].append(move)
+            session['solution_data'] = session['Solution'][0]['description']
+            final_position = session['Solution'][0]['positions']['final']
+            start_position = session['Solution'][0]['positions']['initial']
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -139,9 +143,16 @@ def create_app():
             moves = tree.AStar()
             session['Solution'] = []
             for move in moves:
-                print(move[0])
-                session['Solution'].append(move[0])
-            session['solution_data'] = session['Solution'][0]
+                print(move)
+                session['Solution'].append(move)
+            session['solution_data'] = session['Solution'][0][0]
+            final_position = session['Solution'][0][1][1]
+            start_position = session['Solution'][0][1][0]
+            if(type(final_position[0]) == int):
+                session['grid_data'][final_position[0]-1][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+            if(type(start_position[0]) == int):
+                print(start_position)
+                session['grid_data'][start_position[0]-1][start_position[1]-1]['name'] = "UNUSED"
             return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
@@ -218,7 +229,7 @@ def create_app():
         if(outbound_Folder[0]):
             outbound_name = outbound_Folder[0]
             outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
-            return redirect(url_for('auth.placeholder'))
+            # return redirect(url_for('auth.placeholder'))
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
@@ -256,19 +267,33 @@ def create_app():
         session['Solution'] = []
         for move in moves:
             print(move)
-            session['Solution'].append(move['description'])
-        session['solution_data'] = session['Solution'][0]
-        
+            session['Solution'].append(move)
+        session['solution_data'] = session['Solution'][0]['description']
+        final_position = session['Solution'][0]['positions']['final']
+        start_position = session['Solution'][0]['positions']['initial']
+        if(type(final_position[0]) == int):
+            session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+        if(type(start_position[0]) == int):
+            session['grid_data'][str(start_position[0]-1)][final_position[1]-1]['name'] = "UNUSED"
         return redirect(url_for('auth.unload_load'))
 
     @app.route('/nextInstruction', methods=['POST'])
     def nextInstruction():
         for i in range(len(session['Solution'])):
-            if (session['solution_data'] == session['Solution'][i]):
-                print(i)
-                print(len(session['Solution'])-1)
+            if (session['solution_data'] == session['Solution'][i]['description']):
                 if(i != len(session['Solution'])-1):
-                    session['solution_data'] = session['Solution'][i+1]
+                    session['solution_data'] = session['Solution'][i+1]['description']
+                    final_position = session['Solution'][i+1]['positions']['final']
+                    start_position = session['Solution'][i+1]['positions']['initial']
+                    print(final_position)
+                    print(start_position)
+                    if(type(final_position[0]) == int):
+                        print(session['solution_data'].split()[1])
+                        print(final_position)
+                        print(start_position)
+                        session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+                    if(type(start_position[0]) == int):
+                        session['grid_data'][str(start_position[0]-1)][start_position[1]-1]['name'] = "UNUSED"
                     return redirect(url_for('auth.unload_load'))
                 if( i == len(session['Solution'])-1):
                     session['solution_data'] = "Cycle Complete. Please click the cycle complete button."
@@ -277,11 +302,16 @@ def create_app():
     @app.route('/nextBalanceInstruction', methods=['POST'])
     def nextBalanceInstruction():
         for i in range(len(session['Solution'])):
-            if (session['solution_data'] == session['Solution'][i]):
-                print(i)
-                print(len(session['Solution'])-1)
+            if (session['solution_data'] == session['Solution'][i][0]):
                 if(i != len(session['Solution'])-1):
-                    session['solution_data'] = session['Solution'][i+1]
+                    session['solution_data'] = session['Solution'][i+1][0]
+                    final_position = session['Solution'][i+1][1][1]
+                    start_position = session['Solution'][i+1][1][0]
+                    session['solution_data'] = session['Solution'][i+1][0]
+                    if(type(final_position[0]) == int):
+                        session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+                    if(type(start_position[0]) == int):
+                        session['grid_data'][str(start_position[0]-1)][start_position[1]-1]['name'] = "UNUSED"
                     return redirect(url_for('auth.balance'))
                 if( i == len(session['Solution'])-1):
                     session['solution_data'] = "Cycle Complete. Please click the cycle complete button."

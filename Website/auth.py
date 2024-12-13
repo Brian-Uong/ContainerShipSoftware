@@ -11,6 +11,7 @@ def home():
 def balance():
     session['previous_url'] = url_for('auth.balance')
     grid = session.get('grid_data', {})
+    print(grid)
     filename = session.get('manifest_file', "Unknown File")
     solution = session.get('solution_data', [])
     return render_template("balancing.html", grid=grid, filename=filename, solution=solution)
@@ -19,6 +20,7 @@ def balance():
 def unload_load():
     session['previous_url'] = url_for('auth.unload_load')
     grid = session.get('grid_data', {})
+    print(grid['1'][3])
     filename = session.get('manifest_file', "Unknown File")
     solution = session.get('solution_data', [])
     print(solution)
