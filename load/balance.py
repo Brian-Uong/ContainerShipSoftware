@@ -1,9 +1,10 @@
-
 from collections import Counter, defaultdict
-import manifest_read
+# import manifest_read
 import heapq
 import time
 import copy
+# from manifest_read import parse
+
 
 DEBUG = False
 
@@ -13,10 +14,6 @@ MAX_BAY_X = 12
 MAX_BUFFER_Y = 4
 MAX_BUFFER_X = 24
 MAX_BUFFER_CONTAINERS = 96
-testx = 5
-testy = 4
-testBufferX = 2
-testBufferY = 2
 
 def SIFT(board):
     bay = board.bay
@@ -90,9 +87,9 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self, filepath):
+    def __init__(self, igrid):
         debugPrint("Tree initialized with root BoardState.")
-        grid, _ = manifest_read.parse(filepath)
+        grid = igrid
         self.root = BoardState(grid, 0, None) 
 
         debugPrint("Tree initialized with root BoardState.")
@@ -268,7 +265,8 @@ class Tree:
 def main():
     start_time = time.time()
     filepath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
-    tree = Tree(filepath)
+    grid, _ = parse(filepath)
+    tree = Tree(grid)
     tree.AStar()
 
     end_time = time.time()

@@ -3,6 +3,7 @@ from flask import Flask, request, redirect, url_for, session, flash, jsonify
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from load.manifest_read import parse
+from load.balance import Tree
 
 def create_app():
 
@@ -87,6 +88,8 @@ def create_app():
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
+            tree = Tree(ignore)
+            tree.AStar()
             return redirect(url_for('auth.balance'))
             
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
@@ -94,6 +97,8 @@ def create_app():
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
+            tree = Tree(ignore)
+            tree.AStar()
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -112,6 +117,8 @@ def create_app():
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
+            # tree = Tree(ignore)
+            # tree.AStar()
             return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])

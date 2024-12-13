@@ -35,3 +35,25 @@
 2024-12-12 13:38 Cats is dented
 2024-12-12 13:38 Caleb signs out.
 2024-12-12 13:38 Mayra signs in.
+2024-12-12 17:37 Cycle Complete.
+2024-12-12 17:37 SilverQueen_1.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 17:41 Cycle Complete.
+2024-12-12 17:43 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-12 17:43 Cycle Complete.
+2024-12-12 17:43 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 17:46 Cycle Complete.
+2024-12-12 17:46 SilverQueen_1.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 17:58 Cycle Complete.
+2024-12-12 17:58 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 17:58 Cycle Complete.
+2024-12-12 17:58 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 17:59 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 18:02 Cycle Complete.
+2024-12-12 18:04 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 18:05 Cycle Complete.
+2024-12-12 18:05 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 18:05 Cycle Complete.
+2024-12-12 18:05 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 18:10 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-12 18:10 Cycle Complete.
+2024-12-12 18:10 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
