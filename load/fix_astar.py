@@ -43,6 +43,9 @@ class BoardState:
                         position = (column + 1, row + 1)
                         offloadCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 2
                         totalCost += offloadCost
+
+                        blockingPenalty = 2 * (len(stack) - (row + 1))
+                        totalCost += blockingPenalty
                         found = True
                         break
                 if found:
@@ -54,6 +57,8 @@ class BoardState:
 
         debugPrint(f"Heuristic calculated: {totalCost}")
         return totalCost
+
+
 
     def validateTotalContainers(self, initialCount):
         bayCount = sum(len(stack) for stack in self.bay.values())
