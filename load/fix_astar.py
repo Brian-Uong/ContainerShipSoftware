@@ -5,6 +5,7 @@ import copy
 import time
 import os
 # from manifest_read import parse
+import json
 
 DEBUG = False
 
@@ -186,13 +187,20 @@ class LTree:
         moves = []
         current = goalState
         while current.parent:
-            moves.append((current.moveDescription, current.movePositions))
+            moves.append({
+                "description": current.moveDescription,
+                "positions": {
+                    "initial": current.movePositions[0],
+                    "final": current.movePositions[1]
+                }
+            })
             current = current.parent
         moves.reverse()
-        print("\nSolution Moves:")
-        for i, (desc, positions) in enumerate(moves, 1):
-            print(f"{i}. {desc}")
-            print(f"   Positions: Initial {positions[0]} -> Final {positions[1]}")
+
+        # Print the moves as a JSON object
+        print("\nSolution Moves (JSON):")
+        print(json.dumps(moves, indent=4))
+
         return moves
     
     def updateManifest(self, goalState):
