@@ -216,6 +216,15 @@
             renderContainerData();
         });
 
+        const completeCycleForm = document.getElementById('completeCycleForm');
+        if (completeCycleForm) {
+            completeCycleForm.onsubmit = function () {
+                setTimeout(function () {
+                    window.location.href = "/";
+                }, 3000);
+            };
+        }
+
     });
 </script>
 {% endblock %}
