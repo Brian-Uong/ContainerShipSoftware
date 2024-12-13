@@ -49,11 +49,9 @@ class BoardState:
                 if found:
                     break
 
-        iteration = 0
         for container in self.load:
-            loadCost = 2 + abs(MAX_BAY_Y) + iteration
+            loadCost = 2 + abs(MAX_BAY_Y)
             totalCost += loadCost
-            iteration += 1
 
         debugPrint(f"Heuristic calculated: {totalCost}")
         return totalCost
