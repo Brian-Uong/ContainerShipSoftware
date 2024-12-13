@@ -269,26 +269,43 @@ class BalanceTree:
                 if container.name == "NAN":
                     newBay[row].append(container)
 
-            for container in sorted_containers:
-                placed = False
-                count = 0
-                for row in range(len(board.bay)):
-                    for col in range(len(newBay[row]), len(board.bay[row])):
-                        if col > count:
-                            continue
-                        #need to wrap the columns somehow
-                        if col >= len(board.bay[row]):
-                            col = 0
-                            break
-                        
-                        newBay[row].append(container)
-                        placed = True
-                        break
+        count = 0
 
-                    count+=1
+        while sorted_containers:
+            for col in range(testx):
+                container = sorted_containers[0]
+
+                if len(newBay[col]) > count:
+                    continue
+                
+                newBay[col].append(container)
+                sorted_containers = sorted_containers[1:]
+
+            count += 1
+
+
+
+
+        # for container in sorted_containers:
+        #     placed = False
+        #     count = 0
+        #     for row in range(len(board.bay)):
+        #         for col in range(len(newBay[row]), len(board.bay[row])):
+        #             if col > count:
+        #                 continue
+        #             #need to wrap the columns somehow
+        #             if col >= len(board.bay[row]):
+        #                 col = 0
+        #                 break
                     
-                    if placed:
-                        break 
+        #             newBay[row].append(container)
+        #             placed = True
+        #             break
+
+        #         count+=1
+                
+        #         if placed:
+        #             break 
 
         sortedBay = BoardState(newBay, buffer, 0, None)
         return sortedBay
