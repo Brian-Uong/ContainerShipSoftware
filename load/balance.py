@@ -219,13 +219,13 @@ class Tree:
     def traceSolution(self, goalState):
         moves = []
         current = goalState
-        solution_Folder = 'Website/Solution/solution.txt'
+        solution_Folder = 'Website\Solution\solution.txt'
         while current.parent:
             moves.append((current.moveDescription, current.movePositions))
             current = current.parent
         moves.reverse()
         with open(solution_Folder, 'a') as files:
-            files.write("Solution Moves:\n")
+            files.write("Solution Moves:")
             print("\nSolution Moves:")
             for i, (desc, positions) in enumerate(moves, 1):
                 print(f"{i}. {desc}")

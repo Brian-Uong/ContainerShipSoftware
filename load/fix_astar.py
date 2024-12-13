@@ -150,12 +150,12 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
-        cont1 = manifest_read.A_Container(3000, '6LBdogs500')
-        cont2 = manifest_read.A_Container(634, 'Maersk')
+        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+        cont1 = manifest_read.A_Container(0, 'Cat')
+        cont2 = manifest_read.A_Container(0,'Dog')
         cont3 = manifest_read.A_Container(234, 'Sunshine')
         cont4 = manifest_read.A_Container(7453, 'Rainbows')
-        neededOff = [cont1, cont2]
+        neededOff = [cont1,cont2]
         currentOff = []
         load = [cont3, cont4]
 
