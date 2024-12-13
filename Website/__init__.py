@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 from load.manifest_read import parse
 from load.balance import Tree
+from load.instruction_read import iparse
 
 def create_app():
 
@@ -217,6 +218,14 @@ def create_app():
             os.unlink(solution_file_path)
         return redirect(url_for('home'))
     
+    @app.route('/findSolution', methods=['POST'])
+    def findSolution():
+        file_path = 'Website/ManifestFolder/instructions.txt'
+        load, unload = iparse(file_path)
+        print(load)
+        print(unload)
+        return jsonify({"message": "Success!"})
+
     return app
 
 

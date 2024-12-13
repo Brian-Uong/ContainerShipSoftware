@@ -155,11 +155,10 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self, filePath, neededOff, load):
+    def __init__(self, filePath, neededOff, load, igrid):
         currentOff = []
-
         debugPrint("Tree initialized with root BoardState.")
-        grid, _ = manifest_read.parse(filePath)
+        grid = igrid
         buffer = defaultdict(list)
         for i in range(testBufferX):
             buffer[i] = []

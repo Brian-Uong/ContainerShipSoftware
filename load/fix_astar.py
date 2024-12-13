@@ -147,18 +147,11 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self):
-        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
-        cont1 = manifest_read.A_Container(0, 'Cat')
-        cont2 = manifest_read.A_Container(0,'Dog')
-        cont3 = manifest_read.A_Container(234, 'Sunshine')
-        cont4 = manifest_read.A_Container(7453, 'Rainbows')
-        neededOff = [cont1,cont2]
+    def __init__(self, filePath, neededOff, loadm igrid):
         currentOff = []
-        load = [cont3, cont4]
 
         debugPrint("Tree initialized with root BoardState.")
-        grid, _ = manifest_read.parse(filePath)
+        grid = igrid
         buffer = defaultdict(list)
         for i in range(MAX_BUFFER_X):
             buffer[i] = []
@@ -373,7 +366,11 @@ class Tree:
 def main():
     startTime = time.time()
 
-    tree = Tree()
+    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
+    igrid, _ = parse(filePath)
+    neededOff = [manifest_read.A_Container(0, '6LBdogs500'), manifest_read.A_Container(0, 'Maersk')]
+    load = [manifest_read.A_Container(0, 'Sunshine'), manifest_read.A_Container(0, 'Rainbows')]
+    tree = Tree(filePath, neededOff, load, igrid)
     moves = tree.aStar()
 
     endTime = time.time()

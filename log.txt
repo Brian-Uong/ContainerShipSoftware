@@ -99,3 +99,21 @@
 2024-12-12 23:45 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
 2024-12-12 23:45 Cycle Complete.
 2024-12-12 23:45 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-12 23:47 Cycle Complete.
+2024-12-12 23:47 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-12 23:48 Cycle Complete.
+2024-12-12 23:48 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-12 23:49 Cycle Complete.
+2024-12-12 23:49 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:06 Cycle Complete.
+2024-12-13 00:06 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:07 Cycle Complete.
+2024-12-13 00:07 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:08 Cycle Complete.
+2024-12-13 00:08 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:09 Cycle Complete.
+2024-12-13 00:09 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:11 Cycle Complete.
+2024-12-13 00:11 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
+2024-12-13 00:12 Cycle Complete.
+2024-12-13 00:13 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 
