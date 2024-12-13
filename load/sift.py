@@ -60,7 +60,7 @@ class BoardState:
         weightWidth = 1
 
         print("Bay State:")
-        for row in range(MAX_BAY_X - 1, -1, -1):
+        for row in range(testx - 1, -1, -1):
             for column in range(testy):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
@@ -80,7 +80,7 @@ class BalanceTree:
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         buffer = defaultdict(list)
-        for i in range(MAX_BUFFER_X):
+        for i in range(testx):
             buffer[i] = []
         self.root = BoardState(grid, buffer, 0, None) 
 
@@ -259,10 +259,10 @@ class BalanceTree:
                 if container.name != "NAN": 
                     sorted_containers.append(container)
         sorted_containers.sort(key=lambda x: x.weight, reverse=True)
-        debugPrint(sorted_containers)
+        
 
         newBay = defaultdict(list)
-        for i in range(testx):
+        for i in range(testy):
             newBay[i] = []
         for row in range(len(board.bay)):
             for container in board.bay[row]:
@@ -272,14 +272,20 @@ class BalanceTree:
         count = 0
 
         while sorted_containers:
-            for col in range(testx):
+            for col in range(testy):
+                print(col)
                 container = sorted_containers[0]
+                #print(container.name)
 
                 if len(newBay[col]) > count:
+
                     continue
                 
+                print(container.name)
                 newBay[col].append(container)
                 sorted_containers = sorted_containers[1:]
+                if not sorted_containers:
+                    break
 
             count += 1
 
