@@ -1,13 +1,8 @@
 {% extends "tasks_base.html" %} {% block title %}Balancing{% endblock %}
 
 {% block content %}
+{{solution}}
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const instructionDisplay = document.getElementById('inputDisplay');
-        const solution = docume.getElementById('solution')
-        newEntry = document.createElement('div');
-        fetch("solution.txt").then(response => response.text()).then(text => newEntry.textContent = text);
-        instructionDisplay.appendChild(newEntry);
-    })
+    
 </script>
 {% endblock %}

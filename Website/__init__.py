@@ -90,6 +90,11 @@ def create_app():
             session['manifest_file'] = filename
             tree = Tree(ignore)
             tree.AStar()
+            folder_path_sol = "Website\Solution"
+            Solution_Folder = os.listdir(folder_path_sol)
+            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
+            print(solution_parse(solution_path))
+            session['solution_data'] = solution_parse(solution_path)
             return redirect(url_for('auth.balance'))
             
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
@@ -99,6 +104,11 @@ def create_app():
             session['manifest_file'] = filename
             tree = Tree(ignore)
             tree.AStar()
+            folder_path_sol = "Website\Solution"
+            Solution_Folder = os.listdir(folder_path_sol)
+            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
+            print(solution_parse(solution_path))
+            session['solution_data'] = solution_parse(solution_path)
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -117,8 +127,13 @@ def create_app():
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
-            # tree = Tree(ignore)
-            # tree.AStar()
+            tree = Tree(ignore)
+            tree.AStar()
+            folder_path_sol = "Website\Solution"
+            Solution_Folder = os.listdir(folder_path_sol)
+            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
+            print(solution_parse(solution_path))
+            session['solution_data'] = solution_parse(solution_path)
             return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
@@ -203,3 +218,18 @@ def create_app():
         return redirect(url_for('home'))
     
     return app
+
+
+def solution_parse(file_path):
+    solutions_line = []
+    try:
+        with open(file_path, 'r') as f:
+            for line in f:
+                if line.strip(): 
+                    solutions_line.append(line.strip())
+    except FileNotFoundError:
+        print("Error: Solution file not found.")
+    except Exception as e:
+        print(f"Error while parsing solutions: {e}")
+
+    return solutions_line
