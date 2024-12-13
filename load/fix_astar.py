@@ -283,7 +283,7 @@ class LTree:
                     newBay[otherColumn].append(top)
 
                     newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - len(newBay[otherColumn]))
-                    moveDescription = f"Move \'{top.name}\' from bay column {column + 1} to bay column {otherColumn + 1}"
+                    moveDescription = f"Move {top.name} from bay column {column + 1} to bay column {otherColumn + 1}"
                     movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
 
                     child = BoardState(
@@ -312,7 +312,7 @@ class LTree:
                     newBuffer[bufferCol].append(top)
 
                     newCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 4 + abs(MAX_BUFFER_X - bufferCol + 1) + abs((MAX_BUFFER_Y + 1) - len(newBuffer[bufferCol]))
-                    moveDescription = f"Move \'{top.name}\' from bay column {column + 1} to buffer column {bufferCol + 1}"
+                    moveDescription = f"Move {top.name} from bay column {column + 1} to buffer column {bufferCol + 1}"
                     movePositions = [(column + 1, position[1]), f"Buffer {bufferCol + 1}"]
 
                     child = BoardState(
@@ -337,7 +337,7 @@ class LTree:
                     newCurrOff.append(top)
 
                     newCost = abs(position[0]) + abs(position[1] - (MAX_BAY_Y + 1)) + 2
-                    moveDescription = f"Move \'{top.name}\' from column {column + 1} to OFFLOAD"
+                    moveDescription = f"Move {top.name} from column {column + 1} to OFFLOAD"
                     movePositions = [(column + 1, position[1]), "OFFLOAD"]
 
                     child = BoardState(
@@ -367,7 +367,7 @@ class LTree:
                 newBay[column].append(loadContainer)
 
                 newCost = 2 + abs(column) + abs((MAX_BAY_Y + 1) - len(newBay[column]))
-                moveDescription = f"Load \'{loadContainer.name}\' into bay column {column + 1}"
+                moveDescription = f"Load {loadContainer.name} into bay column {column + 1}"
                 movePositions = ["Load", (column + 1, len(newBay[column]))]
 
                 child = BoardState(
