@@ -90,9 +90,7 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self):
-
-        filepath = 'C:\\Users\\emily\\Documents\\GitHub\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+    def __init__(self, filepath):
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filepath)
         self.root = BoardState(grid, 0, None) 
@@ -122,7 +120,7 @@ class Tree:
             if self.isGoal(left, right):
                 print("Goal state reached!")
                 curr.printState()
-                return
+                return self.traceSolution(curr)
 
             visitedSet.add(curr)
             print("Expanding current state...")
@@ -163,8 +161,9 @@ class Tree:
                             appended = True
 
                             newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-
-                            child = BoardState(newBay, curr.g + newCost, curr)
+                            moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
+                            movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
+                            child = BoardState(newBay, curr.g + newCost, curr, moveDescription, movePositions)
                             print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
                             if child not in visitedSet and child not in frontierSet:
@@ -202,8 +201,9 @@ class Tree:
                             appended = True
 
                             newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-
-                            child = BoardState(newBay, curr.g + newCost, curr)
+                            moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
+                            movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
+                            child = BoardState(newBay, curr.g + newCost, curr, moveDescription, movePositions)
                             print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
 
                             if child not in visitedSet and child not in frontierSet:
@@ -216,7 +216,23 @@ class Tree:
                     if appended:
                         break
 
-
+    def traceSolution(self, goalState):
+        moves = []
+        current = goalState
+        solution_Folder = 'Website/Solution/solution.txt'
+        while current.parent:
+            moves.append((current.moveDescription, current.movePositions))
+            current = current.parent
+        moves.reverse()
+        with open(solution_Folder, 'a') as files:
+            files.write("Solution Moves:\n")
+            print("\nSolution Moves:")
+            for i, (desc, positions) in enumerate(moves, 1):
+                print(f"{i}. {desc}")
+                print(f"   Positions: Initial {positions[0]} -> Final {positions[1]}")
+                files.write(f"{i}. {desc}")
+                files.write(f"   Positions: Initial {positions[0]} -> Final {positions[1]}\n")
+        return moves
 
     def isGoal(self, left_weight, right_weight):
         total_weight = left_weight + right_weight
@@ -251,8 +267,8 @@ class Tree:
 
 def main():
     start_time = time.time()
-
-    tree = Tree()
+    filepath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
+    tree = Tree(filepath)
     tree.AStar()
 
     end_time = time.time()

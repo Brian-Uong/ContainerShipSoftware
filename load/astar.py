@@ -155,15 +155,8 @@ class BoardState:
 
 
 class Tree:
-    def __init__(self):
-        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\test_manifest.txt'
-        cont1 = manifest_read.A_Container(3000, '6LBdogs500')
-        cont2 = manifest_read.A_Container(634, 'Maersk')
-        cont3 = manifest_read.A_Container(234, 'Sunshine')
-        cont4 = manifest_read.A_Container(7453, 'Rainbows')
-        neededOff = [cont1, cont2]
+    def __init__(self, filePath, neededOff, load):
         currentOff = []
-        load = [cont3, cont4]
 
         debugPrint("Tree initialized with root BoardState.")
         grid, _ = manifest_read.parse(filePath)
@@ -380,8 +373,10 @@ class Tree:
 
 def main():
     startTime = time.time()
-
-    tree = Tree()
+    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\test_manifest.txt'
+    neededOff = [manifest_read.A_Container(0, '6LBdogs500'), manifest_read.A_Container(0, 'Maersk')]
+    load = [manifest_read.A_Container(0, 'Sunshine'), manifest_read.A_Container(0, 'Rainbows')]
+    tree = Tree(filePath, neededOff, load)
     moves = tree.aStar()
 
     endTime = time.time()

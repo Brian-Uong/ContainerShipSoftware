@@ -63,7 +63,6 @@ def create_app():
     #These both take a file from their respective buttons on the home page and upload it to the ManifestFolder file. If there is no file selected it will keep them on the hope page.
     @app.route('/balanceRedirect', methods=['GET','POST'])
     def balanceRedirect():
-        # print(request.files)
         folder_path = "Website\ManifestFolder"
         Manifest_Folder = os.listdir(folder_path)
         file = request.files['manifest-input-balance']
@@ -71,7 +70,6 @@ def create_app():
         if len(Manifest_Folder) == 0: 
             manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
             file.save(manifest_path)
-
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
                 num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
@@ -79,22 +77,29 @@ def create_app():
                 file_path_log = 'log.txt'
 
                 with open(file_path_log, 'a') as files:
-                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for balancing, there are ' + str(num_containers) + ' on the ship \n')
+                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for unloading/loading, there are ' + str(num_containers) + ' on the ship \n')
                     os.unlink(file_path_log)
 
             except Exception as e:
-                flash(f"ERRORRRRRR: {e}", "error")
-                return redirect(url_for('home'))
-            
-            session['grid_data'] = {
+                print(f"ERRORRRRRR: {e}", "error")
+                session['grid_data'] = {
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
-
+            return redirect(url_for('auth.balance'))
+            
+            session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+            session['manifest_file'] = filename
             return redirect(url_for('auth.balance'))
         else:
-            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+            if (Manifest_Folder[0] == 'instructions.txt'):
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[1]))
+            else:
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
 
@@ -109,7 +114,6 @@ def create_app():
             session['manifest_file'] = filename
             return redirect(url_for('auth.balance'))
     
-    
     @app.route('/unload_loadRedirect', methods=['POST'])
     def unload_loadRedirect():
         #print(request.files)
@@ -120,7 +124,6 @@ def create_app():
         if len(Manifest_Folder) == 0: 
             manifest_path = (os.path.join(app.root_path+'\ManifestFolder', filename))
             file.save(manifest_path)
-
             try:
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
                 num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
@@ -132,15 +135,19 @@ def create_app():
                     os.unlink(file_path_log)
 
             except Exception as e:
-                flash(f"ERRORRRRRR: {e}", "error")
-                return redirect(url_for('home'))
+                print(f"ERRORRRRRR: {e}", "error")
+                session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
+                key: [{"weight": c.weight, "name": c.name} for c in containers]
+                for key, containers in grid_data.items()
+                }
+                session['manifest_file'] = filename
+                return redirect(url_for('auth.unload_load'))
             
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
-
             return redirect(url_for('auth.unload_load'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):

@@ -1,21 +1,12 @@
 {% extends "tasks_base.html" %} {% block title %}Balancing{% endblock %}
 
 {% block content %}
-
-<!--Start Log Message Section-->
-<!-- <form method="POST" action="/logBalance">
-    <div style="position: fixed; bottom: 0; left: 0; width: 100%; max-width: 400px; padding: 16px;">
-      <label for="logMessage">Log Message</label>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" name="logMessage" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="submit">Submit</button>
-        </div>
-      </div>
-    </form>
-  </div> -->
-  <!--End Log Message Section-->
-
-
-  
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const instructionDisplay = document.getElementById('inputDisplay');
+        newEntry = document.createElement('div');
+        fetch("solution.txt").then(response => response.text()).then(text => newEntry.textContent = text)
+        instructionDisplay.appendChild(newEntry);
+    })
+</script>
 {% endblock %}
