@@ -70,3 +70,12 @@
 2024-12-12 18:20 Cycle Complete.
 2024-12-12 18:20 ShipCase2_1.txt manifest is opened for unloading/loading, there are 4 on the ship 
 2024-12-12 18:20 Cycle Complete.
+2024-12-12 18:23 ShipCase3_1.txt manifest is opened for unloading/loading, there are 6 on the ship 
+2024-12-12 18:26 Cycle Complete.
+2024-12-12 18:26 ShipCase3_1.txt manifest is opened for unloading/loading, there are 6 on the ship 
+2024-12-12 18:26 Cycle Complete.
+2024-12-12 18:26 ShipCase2_1.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 18:33 Cycle Complete.
+2024-12-12 18:33 ShipCase5.txt manifest is opened for unloading/loading, there are 5 on the ship 
+2024-12-12 18:34 Cycle Complete.
+2024-12-12 18:34 ShipCase4_1.txt manifest is opened for unloading/loading, there are 7 on the ship 

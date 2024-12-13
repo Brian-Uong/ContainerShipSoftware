@@ -28,12 +28,13 @@
   <!--Begin Navbar-->
   <nav class="navbar navbar-dark bg-dark" style="max-height: 9vh;">
     <form method="post" action="/homeRedirect">
-      <button class="fa fa-home" type="submit" style="color: white; border: none; padding: .5vh .5vw; background-color: rgb(0,0,0,0); margin-bottom: .5vh; margin-right: 1vw;">
+      <button class="fa fa-home" type="submit" style="color: white; border: none; padding: .1vh .5vw; background-color: rgb(0,0,0,0); margin-bottom: .5vh; margin-right: 1vw; max-height: 1vh; max-width: 1vw;">
       </button>
     </form>
     <form method="post" action="/signIn">
-      <div class="form-group">
+      <div class="form-group" style="max-width: 20vw; max-height: 9vh;">
         <input
+          style="font-size: 1.4vw; max-height: 8vh; max-width: 20vw;"
           type="text"
           class="form-control"
           id="empName"
@@ -49,52 +50,54 @@
   </nav>
 <!--End Navbar-->
 <!--Begin Complete Cycle Button-->
-<div style="position: fixed; bottom: 0; right: 0; width: 100; padding: 15px;">
+<div style="position: fixed; bottom: 3vh; right: 0; max-width: 30vw; max-height: 10vh; padding: 15px; font-size: min(2vw,4vh);">
   <form method="post" action="/completeCycle">
-    <button type="submit" class="btn btn-success btn-lg">Complete Cycle</button>
+    <button type="submit" class="btn btn-success btn-lg" style="font-size: min(2vw,4vh);">Complete Cycle</button>
   </form>
 </div>
 <!--End Complete Cycle Button-->
 
 <!--Begin Log message section-->
 <form method="POST" action="/log">
-  <div style="position: fixed; bottom: 0; left: 0; width: 100%; max-width: 400px; padding: 16px;">
+  <div style="position: absolute; bottom: .5vh; left:1.5vw; max-width:30vw; font-size: min(2vw,5.5vh);"">
     <label for="logMessage">Log Message</label>
     <div class="input-group mb-3">
-      <input type="text" class="form-control" name="logMessage" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
+      <input type="text" class="form-control" name="logMessage" style="font-size: min(1.4vw,3vh); max-height: 8vh;" placeholder="Type log message here..." aria-label="Type log message here..." aria-describedby="basic-addon2">
       <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="submit">Submit</button>
+        <button class="btn btn-outline-secondary" type="submit" style="max-height: 8vh; max-width: 8vw; font-size: min(1.4vw,4.8vh);">Submit</button>
       </div>
     </div>
   </form>
 </div>
 <!--End Log message section-->
 
-<!--Start Ship Grid Section-->
-<!--8 rows, 12 columns needed-->
 <!--Custom border settings & layout-->
 <style>
   .custom-border {
-    border: 1.3px solid black;
-    width: 67px;
-    height: 50px;
+    border: .2vh solid black;
     display: flex;
     justify-content: center;
-    align-items: center;
     text-align: center;
+    max-width: 3vw;
   }
   .layout-right {
+    font-size: min(.8vw,1.9vh);
     position: absolute;
-    bottom: 105px;
-    right: 30px;
-    width: auto;
-    font-size: 12px;
+    padding: 0%;
+    margin: 0%;
+    left: 62vw;
+    top: 20vh;
+    box-sizing: border-box;
+    max-width: 36vw;
+    max-height: 60vh;
   }
   .truck-icon {
     position: absolute;
-    bottom: 105px;
-    left: 300px;
-    font-size: 70px;
+    bottom: 10vh;
+    right: 42vw;
+    font-size: min(4vw,10vh);
+    max-height: 10vh;
+    max-width: 4vw;
   }
 </style>
 
@@ -106,7 +109,7 @@
   {% for j in range(0,8)%}
   <div class="row">
     {% for i in range(0, 12) %}
-    <div class="col-1 custom-border" {% if grid['' ~ i][7-j].name == 'NAN' %} style="background-color: grey;" {% endif %} title="{{[8 - j, i + 1]}} {{grid['' ~ i][7-j].name}}, {{grid['' ~ i][7-j].weight}}">{{[8 - j, i + 1]}} <br/> {{grid['' ~ i][7-j].name}} <br/> {{grid['' ~ i][7-j].weight}}</div>
+    <div class="col-1 custom-border" {% if grid['' ~ i][7-j].name == 'NAN' %} style="background-color: grey;" {% endif %} title="{{[8 - j, i + 1]}} {{grid['' ~ i][7-j].name}}">{{[8 - j, i + 1]}} <br/> {{grid['' ~ i][7-j].name}} <br/></div>
     {% endfor %}
   </div>
   {% endfor %}
@@ -116,7 +119,7 @@
 <!--Instruction display/ unload & oad display-->
 <div class="container-fluid mt-5">
   <div class="d-flex">
-    <div style="position: fixed; top: 20vh; left: 0vw; width: 250px; height: 350px; padding: 10px; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
+    <div style="position: fixed; top: 20vh; left: 0vw; width: 20vw; height: 60vh; border: 1.5px solid; overflow-y: auto;" id="inputDisplay"></div>
   </div>
 </div>
 

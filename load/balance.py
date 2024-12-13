@@ -9,8 +9,8 @@ import copy
 DEBUG = False
 
 MAX_BAY_Y = 12
-SAIL_BAY_Y = 8
-MAX_BAY_X = 12
+SAIL_BAY_Y = 12
+MAX_BAY_X = 8
 MAX_BUFFER_Y = 4
 MAX_BUFFER_X = 24
 MAX_BUFFER_CONTAINERS = 96
@@ -222,7 +222,6 @@ class Tree:
             current = current.parent
         moves.reverse()
         with open(solution_Folder, 'a') as files:
-            files.write("Solution Moves:")
             print("\nSolution Moves:")
             for i, (desc, positions) in enumerate(moves, 1):
                 print(f"{i}. {desc}")
