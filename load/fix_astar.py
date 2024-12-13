@@ -3,15 +3,14 @@ import manifest_read
 from collections import Counter, defaultdict
 import copy
 import time
+import os
 
-DEBUG = False
+DEBUG = True
 
-MAX_BAY_Y = 10
-SAIL_BAY_Y = 8
-MAX_BAY_X = 12
-MAX_BUFFER_Y = 4
-MAX_BUFFER_X = 24
-MAX_BUFFER_CONTAINERS = 96
+MAX_BAY_Y = 12
+MAX_BAY_X = 8
+MAX_BUFFER_Y = 24
+MAX_BUFFER_X = 4
 
 def debugPrint(message):
     if DEBUG:
@@ -100,15 +99,18 @@ class BoardState:
 
     def printState(self):
         print("Current state of the bay, buffer, current offload, and load:")
-        nameWidth = 14
+        nameWidth = 9
         weightWidth = 5
+
+        def truncate_name(name, width):
+            return name[:width] if len(name) > width else name.ljust(width)
 
         print("Bay State:")
         for row in range(MAX_BAY_X - 1, -1, -1):
             for column in range(MAX_BAY_Y):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
-                    name = f"{container.name}".ljust(nameWidth)
+                    name = truncate_name(container.name, nameWidth)
                     weight = f"{container.weight}".ljust(weightWidth)
                     print(f"| {name} {weight} |", end='')
                 else:
@@ -122,7 +124,7 @@ class BoardState:
             for bufferCol in range(MAX_BUFFER_Y):
                 if bufferCol in self.buffer and row < len(self.buffer[bufferCol]):
                     container = self.buffer[bufferCol][row]
-                    name = f"{container.name}".ljust(nameWidth)
+                    name = truncate_name(container.name, nameWidth)
                     weight = f"{container.weight}".ljust(weightWidth)
                     print(f"| {name} {weight} |", end='')
                 else:
@@ -133,21 +135,32 @@ class BoardState:
 
         print("\nNeeded Off:")
         for container in self.neededOff:
-            print(f"  - Name: {container.name}, Weight: {container.weight}")
+            name = truncate_name(container.name, nameWidth)
+            print(f"  - Name: {name}, Weight: {container.weight}")
 
         print("\nCurrent Off:")
         for container in self.currentOff:
-            print(f"  - Name: {container.name}, Weight: {container.weight}")
+            name = truncate_name(container.name, nameWidth)
+            print(f"  - Name: {name}, Weight: {container.weight}")
 
         print("\nLoad State:")
         for container in self.load:
-            print(f"  - Name: {container.name}, Weight: {container.weight}")
+            name = truncate_name(container.name, nameWidth)
+            print(f"  - Name: {name}, Weight: {container.weight}")
         print()
 
 
 
+
 class Tree:
-    def __init__(self, filePath, neededOff, loadm igrid):
+    def __init__(self):
+        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
+        self.fileName = os.path.basename(filePath)
+        cont1 = manifest_read.A_Container(60, 'Catfish')
+        cont2 = manifest_read.A_Container(20,'Dogana')
+        cont3 = manifest_read.A_Container(234, 'Sunshine')
+        cont4 = manifest_read.A_Container(7453, 'Rainbows')
+        neededOff = [cont1,cont2]
         currentOff = []
 
         debugPrint("Tree initialized with root BoardState.")
@@ -180,6 +193,23 @@ class Tree:
             print(f"{i}. {desc}")
             print(f"   Positions: Initial {positions[0]} -> Final {positions[1]}")
         return moves
+    
+    def updateManifest(self, goalState):
+        baseName, extension = self.fileName.rsplit('.', 1)
+        
+        outputPath = f".\\outbound\\{baseName}OUTBOUND.{extension}"
+
+        with open(outputPath, "w") as manifestFile:
+            for y in range(MAX_BAY_X):
+                for x in range(MAX_BAY_Y):
+                    if x in goalState.bay and y < len(goalState.bay[x]):
+                        container = goalState.bay[x][y]
+                        weight = str(container.weight).zfill(5)
+                        name = container.name
+                    else:
+                        weight = "00000"
+                        name = "UNUSED"
+                    manifestFile.write(f"[{str(y + 1).zfill(2)},{str(x + 1).zfill(2)}], {{{weight}}}, {name}\n")
 
     def aStar(self):
         debugPrint("Starting A* search...")
@@ -208,6 +238,7 @@ class Tree:
                 print(f"  Total States Expanded: {self.statesExpanded}")
                 print(f"  Maximum Depth Reached: {self.maxDepthReached}")
                 print(f"  Total Nodes Generated: {self.totalNodesGenerated}")
+                self.updateManifest(curr)
                 return self.traceSolution(curr)
             
             visitedSet.add(curr)
