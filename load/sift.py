@@ -61,7 +61,7 @@ class BoardState:
 
         print("Bay State:")
         for row in range(MAX_BAY_X - 1, -1, -1):
-            for column in range(MAX_BAY_Y):
+            for column in range(testy):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(nameWidth)
@@ -94,6 +94,8 @@ class BalanceTree:
         visitedSet = set()
 
         siftgoal = self.siftGoal(self.root, self.root.buffer)
+        print("Sift goal state")
+        siftgoal.printState()
         sift = SiftTree(self.root.bay, siftgoal)
         sift.astar()
 
@@ -140,7 +142,7 @@ class BalanceTree:
         print("Expanding children...")
 
         if side == "left":
-            for column in range(MAX_BAY_X // 2):
+            for column in range(testx // 2):
                 if column in curr.bay and curr.bay[column]:
                     top = curr.bay[column][-1]
                     if top.name == "NAN" and top.weight == 0:
@@ -252,25 +254,45 @@ class BalanceTree:
     def siftGoal(self, board, buffer):
         sorted_containers = []
 
-        #logically, sort by weight
-        for i in range(testx):
-            for container in board.bay[i]:
-                sorted_containers.append(container)
+        for row in range(len(board.bay)):
+            for container in board.bay[row]:
+                if container.name != "NAN": 
+                    sorted_containers.append(container)
         sorted_containers.sort(key=lambda x: x.weight, reverse=True)
         debugPrint(sorted_containers)
 
         newBay = defaultdict(list)
         for i in range(testx):
             newBay[i] = []
+        for row in range(len(board.bay)):
+            for container in board.bay[row]:
+                if container.name == "NAN":
+                    newBay[row].append(container)
 
-        for container in sorted_containers:
-            current_row = max(newBay.keys(), default=0)
-            while len(newBay[current_row]) >= testx:
-                current_row += 1
-            newBay[current_row].append(container)
+            for container in sorted_containers:
+                placed = False
+                count = 0
+                for row in range(len(board.bay)):
+                    for col in range(len(newBay[row]), len(board.bay[row])):
+                        if col > count:
+                            continue
+                        #need to wrap the columns somehow
+                        if col >= len(board.bay[row]):
+                            col = 0
+                            break
+                        
+                        newBay[row].append(container)
+                        placed = True
+                        break
+
+                    count+=1
+                    
+                    if placed:
+                        break 
 
         sortedBay = BoardState(newBay, buffer, 0, None)
         return sortedBay
+    
 
         
 class SiftTree:
@@ -306,7 +328,7 @@ class SiftTree:
             print("Expanding current state...")
             self.Expand(curr, frontier, frontierSet, visitedSet)
 
-            #input("Press Enter to continue to the next step...")
+            input("Press Enter to continue to the next step...")
 
         print("Failed to find a solution: Frontier is empty.")
 
