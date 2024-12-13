@@ -1,38 +1,12 @@
-2024-12-01 20:17 helllllllooooo
-2024-12-08 02:29Cycle Complete.
-2024-12-08 02:29Cycle Complete.
-2024-12-08 02:29Cycle Complete.
-2024-12-08 02:29Cycle Complete.
-2024-12-08 02:33Cycle Complete.
-2024-12-08 02:34Cycle Complete.
-2024-12-08 02:37Cycle Complete.
-2024-12-08 02:49Cycle Complete.
-2024-12-08 02:49Cycle Complete.
-2024-12-08 02:51Cycle Complete.
-2024-12-08 02:51Cycle Complete.
-2024-12-08 02:53Cycle Complete.
-2024-12-08 02:53Cycle Complete.
-2024-12-08 02:54Cycle Complete.
-2024-12-08 02:56Cycle Complete.
-2024-12-08 02:56Cycle Complete.
-2024-12-08 02:57Cycle Complete.
-2024-12-08 02:57Cycle Complete.
-2024-12-11 08:04Cycle Complete.
-2024-12-11 13:30Cycle Complete.
-2024-12-11 13:31Cycle Complete.
-2024-12-11 15:12Cycle Complete.
-2024-12-11 21:02Cycle Complete.
-2024-12-12 13:33Cycle Complete.
-2024-12-12 13:34 QueenMaryShip.txt manifest is opened for unloading/loading, there are 2 on the ship 
-2024-12-12 13:34 Bob signs in.
-2024-12-12 13:34 Lee signs in.
-2024-12-12 13:37 Henry signs out.
-2024-12-12 13:37 Andrea W signs in.
-2024-12-12 13:37 Andrea W signs out.
-2024-12-12 13:37 Caleb signs in.
-2024-12-12 13:38 Cycle Complete.
-2024-12-12 13:38 ShipCase1.txt manifest is opened for unloading/loading, there are 2 on the ship 
-2024-12-12 13:38 Cats is dented
-2024-12-12 13:38 Caleb signs out.
-2024-12-12 13:38 Mayra signs in.
-2024-12-12 14:34 SilverQueen.txt manifest is opened for balancing, there are 4 on the ship 
+2024-12-12 16:06 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:06 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:10 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:12 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:12 Cycle Complete.
+2024-12-12 16:12 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:14 Cycle Complete.
+2024-12-12 16:14 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:14 Cycle Complete.
+2024-12-12 16:14 SilverQueen.txt manifest is opened for unloading/loading, there are 4 on the ship 
+2024-12-12 16:14 Cycle Complete.
+2024-12-12 16:15 ShipCase4.txt manifest is opened for unloading/loading, there are 7 on the ship 
