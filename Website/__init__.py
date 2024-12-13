@@ -66,6 +66,7 @@ def create_app():
 
     #These both take a file from their respective buttons on the home page and upload it to the ManifestFolder file. If there is no file selected it will keep them on the hope page.
     @app.route('/balanceRedirect', methods=['GET','POST'])
+    @app.route('/balanceRedirect', methods=['GET','POST'])
     def balanceRedirect():
         folder_path = "Website\ManifestFolder"
         Manifest_Folder = os.listdir(folder_path)
@@ -92,26 +93,26 @@ def create_app():
                 }
             session['manifest_file'] = filename
             tree = Tree(ignore)
-            tree.AStar()
-            folder_path_sol = "Website\Solution"
-            Solution_Folder = os.listdir(folder_path_sol)
-            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
-            print(solution_parse(solution_path))
-            session['solution_data'] = solution_parse(solution_path)
+            moves = tree.AStar()
+            session['Solution'] = []
+            for move in moves:
+                print(move[0])
+                session['Solution'].append(move[0])
+            session['solution_Data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
-            
+
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
             tree = Tree(ignore)
-            tree.AStar()
-            folder_path_sol = "Website\Solution"
-            Solution_Folder = os.listdir(folder_path_sol)
-            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
-            print(solution_parse(solution_path))
-            session['solution_data'] = solution_parse(solution_path)
+            moves = tree.AStar()
+            session['Solution'] = []
+            for move in moves:
+                print(move[0])
+                session['Solution'].append(move[0])
+            session['solution_Data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -124,19 +125,19 @@ def create_app():
             except Exception as e:
                 flash(f"ERRORRRRRR: {e}", "error")
                 return redirect(url_for('home'))
-                
+
             session['grid_data'] = {
                 key: [{"weight": c.weight, "name": c.name} for c in containers]
                 for key, containers in grid_data.items()
                 }
             session['manifest_file'] = filename
             tree = Tree(ignore)
-            tree.AStar()
-            folder_path_sol = "Website\Solution"
-            Solution_Folder = os.listdir(folder_path_sol)
-            solution_path = (os.path.join(app.root_path+'\Solution', 'solution.txt'))
-            print(solution_parse(solution_path))
-            session['solution_data'] = solution_parse(solution_path)
+            moves = tree.AStar()
+            session['Solution'] = []
+            for move in moves:
+                print(move[0])
+                session['Solution'].append(move[0])
+            session['solution_Data'] = session['Solution'][0]
             return redirect(url_for('auth.balance'))
     
     @app.route('/unload_loadRedirect', methods=['POST'])
