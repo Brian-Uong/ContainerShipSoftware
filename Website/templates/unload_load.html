@@ -58,14 +58,40 @@
         const nextBtn = document.getElementById('nextBtn')
         const previousBtn = document.getElementById('previousBtn')
         let selectedAction = null;
-        let containerData = [];
+        let containerData = JSON.parse(localStorage.getItem('containerData')) || [];
+
+        // Allow for us to display the user input even after signing in/out or logging a message
+        function renderContainerData() {
+            inputDisplay.innerHTML = ''; 
+            containerData.forEach((entry, index) => {
+                const newEntry = document.createElement('div');
+                newEntry.textContent = `${entry.action}: ${entry.name} ${entry.weight || ''}`;
+                newEntry.id = index;
+
+                newEntry.addEventListener('mouseover', (e) => {
+                    e.target.style.color = "red";
+                });
+                newEntry.addEventListener('mouseleave', (e) => {
+                    e.target.style.color = "black";
+                });
+                newEntry.addEventListener('click', (e) => {
+                    containerData.splice(index, 1); 
+                    localStorage.setItem('containerData', JSON.stringify(containerData)); 
+                    renderContainerData(); 
+                });
+
+                inputDisplay.appendChild(newEntry);
+            });
+        }
+
+        renderContainerData();
 
     unloadBtn.addEventListener('click', () => {
         selectedAction = 'Unload';
         nameField.style.display = 'block';
         addField.style.display = 'block';
         continueField.style.display = 'block';
-        weightField.style.display = 'block';
+        weightField.style.display = 'none';
     });
 
     loadBtn.addEventListener('click', () => {
@@ -89,6 +115,7 @@
         newEntry = document.createElement('div');
         if(selectedAction ==='Load' && containerWeight){
             newEntry.textContent = `${selectedAction}: ${containerName} ${containerWeight}`;
+            containerData.push({ action: selectedAction, name: containerName, weight: containerWeight });
             newEntry.id = idTracker;
             idTracker++;
             newEntry.addEventListener('mouseover', (e) => {
@@ -100,7 +127,8 @@
             newEntry.addEventListener('click', (e) => {
                 e.target.remove();
             })
-            containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
+          //containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
+            localStorage.setItem('containerData', JSON.stringify(containerData));
             fetch('/unloadLoadRequest', {
                 method: 'POST',
                 headers: {
@@ -110,7 +138,8 @@
             });
         }
         else if(selectedAction === 'Unload'){
-            newEntry.textContent = `${selectedAction}: ${containerName} ${containerWeight}`;
+            newEntry.textContent = `${selectedAction}: ${containerName}`;
+            containerData.push({ action: selectedAction, name: containerName, weight: 0})
             newEntry.id = idTracker;
             idTracker++;
             newEntry.addEventListener('mouseover', (e) => {
@@ -122,19 +151,22 @@
             newEntry.addEventListener('click', (e) => {
                 e.target.remove();
             })
-            containerData.push({action: selectedAction, name: containerName, weight: containerWeight});
+          //containerData.push({action: selectedAction, name: containerName});
+            localStorage.setItem('containerData', JSON.stringify(containerData));
             fetch('/unloadLoadRequest', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json'  
                 },
-                body: JSON.stringify({action: selectedAction, name: containerName, weight: containerWeight}),
+                body: JSON.stringify({action: selectedAction, name: containerName}),
             });
         }
         else{
             alert('Input NOT Valid');
             return;
         }
+        localStorage.setItem('containerData', JSON.stringify(containerData));
+      //renderContainerData();
 
         inputDisplay.appendChild(newEntry);
         document.getElementById('containerName').value = '';
@@ -154,7 +186,9 @@
             nextBtn.style.display = 'block';
 
             // Display gets cleared
-            inputDisplay.innerHTML = '';
+            containerData = [];
+            localStorage.removeItem('containerData');
+            renderContainerData();
         });
 
     });
