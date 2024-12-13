@@ -229,7 +229,7 @@ def create_app():
         if(outbound_Folder[0]):
             outbound_name = outbound_Folder[0]
             outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
-            # return redirect(url_for('auth.placeholder'))
+            
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
@@ -242,7 +242,7 @@ def create_app():
         session['solution_data'] = []
         print(session['solution_data'])
         session['Solution'] = []
-        return redirect(url_for('auth.home'))
+        return redirect(url_for('auth.placeholder'))
     
     @app.route('/findSolution', methods=['POST'])
     def findSolution():
@@ -271,6 +271,8 @@ def create_app():
         session['solution_data'] = session['Solution'][0]['description']
         final_position = session['Solution'][0]['positions']['final']
         start_position = session['Solution'][0]['positions']['initial']
+        session['fp'] = final_position
+        session['sp'] = start_position
         if(type(final_position[0]) == int):
             session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
         if(type(start_position[0]) == int):
@@ -285,6 +287,8 @@ def create_app():
                     session['solution_data'] = session['Solution'][i+1]['description']
                     final_position = session['Solution'][i+1]['positions']['final']
                     start_position = session['Solution'][i+1]['positions']['initial']
+                    session['fp'] = final_position
+                    session['sp'] = start_position
                     print(final_position)
                     print(start_position)
                     if(type(final_position[0]) == int):

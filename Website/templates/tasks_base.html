@@ -109,7 +109,7 @@
   {% for j in range(0,8)%}
   <div class="row">
     {% for i in range(0, 12) %}
-    <div class="col-1 custom-border" {% if grid['' ~ i][7-j].name == 'NAN' %} style="background-color: grey;" {% endif %} title="{{[8 - j, i + 1]}} {{grid['' ~ i][7-j].name}}">{{[8 - j, i + 1]}} <br/> {{grid['' ~ i][7-j].name}} <br/></div>
+    <div class="col-1 custom-border" id={{i+1}}{{8-j}} {% if grid['' ~ i][7-j].name == 'NAN' %} style="background-color: grey;" {% endif %} title="{{[8 - j, i + 1]}} {{grid['' ~ i][7-j].name}}">{{[8 - j, i + 1]}} <br/> {{grid['' ~ i][7-j].name}} <br/></div>
     {% endfor %}
   </div>
   {% endfor %}

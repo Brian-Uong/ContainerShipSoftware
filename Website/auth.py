@@ -14,7 +14,11 @@ def balance():
     print(grid)
     filename = session.get('manifest_file', "Unknown File")
     solution = session.get('solution_data', [])
-    return render_template("balancing.html", grid=grid, filename=filename, solution=solution)
+    fp0 = session.get('fp'[0], [])
+    fp1 = session.get('fp'[1], [])
+    sp0 = session.get('sp'[0], [])
+    sp1 = session.get('sp'[1], [])
+    return render_template("balancing.html", grid=grid, filename=filename, solution=solution, sp0 = sp0, sp1 = sp1, fp0 = fp0, fp1 = fp1)
 
 @auth.route('/unload_load')
 def unload_load():
@@ -23,8 +27,9 @@ def unload_load():
     print(grid['1'][3])
     filename = session.get('manifest_file', "Unknown File")
     solution = session.get('solution_data', [])
-    print(solution)
-    return render_template('unload_load.html', grid=grid, filename=filename, solution=solution)
+    fp = session.get('fp', [])
+    sp = session.get('sp', [])
+    return render_template('unload_load.html', grid=grid, filename=filename, solution=solution, sp0 = sp[0], sp1 = sp[1], fp0 = fp[0], fp1 = fp[1])
 
 @auth.route('/file_upload')
 def file_upload():
