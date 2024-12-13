@@ -21,7 +21,8 @@ def unload_load():
     session['previous_url'] = url_for('auth.unload_load')
     grid = session.get('grid_data', {})
     filename = session.get('manifest_file', "Unknown File")
-    solution = session.get('solution_data', [])
+    solution = session.get('solution_Data', [])
+    print(solution)
     return render_template('unload_load.html', grid=grid, filename=filename, solution=solution)
 
 @auth.route('/file_upload')

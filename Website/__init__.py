@@ -218,17 +218,22 @@ def create_app():
         for file in Solution_Folder:
             solution_file_path = os.path.join(solution_folder_path, file)
             os.unlink(solution_file_path)
-        session['solution_data'] = []
+        session['solution_Data'] = []
+        print(session['solution_Data'])
+        session['Solution'] = []
         return redirect(url_for('home'))
     
     @app.route('/findSolution', methods=['POST'])
     def findSolution():
         folder_path = "Website\ManifestFolder"
         Manifest_Folder = os.listdir(folder_path)
-        if (Manifest_Folder[0] == 'instructions.txt'):
-            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[1]))
-        if (Manifest_Folder[1] == 'instructions.txt'):
-            manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+        if(len(Manifest_Folder) > 1):
+            if (Manifest_Folder[0] == 'instructions.txt'):
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[1]))
+            if (Manifest_Folder[1] == 'instructions.txt'):
+                manifest_path = (os.path.join(app.root_path+'\ManifestFolder', Manifest_Folder[0]))
+        else:
+            return ('', 204)
         file_path = 'Website/ManifestFolder/instructions.txt'
         load, unload = iparse(file_path)
         for i in range(len(load)):
@@ -238,9 +243,27 @@ def create_app():
         igrid,_ = parse(manifest_path)
         tree = LTree(manifest_path, unload, load, igrid)
         moves = tree.aStar()
-        session['solution_data'] = moves
-        print(moves)
-        return ('', 204)
+        session['Solution'] = []
+        for move in moves:
+            print(move)
+            session['Solution'].append(move['description'])
+        session['solution_Data'] = session['Solution'][0]
+        
+        return redirect(url_for('auth.unload_load'))
+
+    @app.route('/nextInstruction', methods=['POST'])
+    def nextInstruction():
+        for i in range(len(session['Solution'])):
+            if (session['solution_Data'] == session['Solution'][i]):
+                print(i)
+                print(len(session['Solution'])-1)
+                if(i != len(session['Solution'])-1):
+                    session['solution_Data'] = session['Solution'][i+1]
+                    return redirect(url_for('auth.unload_load'))
+                if( i == len(session['Solution'])-1):
+                    session['solution_Data'] = "Cycle Complete. Please click the cycle complete button."
+        return redirect(url_for('auth.unload_load'))
+
 
     return app
 

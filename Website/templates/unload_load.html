@@ -15,10 +15,9 @@
         </div>
 <!--Buttons to move through the instructions for loading/unloading-->
         <div class="mt-4" id="nextBtn" style="display:none;">
-            <button style="position: fixed; bottom: 50vh; left: 20vw; padding: 8px;" type="button" class="btn btn-secondary" id="nextButton">Next</button>
-        </div>
-        <div class="mt-4" id="previousBtn" style="display:none;">
-            <button style="position: fixed; bottom: 40vh; left: 20vw; padding: 8px;" type="button" class="btn btn-secondary" id="previousButton">Previous</button>
+            <form method="post" action="/nextInstruction">
+                <button style="position: fixed; bottom: 50vh; left: 20vw; padding: 8px;" type="submit" class="btn btn-secondary" id="nextButton">Next</button>
+            </form>
         </div>
 <!--Container info input-->
 <!--These buttons will only appear when user selects Unload/Load buttons-->
@@ -58,32 +57,57 @@
         const addField = document.getElementById('addField');
         const continueField = document.getElementById('continueField');
         const nextBtn = document.getElementById('nextBtn');
-        const previousBtn = document.getElementById('previousBtn');
         let selectedAction = null;
         let containerData = JSON.parse(localStorage.getItem('containerData')) || [];
 
         // Allow for us to display the user input even after signing in/out or logging a message
         function renderContainerData() {
-            inputDisplay.innerHTML = ''; 
-            containerData.forEach((entry, index) => {
-                const newEntry = document.createElement('div');
-                newEntry.textContent = `${entry.action}: ${entry.name} ${entry.weight || ''}`;
-                newEntry.id = index;
+            if('{{solution}}' == '[]'){
+                inputDisplay.innerHTML = ''; 
+                containerData.forEach((entry, index) => {
+                    const newEntry = document.createElement('div');
+                    newEntry.textContent = `${entry.action}: ${entry.name} ${entry.weight || ''}`;
+                    newEntry.id = index;
 
-                newEntry.addEventListener('mouseover', (e) => {
-                    e.target.style.color = "red";
-                });
-                newEntry.addEventListener('mouseleave', (e) => {
-                    e.target.style.color = "black";
-                });
-                newEntry.addEventListener('click', (e) => {
-                    containerData.splice(index, 1); 
-                    localStorage.setItem('containerData', JSON.stringify(containerData)); 
-                    renderContainerData(); 
-                });
+                    newEntry.addEventListener('mouseover', (e) => {
+                        e.target.style.color = "red";
+                    });
+                    newEntry.addEventListener('mouseleave', (e) => {
+                        e.target.style.color = "black";
+                    });
+                    newEntry.addEventListener('click', (e) => {
+                        containerData.splice(index, 1); 
+                        localStorage.setItem('containerData', JSON.stringify(containerData)); 
+                        renderContainerData(); 
+                    });
 
+                    inputDisplay.appendChild(newEntry);
+                });
+            }
+            else if('{{solution}}' == "Cycle Complete. Please click the cycle complete button."){
+                unloadBtn.style.display = 'none';
+                loadBtn.style.display = 'none';
+                nameField.style.display = 'none';
+                addField.style.display = 'none';
+                continueField.style.display = 'none';
+                weightField.style.display = 'none';
+                nextBtn.style.display = 'none';
+                newEntry = document.createElement('div');
+                newEntry.textContent = '{{solution}}'
                 inputDisplay.appendChild(newEntry);
-            });
+            }
+            else{
+                unloadBtn.style.display = 'none';
+                loadBtn.style.display = 'none';
+                nameField.style.display = 'none';
+                addField.style.display = 'none';
+                continueField.style.display = 'none';
+                weightField.style.display = 'none';
+                nextBtn.style.display = 'block';
+                newEntry = document.createElement('div');
+                newEntry.textContent = '{{solution}}'
+                inputDisplay.appendChild(newEntry);
+            }
         }
 
         renderContainerData();
@@ -184,17 +208,12 @@
             addField.style.display = 'none';
             continueField.style.display = 'none';
             weightField.style.display = 'none';
-            previousBtn.style.display = 'block';
             nextBtn.style.display = 'block';
 
             // Display gets cleared
             containerData = [];
             localStorage.removeItem('containerData');
             renderContainerData();
-            moves = "{{solution}}"
-            newEntry = document.createElement('div');
-            newEntry.textContent = moves
-            inputDisplay.appendChild(newEntry);
         });
 
     });
