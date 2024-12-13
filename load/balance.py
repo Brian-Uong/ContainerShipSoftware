@@ -198,7 +198,7 @@ class Tree:
                             appended = True
 
                             newCost = abs(position[0] - (otherColumn + 1)) + abs(position[1] - newRow)
-                            moveDescription = f"Move '{top.name}' from bay column {column + 1} to bay column {otherColumn + 1}"
+                            moveDescription = f"Move {top.name} from bay column {column + 1} to bay column {otherColumn + 1}"
                             movePositions = [(column + 1, position[1]), (otherColumn + 1, len(newBay[otherColumn]))]
                             child = BoardState(newBay, curr.g + newCost, curr, moveDescription, movePositions)
                             print(f"Generated child state with container moved to column {otherColumn + 1}, f={child.f} (g={child.g}, h={child.h})")
