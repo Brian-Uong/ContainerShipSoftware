@@ -1,2 +1,0 @@
-Action: Load, Name: test, Weight: 1
-Action: Unload, Name: Cat, Weight: 0
