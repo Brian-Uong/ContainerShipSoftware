@@ -218,7 +218,7 @@ def create_app():
         if(outbound_Folder[0]):
             outbound_name = outbound_Folder[0]
             outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
-            return redirect(url_for('auth.placeholder'))
+            # return redirect(url_for('auth.placeholder'))
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
@@ -256,19 +256,33 @@ def create_app():
         session['Solution'] = []
         for move in moves:
             print(move)
-            session['Solution'].append(move['description'])
-        session['solution_data'] = session['Solution'][0]
-        
+            session['Solution'].append(move)
+        session['solution_data'] = session['Solution'][0]['description']
+        final_position = session['Solution'][0]['positions']['final']
+        start_position = session['Solution'][0]['positions']['initial']
+        if(type(final_position[0]) == int):
+            session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+        if(type(start_position[0]) == int):
+            session['grid_data'][str(start_position[0]-1)][final_position[1]-1]['name'] = "UNUSED"
         return redirect(url_for('auth.unload_load'))
 
     @app.route('/nextInstruction', methods=['POST'])
     def nextInstruction():
         for i in range(len(session['Solution'])):
-            if (session['solution_data'] == session['Solution'][i]):
-                print(i)
-                print(len(session['Solution'])-1)
+            if (session['solution_data'] == session['Solution'][i]['description']):
                 if(i != len(session['Solution'])-1):
-                    session['solution_data'] = session['Solution'][i+1]
+                    session['solution_data'] = session['Solution'][i+1]['description']
+                    final_position = session['Solution'][i+1]['positions']['final']
+                    start_position = session['Solution'][i+1]['positions']['initial']
+                    print(final_position)
+                    print(start_position)
+                    if(type(final_position[0]) == int):
+                        print(session['solution_data'].split()[1])
+                        print(final_position)
+                        print(start_position)
+                        session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+                    if(type(start_position[0]) == int):
+                        session['grid_data'][str(start_position[0]-1)][start_position[1]-1]['name'] = "UNUSED"
                     return redirect(url_for('auth.unload_load'))
                 if( i == len(session['Solution'])-1):
                     session['solution_data'] = "Cycle Complete. Please click the cycle complete button."
