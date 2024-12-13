@@ -186,15 +186,20 @@ def create_app():
 
     @app.route('/completeCycle', methods=['POST'])
     def completeCycle():
-        folder_path = "Website\ManifestFolder"
-        Manifest_Folder = os.listdir(folder_path)
+        manifest_folder_path = "Website\ManifestFolder"
+        Manifest_Folder = os.listdir(manifest_folder_path)
         file_path = 'log.txt'
+        solution_folder_path = "Website\Solution"
+        Solution_Folder = os.listdir(solution_folder_path)
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
         for file in Manifest_Folder:
-            file_path = os.path.join(folder_path, file)
-            os.unlink(file_path)
+            manifest_file_path = os.path.join(manifest_folder_path, file)
+            os.unlink(manifest_file_path)
+        for file in Solution_Folder:
+            solution_file_path = os.path.join(solution_folder_path, file)
+            os.unlink(solution_file_path)
         return redirect(url_for('home'))
     
     return app
