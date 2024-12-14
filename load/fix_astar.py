@@ -161,7 +161,9 @@ class BoardState:
 
 class LTree:
     def __init__(self, filePath, neededOff, load, igrid):
+        filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\testcases\\SilverQueen.txt'
         self.fileName = os.path.basename(filePath)
+        
         currentOff = []
 
         debugPrint("Tree initialized with root BoardState.")
@@ -205,7 +207,7 @@ class LTree:
     def updateManifest(self, goalState):
         baseName, extension = self.fileName.rsplit('.', 1)
         
-        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\Website\\outbound\\{baseName}OUTBOUND.{extension}"
+        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\Website\\outbound\\SilverQueenOUTBOUND.txt"
 
         with open(outputPath, "w") as manifestFile:
             for y in range(MAX_BAY_X):
@@ -404,8 +406,6 @@ class LTree:
 
 def main():
     startTime = time.time()
-
-    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
     igrid, _ = parse(filePath)
     neededOff = [manifest_read.A_Container(0, 'Cat')]
     load = [manifest_read.A_Container(1, 'test')]

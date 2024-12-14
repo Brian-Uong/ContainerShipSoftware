@@ -129,7 +129,6 @@ class BoardState:
 
 class Tree:
     def __init__(self):
-        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
         cont1 = manifest_read.A_Container(2000, 'Cat')
         cont2 = manifest_read.A_Container(2007, 'Dog')
         neededOff = [cont1, cont2]

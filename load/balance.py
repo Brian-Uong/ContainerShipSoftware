@@ -94,6 +94,22 @@ class Tree:
 
         debugPrint("Tree initialized with root BoardState.")
 
+    def updateManifest(self, goalState):        
+        outputPath = f"C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\Website\\outbound\\SilverQueenOUTBOUND.txt"
+
+        with open(outputPath, "w") as manifestFile:
+            for y in range(MAX_BAY_X):
+                for x in range(MAX_BAY_Y):
+                    if x in goalState.bay and y < len(goalState.bay[x]):
+                        container = goalState.bay[x][y]
+                        weight = str(container.weight).zfill(5)
+                        name = container.name
+                    else:
+                        weight = "00000"
+                        name = "UNUSED"
+                    manifestFile.write(f"[{str(y + 1).zfill(2)},{str(x + 1).zfill(2)}], {{{weight}}}, {name}\n")
+
+
     def AStar(self):
         debugPrint("Starting A* search...")
         frontier = []
@@ -121,6 +137,7 @@ class Tree:
             if self.isGoal(left, right):
                 print("Goal state reached!")
                 curr.printState()
+                self.updateManifest(curr)
                 return self.traceSolution(curr)
 
             visitedSet.add(curr)
@@ -267,7 +284,6 @@ class Tree:
 
 def main():
     start_time = time.time()
-    filepath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
     grid, _ = parse(filepath)
     tree = Tree(grid)
     tree.AStar()

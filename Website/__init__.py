@@ -33,7 +33,7 @@ def create_app():
     @app.route('/log', methods=['POST'])
     def log_message():
         log_message = request.form.get('logMessage')
-        file_path = 'log.txt'
+        file_path = 'C:\\Users\\Public\\log.txt'
 
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + log_message + '\n')
@@ -43,7 +43,7 @@ def create_app():
     @app.route('/signIn', methods=['POST'])
     def sign_in():
         sign_in = request.form.get('empName')
-        file_path = 'log.txt'
+        file_path = 'C:\\Users\\Public\\log.txt'
         current_employee_path = 'curr_emp.txt'
 
         if not os.path.exists(current_employee_path):
@@ -83,10 +83,10 @@ def create_app():
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
                 num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
                 Manifest_Folder = os.listdir(folder_path)
-                file_path_log = 'log.txt'
+                file_path_log = 'C:\\Users\\Public\\log.txt'
 
                 with open(file_path_log, 'a') as files:
-                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for unloading/loading, there are ' + str(num_containers) + ' on the ship \n')
+                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for balancing, there are ' + str(num_containers) + ' containers on the ship \n')
                     os.unlink(file_path_log)
 
             except Exception as e:
@@ -185,10 +185,10 @@ def create_app():
                 ignore, grid_data = parse(manifest_path) #The ignore value being assigned is used in the astar search not the display grid.
                 num_containers = sum(1 for containers in grid_data.values() for c in containers if c.name not in ['NAN', 'UNUSED'])
                 Manifest_Folder = os.listdir(folder_path)
-                file_path_log = 'log.txt'
+                file_path_log = 'C:\\Users\\Public\\log.txt'
 
                 with open(file_path_log, 'a') as files:
-                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for unloading/loading, there are ' + str(num_containers) + ' on the ship \n')
+                    files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' ' + filename + ' manifest is opened for unloading/loading, there are ' + str(num_containers) + ' containers on the ship \n')
                     os.unlink(file_path_log)
 
             except Exception as e:
@@ -238,15 +238,13 @@ def create_app():
     def completeCycle():
         manifest_folder_path = "Website\ManifestFolder"
         Manifest_Folder = os.listdir(manifest_folder_path)
-        file_path = 'log.txt'
+        file_path = 'C:\\Users\\Public\\log.txt'
         solution_folder_path = "Website\Solution"
         Solution_Folder = os.listdir(solution_folder_path)
         outbound_Folder = os.listdir("Website\outbound")
-        if(outbound_Folder[0]):
+        if(len(outbound_Folder) != 0):
             outbound_name = outbound_Folder[0]
             outbound_file_path = os.path.join(app.root_path + '\outbound', outbound_name)
-            
-
         with open(file_path, 'a') as files:
             files.write(datetime.now().strftime('%Y-%m-%d %H:%M') + ' Cycle Complete.\n')
         for file in Manifest_Folder:
@@ -274,7 +272,7 @@ def create_app():
         file_path = 'Website/ManifestFolder/instructions.txt'
         load, unload = iparse(file_path)
         for i in range(len(load)):
-            load[i] = A_Container(0, load[i])
+            load[i] = A_Container(5425, load[i])
         for i in range(len(unload)):
             unload[i] = A_Container(0, unload[i])
         igrid,_ = parse(manifest_path)
