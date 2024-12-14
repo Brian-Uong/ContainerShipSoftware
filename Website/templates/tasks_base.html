@@ -49,6 +49,15 @@
     </div>
   </nav>
 <!--End Navbar-->
+<div class="buffer container">
+  {% for j in range(0,4)%}
+  <div class="row">
+    {% for i in range(0, 24) %}
+    <div class="col-1 custom-border" style = "max-width: .5vw; font-size: 1vw;">.</div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
 <!--Begin Complete Cycle Button-->
 <div style="position: fixed; bottom: 3vh; right: 0; max-width: 30vw; max-height: 10vh; padding: 15px; font-size: min(2vw,4vh);">
   <form id="completeCycleForm" method="post" action="/completeCycle">
@@ -93,7 +102,7 @@
   }
   .truck-box {
     position: absolute;
-    bottom: 10vh;
+    bottom: 20vh;
     right: 42vw;
     font-size: min(1.5vw, 2vh);
     max-height: 10vh;
@@ -104,6 +113,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
+  }
+  .buffer {
+    position: absolute;
+    right: 0vw;
+    bottom: 3vh;
     box-sizing: border-box;
   }
 </style>

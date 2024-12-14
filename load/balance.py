@@ -107,7 +107,7 @@ class Tree:
             #     print("Goal state reached!")
             #     self.root.printState()
             #     return
-            
+             
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
 

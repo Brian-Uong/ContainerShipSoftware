@@ -161,7 +161,6 @@ class BoardState:
 
 class LTree:
     def __init__(self, filePath, neededOff, load, igrid):
-        filePath = 'C:\\Users\\matth\\OneDrive\\Desktop\\HW\\CS 179\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
         self.fileName = os.path.basename(filePath)
         currentOff = []
 
