@@ -110,15 +110,16 @@
                 if('{{fp0}}' != 'L' && '{{fp0}}' != 'M' && '{{fp0}}' != 'O'){
                     document.getElementById('{{fp0}}{{fp1}}').style.backgroundColor = "lightgreen";
                 }
-                if('{{fp0}}' == 'L'){
-                    document.getElementById('truck').style.color = "pink";
+
+                if('{{sp0}}' == 'L'){
+                    document.getElementById('truck').style.backgroundColor = "pink";
                 }
                 console.log('{{sp0}}')
                 if('{{sp0}}' != 'L' && '{{sp0}}' != 'M' && '{{sp0}}' != 'O'){
                     document.getElementById('{{sp0}}{{sp1}}').style.backgroundColor = "pink";
                 }
-                if('{{sp0}}' == 'O'){
-                    document.getElementById('truck').style.background = "lightgreen";
+                if('{{fp0}}' == 'O'){
+                    document.getElementById('truck').style.backgroundColor = "lightgreen";
                 }
                 inputDisplay.appendChild(newEntry);
             }

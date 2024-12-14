@@ -102,9 +102,16 @@ def create_app():
             for move in moves:
                 print(move)
                 session['Solution'].append(move)
-            session['solution_data'] = session['Solution'][0]['description']
-            final_position = session['Solution'][0]['positions']['final']
-            start_position = session['Solution'][0]['positions']['initial']
+            session['solution_data'] = session['Solution'][0][0]
+            final_position = session['Solution'][0][1][1]
+            start_position = session['Solution'][0][1][0]
+            session['fp'] = final_position
+            session['sp'] = start_position
+            if(type(final_position[0]) == int):
+                session['grid_data'][final_position[0]-1][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+            if(type(start_position[0]) == int):
+                print(start_position)
+                session['grid_data'][start_position[0]-1][start_position[1]-1]['name'] = "UNUSED"
             return redirect(url_for('auth.balance'))
 
             session['grid_data'] = { #I think that in order to allow the name to be displayed I want to store the name of the file somewher in here but I need to understand how Andrea sent this data to tasks_base
@@ -118,9 +125,16 @@ def create_app():
             for move in moves:
                 print(move)
                 session['Solution'].append(move)
-            session['solution_data'] = session['Solution'][0]['description']
-            final_position = session['Solution'][0]['positions']['final']
-            start_position = session['Solution'][0]['positions']['initial']
+            session['solution_data'] = session['Solution'][0][0]
+            final_position = session['Solution'][0][1][1]
+            start_position = session['Solution'][0][1][0]
+            session['fp'] = final_position
+            session['sp'] = start_position
+            if(type(final_position[0]) == int):
+                session['grid_data'][final_position[0]-1][final_position[1]-1]['name'] = session['solution_data'].split()[1]
+            if(type(start_position[0]) == int):
+                print(start_position)
+                session['grid_data'][start_position[0]-1][start_position[1]-1]['name'] = "UNUSED"
             return redirect(url_for('auth.balance'))
         else:
             if (Manifest_Folder[0] == 'instructions.txt'):
@@ -148,6 +162,8 @@ def create_app():
             session['solution_data'] = session['Solution'][0][0]
             final_position = session['Solution'][0][1][1]
             start_position = session['Solution'][0][1][0]
+            session['fp'] = final_position
+            session['sp'] = start_position
             if(type(final_position[0]) == int):
                 session['grid_data'][final_position[0]-1][final_position[1]-1]['name'] = session['solution_data'].split()[1]
             if(type(start_position[0]) == int):
@@ -308,6 +324,8 @@ def create_app():
                     session['solution_data'] = session['Solution'][i+1][0]
                     final_position = session['Solution'][i+1][1][1]
                     start_position = session['Solution'][i+1][1][0]
+                    session['fp'] = final_position
+                    session['sp'] = start_position
                     session['solution_data'] = session['Solution'][i+1][0]
                     if(type(final_position[0]) == int):
                         session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]

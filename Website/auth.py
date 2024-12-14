@@ -16,6 +16,8 @@ def balance():
     solution = session.get('solution_data', [])
     fp = session.get('fp', ['M','M'])
     sp = session.get('sp', ['M','M'])
+    print(fp)
+    print(sp)
     return render_template("balancing.html", grid=grid, filename=filename, solution=solution,sp0 = sp[0], sp1 = sp[1], fp0 = fp[0], fp1 = fp[1])
 
 @auth.route('/unload_load')
