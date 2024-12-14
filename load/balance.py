@@ -103,10 +103,10 @@ class Tree:
 
         while frontier:
             debugPrint(f"Frontier size: {len(frontier)}")
-            if len(frontier) <= 1:
-                print("Goal state reached!")
-                self.root.printState()
-                return
+            # if len(frontier) <= 1:
+            #     print("Goal state reached!")
+            #     self.root.printState()
+            #     return
             
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
