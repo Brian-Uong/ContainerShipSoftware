@@ -91,18 +91,26 @@
     max-width: 36vw;
     max-height: 60vh;
   }
-  .truck-icon {
+  <!--Little Truck-->
+  .truck-box {
     position: absolute;
     bottom: 10vh;
     right: 42vw;
-    font-size: min(4vw,10vh);
+    font-size: min(1.5vw, 2vh);
     max-height: 10vh;
     max-width: 4vw;
+    width: 4vw; 
+    height: 10vh;
+    border: 0.2vh solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
   }
 </style>
 
-<!--Little Truck-->
-<i class="fas fa-truck truck-icon" id="truck"></i>
+<!-- Little Truck BOX -->
+<div class="truck-box" id="truck">Truck</div>
 
 <!--Loop that handles filling in the table-->
 <div class="container layout-right">
