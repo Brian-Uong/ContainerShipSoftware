@@ -406,10 +406,10 @@ class LTree:
 def main():
     startTime = time.time()
 
-    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\SilverQueen.txt'
+    filePath = 'C:\\Users\\edech\\Documents\\BEAM-Solutions-Project\\load\\ShipCase4.txt'
     igrid, _ = parse(filePath)
-    neededOff = [manifest_read.A_Container(0, 'Rations for US Army'), manifest_read.A_Container(0, 'Batons')]
-    load = [manifest_read.A_Container(0, 'Sunshine'), manifest_read.A_Container(0, 'Rainbows')]
+    neededOff = [manifest_read.A_Container(0, 'Cat')]
+    load = [manifest_read.A_Container(1, 'test')]
     tree = LTree(filePath, neededOff, load, igrid)
     moves = tree.aStar()
 

@@ -289,12 +289,9 @@ def create_app():
                     start_position = session['Solution'][i+1]['positions']['initial']
                     session['fp'] = final_position
                     session['sp'] = start_position
-                    print(final_position)
-                    print(start_position)
+                    print(session['fp'])
+                    print(session['sp'])
                     if(type(final_position[0]) == int):
-                        print(session['solution_data'].split()[1])
-                        print(final_position)
-                        print(start_position)
                         session['grid_data'][str(final_position[0]-1)][final_position[1]-1]['name'] = session['solution_data'].split()[1]
                     if(type(start_position[0]) == int):
                         session['grid_data'][str(start_position[0]-1)][start_position[1]-1]['name'] = "UNUSED"
