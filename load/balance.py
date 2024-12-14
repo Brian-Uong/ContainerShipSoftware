@@ -71,15 +71,11 @@ class BoardState:
         weightWidth = 1
 
         print("Bay State:")
-        num_containers = 0
         for row in range(MAX_BAY_X - 1, -1, -1):
             for column in range(MAX_BAY_Y):
                 if column in self.bay and row < len(self.bay[column]):
                     container = self.bay[column][row]
                     name = f"{container.name}".ljust(nameWidth)
-                    if(name != "UNUSED" or name != "NAN"):
-                        num_containers +=1
-                        print(num_containers)
                     weight = f"{container.weight}".ljust(weightWidth)
                     print(f"|{name} {weight}|", end='')
                 else:
@@ -87,22 +83,6 @@ class BoardState:
                     emptyWeight = "0".ljust(weightWidth)
                     print(f"| {emptyName} {emptyWeight} |", end='')
             print()
-    def numContainers(self):
-        nameWidth = 1
-        weightWidth = 1
-        num_containers = 0
-        for row in range(MAX_BAY_X - 1, -1, -1):
-            for column in range(MAX_BAY_Y):
-                if column in self.bay and row < len(self.bay[column]):
-                    container = self.bay[column][row]
-                    name = f"{container.name}".ljust(nameWidth)
-                    if(name != "UNUSED" or name != "NAN"):
-                        num_containers +=1
-                    weight = f"{container.weight}".ljust(weightWidth)
-                else:
-                    emptyName = "UNUSED".ljust(nameWidth)
-                    emptyWeight = "0".ljust(weightWidth)
-        return num_containers/2
 
 
 
@@ -123,10 +103,10 @@ class Tree:
 
         while frontier:
             debugPrint(f"Frontier size: {len(frontier)}")
-            if int(self.root.numContainers()) <= 1:
+            if len(frontier) <= 1:
                 print("Goal state reached!")
                 self.root.printState()
-                return self.traceSolution(curr)
+                return
             
             _, curr = heapq.heappop(frontier)
             frontierSet.remove(curr)
